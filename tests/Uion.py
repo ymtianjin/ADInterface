@@ -10,7 +10,7 @@ class Uion(unittest.TestCase):
     http = None
 
     def setUp(self):
-        self.parentPath = os.path.join(os.getcwd(), '/data');
+        self.parentPath = os.path.join(os.getcwd(), 'data');
         self.param = Param.Param(self)
 
         self.http = Http.Http(self)

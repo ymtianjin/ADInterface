@@ -24,9 +24,9 @@ testLoader = unittest.defaultTestLoader
 t1 = testLoader.loadTestsFromModule(Uion)
 ts.addTest(t1)
 
-logPath = os.path.join(os.getcwd(), 'results/report/', time.strftime('%Y%m%d%H%M%S') + 'report.html')
-logFile = open(logPath, 'wb')
-runner = HTMLTestRunner.HTMLTestRunner(stream = logFile, title = '测试报告', description = '测试执行结果：')
-runner.run(ts)
-#unittest.TextTestRunner(verbosity=2).run(ts)
+#logPath = os.path.join(os.getcwd(), 'results/report/', time.strftime('%Y%m%d%H%M%S') + 'report.html')
+#logFile = open(logPath, 'wb')
+#runner = HTMLTestRunner.HTMLTestRunner(stream = logFile, title = '测试报告', description = '测试执行结果：')
+#runner.run(ts)
+unittest.TextTestRunner(verbosity=2).run(ts)
 

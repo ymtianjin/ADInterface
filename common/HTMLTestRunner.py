@@ -199,8 +199,8 @@ class Template_mixin(object):
     <meta name="generator" content="%(generator)s"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     %(stylesheet)s
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <script type="text/javascript" src="https://cdn.bootcss.com/echarts/3.8.5/echarts.common.js"></script>
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="echarts.common.js"></script>
 </head>
 <body>
     <script language="javascript" type="text/javascript"><!--
