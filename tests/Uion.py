@@ -10,7 +10,7 @@ class Uion(unittest.TestCase):
     http = None
 
     def setUp(self):
-        self.parentPath = os.getcwd() + '/data';
+        self.parentPath = os.path.join(os.getcwd(), '/data');
         self.param = Param.Param(self)
 
         self.http = Http.Http(self)
@@ -25,7 +25,7 @@ class Uion(unittest.TestCase):
 
         files = os.listdir(self.parentPath)
         for file in files:
-            path = self.parentPath + '/' + file
+            path = os.path.join(self.parentPath, file)
             ret = False
             if os.path.isfile(path) and os.path.splitext(path)[1] == '.xlsx':
                 ret = self.param.reopen(path)

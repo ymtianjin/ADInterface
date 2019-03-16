@@ -1,9 +1,9 @@
 # encoding=utf-8
 import unittest
 import logging
-import os
+import os, time
 
-from common import Log
+from common import Log, HTMLTestRunner
 from tests import Uion
 
 
@@ -11,9 +11,9 @@ from tests import Uion
 logger = logging.getLogger('start')
 logger.setLevel(logging.DEBUG)
 
-path = os.getcwd() + '/results/logs/'
+logPath = os.path.join(os.getcwd(), 'results/logs/')
 #根节点初始化
-log = Log.createMainLog(path)
+log = Log.createMainLog(logPath)
 # 打印日志，运行用例
 logger.info('begin to generate testcase')
 
@@ -23,5 +23,10 @@ testLoader = unittest.defaultTestLoader
 # 投放测试
 t1 = testLoader.loadTestsFromModule(Uion)
 ts.addTest(t1)
-unittest.TextTestRunner(verbosity=2).run(ts)
+
+logPath = os.path.join(os.getcwd(), 'results/report/', time.strftime('%Y%m%d%H%M%S') + 'report.html')
+logFile = open(logPath, 'wb')
+runner = HTMLTestRunner.HTMLTestRunner(stream = logFile, title = '测试报告', description = '测试执行结果：')
+runner.run(ts)
+#unittest.TextTestRunner(verbosity=2).run(ts)
 
