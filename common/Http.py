@@ -3,6 +3,8 @@ import unittest, requests, json, logging
 
 class Http:
 	testCase = None
+	success = False
+	msg = ""
 
 	# 构造函数，在类的创建过程中通过编译器调用的函数
 	# self指向自己，在实例化对象调用的时候会自动传入，不需要显式调用
@@ -37,11 +39,11 @@ class Http:
 				if len(curRet) > keyIndex:
 					curRet = curRet[keyIndex] # 得到数组的值
 				else:
-					logging.error("out of range: " + keyTip)
+					self.msg = "out of range: " + keyTip
 
 					return False
 			elif not curRet.__contains__(k): # 判断键值是否存在
-				logging.error("key is not exist: " + keyTip)
+				self.msg = "key is not exist: " + keyTip
 
 				return False
 			else:
@@ -49,7 +51,7 @@ class Http:
 
 		if not value is None:
 			if not value == curRet: #判断值是否匹配
-				logging.error(keyTip + " value is not match: " + str(value) + " != " + str(curRet))
+				self.msg = keyTip + " value is not match: " + str(value) + " != " + str(curRet)
 
 				return False
 
@@ -59,55 +61,70 @@ class Http:
 
 	def checkResponse(self, res, checkResult = None):
 		if not res.status_code == 200:
-			logging.error("status_code is not 200: " + str(res.status_code))
-
-			return
-		if res.text is None or res.text == "":
-			logging.error("response is empty")
+			self.msg = "status_code is not 200: " + str(res.status_code)
 
 			return
 
 		if checkResult is None or len(checkResult) == 0:
-			logging.info("empty check successfully")
+			self.msg = "empty check successfully"
 
-			return
+			return True
 
+
+		if res.text is None or res.text == "":
+			self.msg = "response is empty"
+
+			return False
+
+		#logging.info(res.text)
 		# 判断返回值是否json对象
 		result = json.loads(res.text)
 		if not isinstance(result, dict):
-			logging.error("parse result failed")
+			self.msg = "parse result failed"
 
-			return
+			return False
 		isOk = True
 		for key in checkResult:
 			if not self.checkResult(result, key, checkResult[key]):
 				isOk = False
 
-		if isOk:
-			logging.info("all check successfully")
+		return isOk
 
+	def init(self):
+		success = False
+		msg = ""
+
+	def finish(self, url, params, res, checkResult):
+		if res is None or res.text is None:
+			strData = "empty"
+		else:
+			strData = str(res.text)
+		if len(self.msg) > 0:
+			self.msg = self.msg + ", data: " + strData + ", except: " + str(checkResult);
+		else:
+			self.msg = "data: " + strData + ", except: " + str(checkResult);
+		logging.info(url + ", result: " + str(self.success) + ", " + self.msg)
 
 	def get(self, url, params = None, checkResult = None):
+		self.init()
 		try:
 			res = requests.get(url = url, params = params)
+			self.success = self.checkResponse(res, checkResult)
 		except BaseException:
-			res = "access url failed"
+			self.msg = "access url failed"
+		self.finish(url, params, res, checkResult)
+		
 
-			return res
-
-		self.checkResponse(res, checkResult)
-
-		return res.text
+		return self.success
 
 
 	def  post(self, url, data = None, checkResult = None):
+		self.init()
 		try:
 			res = requests.post(url = url, data = data)
+			self.success = self.checkResponse(res, checkResult)
 		except BaseException:
-			res = "access url failed"
+			self.msg = "access url failed"
+		self.finish(url, params, res, checkResult)
 
-			return res
-
-		self.checkResponse(res, checkResult)
-
-		return res.text
+		return self.success

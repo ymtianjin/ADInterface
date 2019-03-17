@@ -70,16 +70,14 @@ class Param:
 
 #读取调用方法、地址、执行次数
 	def readStep(self, startFrom = 1):
-		method = self.read(startFrom, 0)
-		url = self.read(startFrom, 1)
-		count = self.read(startFrom, 6)
+		name = self.read(startFrom, 0)
+		method = self.read(startFrom, 1)
+		url = self.read(startFrom, 2)
 		if method == None or url == None:
 			return None
-		if count == None:
-			count = 1
-		if isinstance(count, str) and not count.isdigit():
-			count = 1
-		address = {'method': method, 'url': url, 'count': int(count)}
+		if name is None:
+			name = url
+		address = {'name': name, 'method': method, 'url': url}
 
 		return address
 
@@ -89,10 +87,10 @@ class Param:
 		row = startFrom #开始读的行
 		data = {}
 		while True:
-			name = self.read(row, 2)
+			name = self.read(row, 3)
 			if name is None or name == "": #没有参数，表示读取结束
 				break
-			value = self.read(row, 3)
+			value = self.read(row, 4)
 			data[name] = self.transValue(value)
 			row += 1
 
@@ -103,10 +101,10 @@ class Param:
 		row = startFrom
 		check = {}
 		while True:
-			name = self.read(row, 4)
+			name = self.read(row, 5)
 			if name is None or name == "":
 				break
-			value = self.read(row, 5)
+			value = self.read(row, 6)
 			if value == "":
 				check[name] = None
 			else:

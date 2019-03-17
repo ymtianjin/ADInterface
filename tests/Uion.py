@@ -1,8 +1,8 @@
 # encoding=utf-8
 import unittest, logging
-import os
+import os, time, sys
 
-from common import Param, Http
+from common import Param, Http, HTMLReport
 
 class Uion(unittest.TestCase):
     parentPath = None
@@ -23,6 +23,11 @@ class Uion(unittest.TestCase):
     def test_free(self):
         logging.info(self._testMethodName)
 
+        reportPath = os.path.join(os.getcwd(), 'results/report/', time.strftime('%Y%m%d%H%M%S') + 'report.html')
+        reportFile = open(reportPath, 'wb')
+        report = HTMLReport.HTMLReport(stream = reportFile, title = '接口测试报告', description = '接口测试执行结果：')
+        results = []
+
         files = os.listdir(self.parentPath)
         for file in files:
             path = os.path.join(self.parentPath, file)
@@ -39,7 +44,7 @@ class Uion(unittest.TestCase):
             for caseIndex in range(0, caseCount):
                 logging.info("===========bengin============")
                 caseName = self.param.switchCase(caseIndex)
-                logging.info("case: " + caseName)
+                result = HTMLReport.HTMLResult(caseName)
                 stepIndex = 1
                 stepStart = 1
                 while True:
@@ -48,21 +53,23 @@ class Uion(unittest.TestCase):
                         break
                     data = self.param.readData(stepStart)
                     check = self.param.readCheck(stepStart)
-                    logging.info("step: " + str(stepIndex) + ", " + str(address))
-                    logging.info("data: " + str(data))
-                    logging.info("check: " + str(check))
-                    for index in range(0, address["count"]):
-                        logging.info("execute: " + str(index + 1))
-                        if address["method"] == "get":
-                            res = self.http.get(address["url"], data, check)
-                        elif address["method"] == "post":
-                            res = self.http.post(address["url"], data, check)                
-                        if not res is None:
-                            logging.info(res)
+                    if address["method"] == "get":
+                        self.http.get(address["url"], data, check)
+                    elif address["method"] == "post":
+                        self.http.post(address["url"], data, check)
                     stepIndex = stepIndex + 1
                     stepStart = stepStart + max(len(data), len(check)) + 1
+
+                    if self.http.success:
+                        result.addSuccess(address["name"], self.http.msg)
+                    else:
+                        result.addFailure(address["name"], self.http.msg)
+                results.append(result)
+
                 logging.info("===========end============")
 
+        report.generate(results)
+        reportFile.close()
 
 if __name__ == '__main__':
     unittest.main()

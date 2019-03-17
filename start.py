@@ -1,9 +1,9 @@
 # encoding=utf-8
 import unittest
 import logging
-import os, time
+import os
 
-from common import Log, HTMLTestRunner
+from common import Log, HTMLReport
 from tests import Uion
 
 
