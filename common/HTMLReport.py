@@ -621,8 +621,6 @@ class HTMLReport(Template_mixin):
             status=self.STATUS[n],
         )
         rows.append(row)
-        if not has_output:
-            return
 
     def _generate_ending(self):
         return self.ENDING_TMPL
