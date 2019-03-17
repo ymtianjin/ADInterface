@@ -148,15 +148,12 @@ class Http:
 				if not name is None:
 					data[key] = self.variable[name]
 
-	def finish(self, url, res, checkResult):
+	def finish(self, url, data, res, checkResult):
 		if res is None or res.text is None:
 			strData = "empty"
 		else:
 			strData = str(res.text)
-		if len(self.msg) > 0:
-			self.msg = self.msg + ", data: " + strData + ", except: " + str(checkResult);
-		else:
-			self.msg = "data: " + strData + ", except: " + str(checkResult);
+		self.msg = (len(self.msg) > 0 and self.msg + ", " or "") + "data: " + str(data) + ", response: " + strData + ", except: " + str(checkResult);
 		logging.info(url + ", result: " + str(self.success) + ", " + self.msg)
 
 	def get(self, url, params = None, checkResult = None, variable = None):
@@ -167,7 +164,7 @@ class Http:
 			self.readVariable(res, variable)
 		except BaseException:
 			self.msg = "access url failed"
-		self.finish(url, res, checkResult)
+		self.finish(url, params, res, checkResult)
 		
 
 		return self.success
@@ -181,6 +178,6 @@ class Http:
 			self.readVariable(res, variable)
 		except BaseException:
 			self.msg = "access url failed"
-		self.finish(url, res, checkResult)
+		self.finish(url, data, res, checkResult)
 
 		return self.success
