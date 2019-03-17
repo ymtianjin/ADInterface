@@ -147,7 +147,6 @@ class Http:
 				name = self.isVariableName(data[key])
 				if not name is None:
 					data[key] = self.variable[name]
-		print(str(data))
 
 	def finish(self, url, res, checkResult):
 		if res is None or res.text is None:
