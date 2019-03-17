@@ -5,9 +5,11 @@ import os, time, sys
 from common import Param, Http, HTMLReport
 
 class Uion(unittest.TestCase):
-    parentPath = None
-    param = None
-    http = None
+
+    def __init(self):
+        self.parentPath = None
+        self.param = None
+        self.http = None
 
     def setUp(self):
         self.parentPath = os.path.join(os.getcwd(), 'data');
@@ -53,12 +55,13 @@ class Uion(unittest.TestCase):
                         break
                     data = self.param.readData(stepStart)
                     check = self.param.readCheck(stepStart)
+                    variable = self.param.readVariable(stepStart)
                     if address["method"] == "get":
-                        self.http.get(address["url"], data, check)
+                        self.http.get(address["url"], data, check, variable)
                     elif address["method"] == "post":
-                        self.http.post(address["url"], data, check)
+                        self.http.post(address["url"], data, check, variable)
                     stepIndex = stepIndex + 1
-                    stepStart = stepStart + max(len(data), len(check)) + 1
+                    stepStart = stepStart + max(len(data), len(check), len(variable)) + 1
 
                     if self.http.success:
                         result.addSuccess(address["name"], self.http.msg)
