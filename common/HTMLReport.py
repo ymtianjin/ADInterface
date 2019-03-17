@@ -581,13 +581,14 @@ class HTMLReport(Template_mixin):
                 error = result.error_count,
                 cid = 'c%s' % (cid+1),
             )
-            cid += 1
             rows.append(row)
 
             tid = 0
             for n, name, msg in result.result:
                 self._generate_report_test(rows, cid, tid, n, name, msg)
                 tid += 1
+
+            cid += 1
 
         report = self.REPORT_TMPL % dict(
             test_list = ''.join(rows),
