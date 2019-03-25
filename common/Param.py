@@ -52,6 +52,8 @@ class Param:
 			value = value.lstrip('[')
 			value = value.rstrip(']')
 			value = value.split(',')
+			#for v in value:
+			#	value[v] = self.transValue(value[v])
 
 			return value
 

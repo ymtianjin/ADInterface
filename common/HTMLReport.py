@@ -626,32 +626,3 @@ class HTMLReport(Template_mixin):
     def _generate_ending(self):
         return self.ENDING_TMPL
 
-
-##############################################################################
-# Facilities for running tests from the command line
-##############################################################################
-
-# Note: Reuse unittest.TestProgram to launch test. In the future we may
-# build our own launcher to support more specific command line
-# parameters like test title, CSS, etc.
-class TestProgram(unittest.TestProgram):
-    """
-    A variation of the unittest.TestProgram. Please refer to the base
-    class for command line parameters.
-    """
-    def runTests(self):
-        # Pick HTMLTestRunner as the default test runner.
-        # base class's testRunner parameter is not useful because it means
-        # we have to instantiate HTMLTestRunner before we know self.verbosity.
-        if self.testRunner is None:
-            self.testRunner = HTMLTestRunner(verbosity=self.verbosity)
-        unittest.TestProgram.runTests(self)
-
-main = TestProgram
-
-##############################################################################
-# Executing this module from the command line
-##############################################################################
-
-if __name__ == "__main__":
-    main(module=None)

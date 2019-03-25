@@ -141,7 +141,6 @@ class Http:
 	def init(self, data):
 		self.success = False
 		self.msg = ""
-		print(str(data))
 		if not data is None and len(data) > 0:
 			for key in data:
 				name = self.isVariableName(data[key])
