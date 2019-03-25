@@ -46,18 +46,66 @@ class Param:
 			return None
 
 
+	def isEmpty(self, value):
+		if len(value) == 0:
+			return True
+
+		for c in value:
+			if c == ' ' or c == '\n' or c == '\r' or c == '\t':
+				pass
+			else:
+				return False
+
+		return True
+
+
+	def isArray(self, value):
+		if isinstance(value, str)  and len(value) > 2:
+			length = len(value)
+			start = value.find('[')
+			end = value.rfind(']')
+			if start >= 0 and end > start:
+				strFront = value[0 : start]
+				strTail = value[end + 1 : len(value) - end]
+				if self.isEmpty(strFront) and self.isEmpty(strTail):
+					return (start, end)
+
+		return (-1, -1)
+
+	
 	#转换得到的值，如果是数组就转换成数组，否则直接返回
 	def transValue(self, value):
-		if isinstance(value, str)  and len(value) > 2 and value[0] == '[' and value[len(value) -1] == ']':
-			value = value.lstrip('[')
-			value = value.rstrip(']')
-			value = value.split(',')
-			#for v in value:
-			#	value[v] = self.transValue(value[v])
-
+		start, end = self.isArray(value)
+		if start < 0 or end < 0:
 			return value
 
-		return value
+		value = value[start + 1 : end]
+		if len(value) > 0:
+			start = value.find('[')
+			end = value.rfind(']')
+			if start >= 0 and end > start:
+				arr = []
+				str1 = value[0 : start]
+				dotIndex = str1.rfind(',')
+				if dotIndex >= 0:
+					str1 = str1[0 : dotIndex]
+				str2 = value[start : end + 1]
+				str3 = value[end + 1 : len(value)]
+				dotIndex = str3.find(',')
+				if dotIndex >= 0:
+					str3 = str3[dotIndex + 1 : len(str3)]
+				if not self.isEmpty(str1):
+					arr.extend(str1.split(','))
+				child = self.transValue(str2)
+				arr.append(child)
+				if not self.isEmpty(str3):
+					arr.extend(str3.split(','))
+			else:
+				arr = value.split(',')
+		else:
+			arr = []
+
+		return arr
 
 
 	#获得用例数量
