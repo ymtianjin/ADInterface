@@ -72,6 +72,12 @@ class Param:
 
 		return (-1, -1)
 
+
+	def stripArray(self, arr):
+		for n in range(0, len(arr)):
+			if isinstance(arr[n], str):
+				arr[n] = arr[n].strip()
+
 	
 	#转换得到的值，如果是数组就转换成数组，否则直接返回
 	def transValue(self, value):
@@ -104,6 +110,7 @@ class Param:
 				arr = value.split(',')
 		else:
 			arr = []
+		self.stripArray(arr)
 
 		return arr
 
