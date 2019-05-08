@@ -172,7 +172,8 @@ class Http:
 	def  post(self, url, data = None, checkResult = None, variable = None):
 		self.init(data)
 		try:
-			res = requests.post(url = url, data = data)
+			headers = {'Content-Type': 'application/json'}
+			res = requests.post(url = url, data = json.dumps(data), headers = headers)
 			self.success = self.checkResponse(res, checkResult)
 			self.readVariable(res, variable)
 		except BaseException:
