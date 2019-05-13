@@ -81,6 +81,9 @@ class Param:
 	
 	#转换得到的值，如果是数组就转换成数组，否则直接返回
 	def transValue(self, value):
+		if not isinstance(value, str)  or len(value) < 2:
+			return value
+			
 		data = None
 		try:
 			data = json.loads(value)	
