@@ -1,5 +1,5 @@
 # encoding=utf-8
-import xlrd
+import xlrd, json
 
 class Param:
 
@@ -81,6 +81,15 @@ class Param:
 	
 	#转换得到的值，如果是数组就转换成数组，否则直接返回
 	def transValue(self, value):
+		data = None
+		try:
+			data = json.loads(value)	
+		except json.JSONDecodeError:
+			pass		
+		finally:
+			if data is not None:
+				return data
+
 		start, end = self.isArray(value)
 		if start < 0 or end < 0:
 			return value
