@@ -23,9 +23,8 @@ class Http:
 		return -1
 
 	def isVariableName(self, key):
-		if isinstance(key, str) and len(key) > 2 and key[0] == '{' and key[len(key) - 1] == '}' and key.find("{global_") == 0:
-			key = key.lstrip('{')
-			key = key.rstrip('}')
+		if isinstance(key, str) and len(key) > 2 and key.find("$global_") == 0:
+			key = key.lstrip('$')
 			if self.variable.__contains__(key):
 				return key
 		return None
