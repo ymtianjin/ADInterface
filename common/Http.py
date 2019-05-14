@@ -74,17 +74,17 @@ class Http:
 				if len(curRet) > valueIndex:
 					curRet = curRet[valueIndex] # 得到数组的值
 				else:
-					return None
+					curRet = None
+					break
 			elif not curRet.__contains__(v): # 判断键值是否存在
-				return None
+				curRet = None
+				break
 			else:
 				curRet = curRet[v] #得到返回的值
 
-		if not curRet is None:
-			self.variable[name] = curRet
-			return True
+		self.variable[name] = curRet
 
-		return False
+		return (curRet is None)
 
 
 
