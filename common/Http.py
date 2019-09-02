@@ -22,12 +22,20 @@ class Http:
 
 		return -1
 
-	def isVariableName(self, key):
-		if isinstance(key, str) and len(key) > 2 and key.find("$global_") == 0:
-			key = key.lstrip('$')
-			if self.variable.__contains__(key):
-				return key
-		return None
+	def assignValue(self, key):
+		while True:
+			if isinstance(key, str) and len(key) > 2 and key.find("{$global_") >= 0 and key.find("}") > 0:
+				begin = key.find("{$global_") + 2
+				end = key.find("}")			
+				lenth = end - begin
+				name = key[begin:length]
+				if self.variable.__contains__(name):
+					value = self.variable[name]
+					name = "{$" + name + "}"
+					key.replace(name, value)
+				else:
+					break
+		return key
 
 
 	def checkResult(self, result, key, value):
@@ -117,7 +125,7 @@ class Http:
 
 		return isOk
 
-	def readVariable(self, res, variable = None):
+	def readValue(self, res, variable = None):
 		if not res.status_code == 200:
 			return False
 
@@ -142,9 +150,7 @@ class Http:
 		self.msg = ""
 		if not data is None and len(data) > 0:
 			for key in data:
-				name = self.isVariableName(data[key])
-				if not name is None:
-					data[key] = self.variable[name]
+				data[key] = self.assignValue(data[key])
 
 	def finish(self, url, data, res, checkResult):
 		if res is None or res.text is None:
@@ -154,12 +160,17 @@ class Http:
 		self.msg = (len(self.msg) > 0 and self.msg + ", " or "") + "data: " + str(data) + ", response: " + strData + ", except: " + str(checkResult);
 		logging.info(url + ", result: " + str(self.success) + ", " + self.msg)
 
+	def define(self, variable):
+		for name in variable:
+			self.variable[name] = variable[name]
+
 	def get(self, url, params = None, checkResult = None, variable = None):
+		url = self.assignValue(url)
 		self.init(params)
 		try:
 			res = requests.get(url = url, params = params)
 			self.success = self.checkResponse(res, checkResult)
-			self.readVariable(res, variable)
+			self.readValue(res, variable)
 		except BaseException:
 			self.msg = "access url failed"
 		self.finish(url, params, res, checkResult)
@@ -169,12 +180,13 @@ class Http:
 
 
 	def  post(self, url, data = None, checkResult = None, variable = None):
+		url = self.assignValue(url)
 		self.init(data)
 		try:
 			headers = {'Content-Type': 'application/json'}
 			res = requests.post(url = url, data = json.dumps(data), headers = headers)
 			self.success = self.checkResponse(res, checkResult)
-			self.readVariable(res, variable)
+			self.readValue(res, variable)
 		except BaseException:
 			self.msg = "access url failed"
 		self.finish(url, data, res, checkResult)

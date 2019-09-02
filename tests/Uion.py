@@ -56,12 +56,16 @@ class Uion(unittest.TestCase):
                     data = self.param.readData(stepStart)
                     check = self.param.readCheck(stepStart)
                     variable = self.param.readVariable(stepStart)
-                    if address["method"] == "get":
+                    if address["method"] == "define":
+                        self.http.define(variable)
+                    elif address["method"] == "get":
                         self.http.get(address["url"], data, check, variable)
                     elif address["method"] == "post":
                         self.http.post(address["url"], data, check, variable)
                     stepIndex = stepIndex + 1
                     stepStart = stepStart + max(len(data), len(check), len(variable)) + 1
+                    if address["method"] == "define":
+                        continue
 
                     if self.http.success:
                         result.addSuccess(address["name"], self.http.msg)
