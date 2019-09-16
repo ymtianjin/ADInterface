@@ -51,7 +51,7 @@ class Uion(unittest.TestCase):
                 stepStart = 1
                 while True:
                     address = self.param.readStep(stepStart)
-                    if address == None:
+                    if address == None and variable == None:
                         break
                     data = self.param.readData(stepStart)
                     check = self.param.readCheck(stepStart)

@@ -23,18 +23,25 @@ class Http:
 		return -1
 
 	def assignValue(self, key):
+		if not isinstance(key, str) or len(key) < 10:
+			return key
+
+		prev = 0
 		while True:
-			if isinstance(key, str) and len(key) > 2 and key.find("{$global_") >= 0 and key.find("}") > 0:
-				begin = key.find("{$global_") + 2
-				end = key.find("}")			
-				lenth = end - begin
-				name = key[begin:length]
-				if self.variable.__contains__(name):
-					value = self.variable[name]
-					name = "{$" + name + "}"
-					key.replace(name, value)
-				else:
-					break
+			begin = key.find("{$global_", prev)
+			if begin < 0:
+				break
+			begin += 2
+			end = key.find("}", begin)
+			if end < 0:
+				break
+			name = key[begin:end]
+			if self.variable.__contains__(name):
+				value = self.variable[name]
+				name = "{$" + name + "}"
+				key = key.replace(name, value)
+			prev = end + 1
+
 		return key
 
 
