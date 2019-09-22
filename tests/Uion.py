@@ -25,6 +25,10 @@ class Uion(unittest.TestCase):
     def test_free(self):
         logging.info(self._testMethodName)
 
+        testFileName = None
+        if len(sys.argv) > 1:
+            testFileName = sys.argv[1]
+
         reportPath = os.path.join(os.getcwd(), 'results/report/', time.strftime('%Y%m%d%H%M%S') + 'report.html')
         reportFile = open(reportPath, 'wb')
         report = HTMLReport.HTMLReport(stream = reportFile, title = '接口测试报告', description = '接口测试执行结果：')
@@ -35,7 +39,8 @@ class Uion(unittest.TestCase):
             path = os.path.join(self.parentPath, file)
             ret = False
             if os.path.isfile(path) and os.path.splitext(path)[1] == '.xlsx':
-                ret = self.param.reopen(path)
+                if testFileName == None or testFileName == os.path.splitext(os.path.basename(path))[0]:
+                    ret = self.param.reopen(path)
             if not ret:
                 continue
 
