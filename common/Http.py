@@ -167,9 +167,28 @@ class Http:
 		self.msg = (len(self.msg) > 0 and self.msg + ", " or "") + "data: " + str(data) + ", response: " + strData + ", except: " + str(checkResult);
 		logging.info(url + ", result: " + str(self.success) + ", " + self.msg)
 
-	def define(self, variable):
-		for name in variable:
-			self.variable[name] = variable[name]
+	def function(self, url, params = None, checkResult = None, variable = None):
+		if url == "define" and params is not None:
+			for name in params:
+				self.variable[name] = params[name]
+		elif url == "split" and params is not None:
+			for name in params:
+				if self.variable.__contains__(name) and isinstance(self.variable[name], str):
+					self.variable[name] = self.variable[name].split(params[name])
+		elif url == "join" and params is not None:
+			for name in params:
+				if self.variable.__contains__(name) and isinstance(self.variable[name], list):
+					self.variable[name] = params[name].join(self.variable[name])
+		elif url == "substr" and params is not None:
+			for name in params:
+				if self.variable.__contains__(name) and isinstance(self.variable[name], str):
+					seq = params[name].split(":")
+					if len(seq) == 2:
+						begin = int(seq[0])
+						end = int(seq[1])
+						length = len(self.variable[name])
+						if end > begin and begin < length and end < length:
+							self.variable[name] = self.variable[name][begin:end]
 
 	def get(self, url, params = None, checkResult = None, variable = None):
 		url = self.assignValue(url)

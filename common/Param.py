@@ -143,11 +143,12 @@ class Param:
 		name = self.read(startFrom, 0)
 		method = self.read(startFrom, 1)
 		url = self.read(startFrom, 2)
-		if method == None:
+		if method == None or url == None:
 			return None
 		if name is None:
 			name = url
 		address = {'name': name, 'method': method, 'url': url}
+
 
 		return address
 
