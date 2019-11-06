@@ -14,17 +14,21 @@ class Parser:
             data = json.loads(res.text)
             if not isinstance(data, dict):
                 return False
+            if not isinstance(data.data, list):
+                return False
             self.program = data
         except BaseException:
             return False
-        for levelOneChannel in self.program:
+        for levelOneIndex, levelOneChannel in enumerate(self.program.data):
             pageId = levelOneChannel.id
             pageData = self.page(pageId)
+            self.program.data[levelOneIndex]["page"] = pageData;
             if not isinstance(levelOneChannel.child, list):
                 continue
-            for levelTwoChannel in levelOneChannel.child:
+            for levelTwoIndex, levelTwoChannel in enumerate(levelOneChannel.child):
                 pageId = levelTwoChannel.id
                 pageData = self.page(pageId)
+                self.program.data[levelOneIndex].child[levelTwoIndex]["page"] = pageData
 
     def page(self, pageId):
         pass
