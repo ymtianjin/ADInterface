@@ -11,7 +11,7 @@ class Parser:
     def index(self):
         try:
             res = requests.get(url=self.indexUrl)
-            if res.status_code <> 200:
+            if res.status_code != 200:
                 return False
             data = json.loads(res.text)
             if not isinstance(data, dict):
@@ -37,7 +37,7 @@ class Parser:
             url = self.pageUrl
             url.replace("{page_id}", pageId)
             res = requests.get(url=url)
-            if res.status_code <> 200:
+            if res.status_code != 200:
                 return False
             data = json.loads(res.text)
             if not isinstance(data, dict):
@@ -63,7 +63,7 @@ class Parser:
             url.replace("{right_content}", contentId[len(contentId) - 2, len(contentId)])
             url.replace("{content_id}", contentId)
             res = requests.get(url=url)
-            if res.status_code <> 200:
+            if res.status_code != 200:
                 return False
             data = json.loads(res.text)
             if not isinstance(data, dict):
