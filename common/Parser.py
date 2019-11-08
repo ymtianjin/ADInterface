@@ -6,7 +6,9 @@ class Parser:
         self.indexUrl = "http://111.32.138.57:81/api/v31/8acb5c18e56c1988723297b1a8dc9260/600001/navigation/index.json"
         self.pageUrl = "http://testcms31.ottcn.com:30013/api/v31/8acb5c18e56c1988723297b1a8dc9260/600001/page/{page_id}.json"
         self.contentUrl = "http://testcms31.ottcn.com:30013/api/v31/8acb5c18e56c1988723297b1a8dc9260/600001/content/{left_content}/{right_content}/{content_id}.json"
+        self.menuUrl = "http://111.32.138.57:81/api/v31/8acb5c18e56c1988723297b1a8dc9260/600001/categorytree/categorytree.json"
         self.program = {}
+        self.menu = {}
 
     def index(self):
         try:
@@ -74,5 +76,16 @@ class Parser:
             return False
 
     def menu(self):
-        pass
+        try:
+            res = requests.get(url=self.menuUrl)
+            if res.status_code != 200:
+                return False
+            data = json.loads(res.text)
+            if not isinstance(data, dict):
+                return False
+            if not isinstance(data.data, list):
+                return False
+            self.menu = data
+        except BaseException:
+            return False
 
