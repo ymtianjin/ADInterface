@@ -18,21 +18,32 @@ class Parser:
             data = json.loads(res.text)
             if not isinstance(data, dict):
                 return False
+            if data.errorCode != 200:
+                return False
             if not isinstance(data.data, list):
                 return False
-            self.program = data
         except BaseException:
             return False
-        for levelOneIndex, levelOneChannel in enumerate(self.program.data):
+        self.program = {
+            "data": [],
+            "errorMessage": data.errorMessage,
+            "errorCode": data.errorCode
+        }
+        for levelOneChannel in data.data:
             pageId = levelOneChannel.id
             pageData = self.page(pageId)
-            self.program.data[levelOneIndex]["page"] = pageData;
-            if not isinstance(levelOneChannel.child, list):
-                continue
-            for levelTwoIndex, levelTwoChannel in enumerate(levelOneChannel.child):
-                pageId = levelTwoChannel.id
-                pageData = self.page(pageId)
-                self.program.data[levelOneIndex].child[levelTwoIndex]["page"] = pageData
+            levelOneChannel["page"] = pageData
+            childChannel = []
+            if isinstance(levelOneChannel.child, list):
+                for levelTwoChannel in levelOneChannel.child:
+                    pageId = levelTwoChannel.id
+                    pageData = self.page(pageId)
+                    if not pageData:
+                        continue
+                    levelTwoChannel["page"] = pageData
+                    childChannel.append(levelTwoChannel)
+            levelOneChannel["child"] = childChannel
+            self.program.data.append(levelOneChannel)
 
     def page(self, pageId):
         try:
@@ -44,16 +55,43 @@ class Parser:
             data = json.loads(res.text)
             if not isinstance(data, dict):
                 return False
+            if data.errorCode != 200:
+                return False
             if not isinstance(data.data, list):
                 return False
-            pageData = data
-            for blockIndex, blockData in enumerate(pageData.data):
-                if not isinstance(blockData.programs, list):
-                    continue
-                for programIndex, programData in enumerate(blockData.programs):
-                    contentId = programData.contentId
-                    content = self.content(contentId)
-                    pageData.data[blockIndex].programs[programIndex]["content"] = content
+            if not isinstance(data.logo, str) or len(data.logo) > 0:
+                return False
+            pageData = {
+                "data": [],
+                "isNav": data.isNav,
+                "subTitle": data.subTitle,
+                "pageTitle": data.pageTitle,
+                "background": data.background,
+                "errorMessage": data.errorMessage,
+                "errorCode": data.errorCode,
+                "logo": data.logo,
+                "description": data.description,
+                "titlePoster": data.titlePoster,
+                "isAd": data.isAd,
+                "templateZT": data.templateZT
+            }
+            for blockData in data.data:
+                programs = []
+                if isinstance(blockData.programs, list):
+                    for programData in blockData.programs:
+                        if programData.l_actionType != "OPEN_DETAILS":
+                            continue
+                        if programData.contentType != "PS" and programData.contentType != "CS" and programData.contentType != "TV":
+                            continue
+                        contentId = programData.contentId
+                        content = self.content(contentId)
+                        if not content:
+                            continue
+                        programs.append(content)
+                blockData["programs"] = programs
+                pageData.data.append(blockData)
+            if len(pageData.data) == 0:
+                return False
             return pageData
         except BaseException:
             return False
@@ -70,6 +108,12 @@ class Parser:
             data = json.loads(res.text)
             if not isinstance(data, dict):
                 return False
+            if data.errorCode != 200:
+                return False
+            if not isinstance(data, dict) or len(data.data) < 3:
+                return False
+            if data.vipFlag == 0 or data.vipFlag is None:
+                return False
             contentData = data
             return contentData
         except BaseException:
@@ -82,6 +126,8 @@ class Parser:
                 return False
             data = json.loads(res.text)
             if not isinstance(data, dict):
+                return False
+            if data.errorCode != 200:
                 return False
             if not isinstance(data.data, list):
                 return False
