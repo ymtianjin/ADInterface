@@ -32,7 +32,8 @@ class Parser:
         for levelOneChannel in data.data:
             pageId = levelOneChannel.id
             pageData = self.page(pageId)
-            levelOneChannel["page"] = pageData
+            if isinstance(pageData, dict) and len(pageData) > 0:
+                levelOneChannel["page"] = pageData
             childChannel = []
             if isinstance(levelOneChannel.child, list):
                 for levelTwoChannel in levelOneChannel.child:
