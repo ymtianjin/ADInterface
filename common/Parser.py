@@ -7,6 +7,7 @@ class Parser:
         self.pageUrl = "http://testcms31.ottcn.com:30013/api/v31/8acb5c18e56c1988723297b1a8dc9260/600001/page/{page_id}.json"
         self.contentUrl = "http://testcms31.ottcn.com:30013/api/v31/8acb5c18e56c1988723297b1a8dc9260/600001/content/{left_content}/{right_content}/{content_id}.json"
         self.menuUrl = "http://111.32.138.57:81/api/v31/8acb5c18e56c1988723297b1a8dc9260/600001/categorytree/categorytree.json"
+        self.subcontentUrl = "http://testcms31.ottcn.com:30012/api/v31/8acb5c18e56c1988723297b1a8dc9260/600001/detailsubcontents/{content_id}.json?subcontenttype=subcontents"
         self.program = {}
         self.menu = {}
 
@@ -18,7 +19,7 @@ class Parser:
             data = json.loads(res.text)
             if not isinstance(data, dict):
                 return False
-            if data.errorCode != 200:
+            if data.errorCode != 0:
                 return False
             if not isinstance(data.data, list):
                 return False
@@ -56,7 +57,7 @@ class Parser:
             data = json.loads(res.text)
             if not isinstance(data, dict):
                 return False
-            if data.errorCode != 200:
+            if data.errorCode != 0:
                 return False
             if not isinstance(data.data, list):
                 return False
@@ -101,6 +102,19 @@ class Parser:
 
     def content(self, contentId):
         try:
+            url = self.subcontentUrl
+            url.replace("{content_id}", contentId)
+            res = requests.get(url=url)
+            if res.status_code != 200:
+                return False
+            data = json.loads(res.text)
+            if not isinstance(data, dict):
+                return False
+            if data.errorCode != 0:
+                return False
+            if not isinstance(data, dict) or not isinstance(data.data, list) or len(data.data) < 3:
+                return False
+
             url = self.contentUrl
             url.replace("{left_content}", contentId[0, 2])
             url.replace("{right_content}", contentId[len(contentId) - 2, len(contentId)])
@@ -111,9 +125,7 @@ class Parser:
             data = json.loads(res.text)
             if not isinstance(data, dict):
                 return False
-            if data.errorCode != 200:
-                return False
-            if not isinstance(data, dict) or len(data.data) < 3:
+            if data.errorCode != 0:
                 return False
             if data.vipFlag == 0 or data.vipFlag is None:
                 return False
@@ -130,7 +142,7 @@ class Parser:
             data = json.loads(res.text)
             if not isinstance(data, dict):
                 return False
-            if data.errorCode != 200:
+            if data.errorCode != 0:
                 return False
             if not isinstance(data.data, list):
                 return False
