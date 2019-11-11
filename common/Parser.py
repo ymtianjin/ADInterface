@@ -31,15 +31,20 @@ class Parser:
             "errorCode": data.errorCode
         }
         for levelOneChannel in data.data:
+            levelOneClickParam = {
+                "levelOne": lenvelOneChannel.title
+            }
             pageId = levelOneChannel.id
-            pageData = self.page(pageId)
+            pageData = self.page(pageId, levelOneClickParam)
             if isinstance(pageData, dict) and len(pageData) > 0:
                 levelOneChannel["page"] = pageData
             childChannel = []
             if isinstance(levelOneChannel.child, list):
                 for levelTwoChannel in levelOneChannel.child:
+                    levelTwoClickParam = levelOneClickParam
+                    levelTwoClickParam["levelTwo"] = levelTwoChannel.title
                     pageId = levelTwoChannel.id
-                    pageData = self.page(pageId)
+                    pageData = self.page(pageId, levelTwoClickParam)
                     if not pageData:
                         continue
                     levelTwoChannel["page"] = pageData
@@ -47,7 +52,7 @@ class Parser:
             levelOneChannel["child"] = childChannel
             self.program.data.append(levelOneChannel)
 
-    def page(self, pageId):
+    def page(self, pageId, clickParam):
         try:
             url = self.pageUrl
             url.replace("{page_id}", pageId)
@@ -76,16 +81,19 @@ class Parser:
                 "isAd": data.isAd,
                 "templateZT": data.templateZT
             }
+            clickParam["block"] = []
             for blockData in data.data:
+                layoutCode = blockData.layoutCode
+                clickParam.block.append(layoutCode[len(layoutCode) - 3, len(layoutCode)])
                 programs = []
                 if isinstance(blockData.programs, list):
-                    for programData in blockData.programs:
+                    for programIndex, programData in enumerate(blockData.programs):
                         if programData.l_actionType != "OPEN_DETAILS":
                             continue
                         if programData.contentType != "PS" and programData.contentType != "CS" and programData.contentType != "TV": #节目集类型：CS=合集、TV=电视、PS=剧集
                             continue
                         contentId = programData.contentId
-                        content = self.content(contentId)
+                        content = self.content(contentId, clickParam, programIndex)
                         if not content:
                             continue
                         programData["content"] = content
@@ -100,7 +108,7 @@ class Parser:
         except BaseException:
             return False
 
-    def content(self, contentId):
+    def content(self, contentId, clickParam, programIndex):
         try:
             url = self.contentUrl
             url.replace("{left_content}", contentId[0, 2])
@@ -133,6 +141,22 @@ class Parser:
                 data["subcontent"] = subcontentData
 
             contentData = data
+
+            #构造点击参数字符串：['CCTV+','CCTV5',[['017'],['005'],['008',3]]]
+            param = []
+            param.append(clickParam.levelOne)
+            if clickParam.has_key("levelTwo"):
+                param.append(clickParam.levelTwo)
+            else:
+                param.append("")
+            block = []
+            for blockLayout in clickParam.block:
+                layout = [blockLayout]
+                block.append(layout)
+            block[len(block) - 1].append(programIndex)
+            param.append(block)
+            contentData["clickParam"] = str(param)
+
             return contentData
         except BaseException:
             return False
