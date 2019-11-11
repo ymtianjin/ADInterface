@@ -73,7 +73,6 @@ class Parser:
                 "errorCode": data.errorCode,
                 "logo": data.logo,
                 "description": data.description,
-                "titlePoster": data.titlePoster,
                 "isAd": data.isAd,
                 "templateZT": data.templateZT
             }
@@ -89,7 +88,8 @@ class Parser:
                         content = self.content(contentId)
                         if not content:
                             continue
-                        programs.append(content)
+                        programData["content"] = content
+                        programs.append(programData)
                 if len(programs) == 0:
                     continue
                 blockData["programs"] = programs
