@@ -82,7 +82,7 @@ class Parser:
                     for programData in blockData.programs:
                         if programData.l_actionType != "OPEN_DETAILS":
                             continue
-                        if programData.contentType != "PS" and programData.contentType != "CS" and programData.contentType != "TV":
+                        if programData.contentType != "PS" and programData.contentType != "CS" and programData.contentType != "TV": #节目集类型：CS=合集、TV=电视、PS=剧集
                             continue
                         contentId = programData.contentId
                         content = self.content(contentId)
@@ -102,19 +102,6 @@ class Parser:
 
     def content(self, contentId):
         try:
-            url = self.subcontentUrl
-            url.replace("{content_id}", contentId)
-            res = requests.get(url=url)
-            if res.status_code != 200:
-                return False
-            data = json.loads(res.text)
-            if not isinstance(data, dict):
-                return False
-            if data.errorCode != 0:
-                return False
-            if not isinstance(data, dict) or not isinstance(data.data, list) or len(data.data) < 3:
-                return False
-
             url = self.contentUrl
             url.replace("{left_content}", contentId[0, 2])
             url.replace("{right_content}", contentId[len(contentId) - 2, len(contentId)])
@@ -129,6 +116,22 @@ class Parser:
                 return False
             if data.vipFlag == 0 or data.vipFlag is None:
                 return False
+
+            if data.contentType == "CS" and data.seriesType == "1": #当contentType为CS的时候，seriesType为1表示剧集（需要获取subcontent），如果seriesType为0表示综艺
+                url = self.subcontentUrl
+                url.replace("{content_id}", contentId)
+                res = requests.get(url=url)
+                if res.status_code != 200:
+                    return False
+                subcontentData = json.loads(res.text)
+                if not isinstance(subcontentData, dict):
+                    return False
+                if subcontentData.errorCode != 0:
+                    return False
+                if not isinstance(subcontentData.data, list) or len(subcontentData.data) < 3:
+                    return False
+                data["subcontent"] = subcontentData
+
             contentData = data
             return contentData
         except BaseException:
