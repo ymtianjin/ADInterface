@@ -1,5 +1,6 @@
 # encoding=utf-8
 import unittest, requests, json, logging
+import Parser
 
 class Http:
 
@@ -199,6 +200,11 @@ class Http:
 						length = len(self.variable[name])
 						if end > begin and begin < length and end < length:
 							self.variable[name] = self.variable[name][begin:end]
+		else url == "click":
+			parser = Parser.Parser()
+			param = parser.csSeriesParam()
+			# 在此调用click(param)
+
 
 	def get(self, url, params = None, checkResult = None, variable = None):
 		url = self.assignValue(url)
