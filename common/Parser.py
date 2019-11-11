@@ -89,6 +89,8 @@ class Parser:
                         if not content:
                             continue
                         programs.append(content)
+                if len(programs) == 0:
+                    continue
                 blockData["programs"] = programs
                 pageData.data.append(blockData)
             if len(pageData.data) == 0:
