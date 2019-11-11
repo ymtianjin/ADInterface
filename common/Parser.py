@@ -10,6 +10,12 @@ class Parser:
         self.subcontentUrl = "http://testcms31.ottcn.com:30012/api/v31/8acb5c18e56c1988723297b1a8dc9260/600001/detailsubcontents/{content_id}.json?subcontenttype=subcontents"
         self.program = {}
         self.menu = {}
+        self.ps = []
+        self.tv = []
+        self.cs = []
+        self.cs_series = []
+
+        self.index()
 
     def index(self):
         try:
@@ -157,6 +163,16 @@ class Parser:
             param.append(block)
             contentData["clickParam"] = str(param)
 
+            if contentData.contentType == "PS":
+                self.ps.append(contentData.clickParam)
+            elif contentData.contentType == "TV":
+                self.tv.append(contentData.clickParam)
+            elif contentData.contentType == "CS":
+                if contentData.seriesType == "1":
+                    self.cs_series.append(contentData.clickParam)
+                else:
+                    self.cs.append(contentData.clickParam)
+
             return contentData
         except BaseException:
             return False
@@ -176,4 +192,9 @@ class Parser:
             self.menu = data
         except BaseException:
             return False
+
+    def csSeriesParam(self):
+        if len(self.cs_series) == 0:
+            return ""
+        return self.cs_series[0]
 
