@@ -8,11 +8,11 @@ class Parser:
         self.indexUrl = "http://111.32.138.57:81/api/v31/{app_key}/{channel_code}/navigation/index.json"
         self.pageUrl = "http://testcms31.ottcn.com:30013/api/v31/{app_key}/{channel_code}/page/{page_id}.json"
         self.contentUrl = "http://testcms31.ottcn.com:30013/api/v31/{app_key}/{channel_code}/content/{left_content}/{right_content}/{content_id}.json"
-        self.menuUrl = "http://111.32.138.57:81/api/v31/{app_key}/{channel_code}/categorytree/categorytree.json"
         self.subcontentUrl = "http://testcms31.ottcn.com:30012/api/v31/{app_key}/{channel_code}/detailsubcontents/{content_id}.json?subcontenttype=subcontents"
+        self.categoryTreeUrl = "http://111.32.138.57:81/api/v31/{app_key}/{channel_code}/categorytree/categorytree.json"
         self.channel = {}
         self.program = []
-        self.menu = {}
+        self.category = {}
 
     def index(self):
         try:
@@ -38,6 +38,7 @@ class Parser:
         }
         for levelOneChannel in data.data:
             levelOneClickParam = {
+                "levelOneId": lenvelOneChannel.id
                 "levelOne": lenvelOneChannel.title
             }
             pageId = levelOneChannel.id
@@ -48,6 +49,7 @@ class Parser:
             if isinstance(levelOneChannel.child, list):
                 for levelTwoChannel in levelOneChannel.child:
                     levelTwoClickParam = levelOneClickParam
+                    levelTwoClickParam["levelTwoId"] = levelTwoChannel.id
                     levelTwoClickParam["levelTwo"] = levelTwoChannel.title
                     pageId = levelTwoChannel.id
                     pageData = self.page(pageId, levelTwoClickParam)
@@ -165,7 +167,9 @@ class Parser:
                 block.append(layout)
             block[len(block) - 1].append(programIndex)
             param.append(block)
-            contentData["clickParam"] = str(param)
+            contentData["clickParam"] = param
+
+            categoryIds = contentData.categoryIDs.split("|")
 
             self.program.append(contentData)
 
@@ -173,9 +177,9 @@ class Parser:
         except BaseException:
             return False
 
-    def menu(self):
+    def categoryTree(self):
         try:
-            url = self.menuUrl
+            url = self.categoryTreeUrl
             url.replace("{app_key}", self.appKey)
             url.replace("{channel_code", self.channelCode)
             res = requests.get(url=url)
@@ -188,25 +192,32 @@ class Parser:
                 return False
             if not isinstance(data.data, list):
                 return False
-            self.menu = data
+
+            levelOneCategory = []
+            levelTwoCategory = []
+            for levelOneCategoryData in data.data:
+                levelOneCategory.append(levelOneCategoryData.id)
+                if isinstance(levelOneCategoryData.child, list):
+                    for levelTwoCategoryData in levelOneCategoryData.child:
+                        levelTwoCategory.append(levelTwoCategoryData.id)
+
+            self.category = { "levelOne": levelOneCategory, "levelTwo": levelTwoCategory }
         except BaseException:
             return False
-
-    def csSeriesParam(self):
-        if len(self.cs_series) == 0:
-            return ""
-        return self.cs_series[0]
 
     def appChannel(self, appKey, channelCode):
         self.appKey = appKey
         self.channelCode = channelCode
 
-    def all(self):
+    def filter(self, duration = 0, levelOneChannel = [], levelTwoChannel = [], videoType = [], videoClass = [], levelOneMenu = [], levelTwoMenu = [], series = []):
         self.channel = {}
         self.program = []
         self.menu = {}
+        self.category = {}
+
+        self.categoryTree()
         self.index()
-        self.menu()
+
         if len(self.program) == 0:
             return ""
         ps = []
@@ -214,6 +225,16 @@ class Parser:
         cs = []
         csSeries = []
         for programData in self.program:
+            if isinstance(duration, int) and duration > 0 and int(programData.duration) < duration: #过滤时长
+                continue
+            if isinstance(levelOneChannel, list) and len(levelOneChannel) > 0 and programData.clickParam.levelOneChannelId not in levelOneChannel:
+                continue
+            if isinstance(levelTwoChannel, list) and len(levelTwoChannel) > 0 and programData.clickParam.levelTwoChannelId not in levelTwoChannel:
+                continue
+            if isinstance(videoType, list) and len(videoType) > 0 and programData.videoType not in videoType:
+                continue
+            if isinstance(videoClass, list) and len(videoClass) > 0 and programData.videoClass not in videoClass:
+                continue
             if programData.contentType == "PS":
                 ps.append(programData.clickParam)
             elif programData.contentType == "TV":
@@ -228,4 +249,4 @@ class Parser:
         csParam = ramdon.choice(cs)
         csSeriesParam = ramdon.choice(csSeries)
 
-        return [psParam, tvParam, csParam, csSeriesParam]
+        return [str(psParam), str(tvParam), str(csParam), str(csSeriesParam)]
