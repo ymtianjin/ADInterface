@@ -1,25 +1,25 @@
 # encoding=utf-8
-import json, requests
+import json, requests， random
 
 class Parser:
     def __init__(self):
-        self.indexUrl = "http://111.32.138.57:81/api/v31/8acb5c18e56c1988723297b1a8dc9260/600001/navigation/index.json"
-        self.pageUrl = "http://testcms31.ottcn.com:30013/api/v31/8acb5c18e56c1988723297b1a8dc9260/600001/page/{page_id}.json"
-        self.contentUrl = "http://testcms31.ottcn.com:30013/api/v31/8acb5c18e56c1988723297b1a8dc9260/600001/content/{left_content}/{right_content}/{content_id}.json"
-        self.menuUrl = "http://111.32.138.57:81/api/v31/8acb5c18e56c1988723297b1a8dc9260/600001/categorytree/categorytree.json"
-        self.subcontentUrl = "http://testcms31.ottcn.com:30012/api/v31/8acb5c18e56c1988723297b1a8dc9260/600001/detailsubcontents/{content_id}.json?subcontenttype=subcontents"
-        self.program = {}
+        self.appKey = ""
+        self.channelCode = ""
+        self.indexUrl = "http://111.32.138.57:81/api/v31/{app_key}/{channel_code}/navigation/index.json"
+        self.pageUrl = "http://testcms31.ottcn.com:30013/api/v31/{app_key}/{channel_code}/page/{page_id}.json"
+        self.contentUrl = "http://testcms31.ottcn.com:30013/api/v31/{app_key}/{channel_code}/content/{left_content}/{right_content}/{content_id}.json"
+        self.menuUrl = "http://111.32.138.57:81/api/v31/{app_key}/{channel_code}/categorytree/categorytree.json"
+        self.subcontentUrl = "http://testcms31.ottcn.com:30012/api/v31/{app_key}/{channel_code}/detailsubcontents/{content_id}.json?subcontenttype=subcontents"
+        self.channel = {}
+        self.program = []
         self.menu = {}
-        self.ps = []
-        self.tv = []
-        self.cs = []
-        self.cs_series = []
-
-        self.index()
 
     def index(self):
         try:
-            res = requests.get(url=self.indexUrl)
+            url = self.pageUrl
+            url.replace("{app_key}", self.appKey)
+            url.replace("{channel_code", self.channelCode)
+            res = requests.get(url=url)
             if res.status_code != 200:
                 return False
             data = json.loads(res.text)
@@ -31,7 +31,7 @@ class Parser:
                 return False
         except BaseException:
             return False
-        self.program = {
+        self.channel = {
             "data": [],
             "errorMessage": data.errorMessage,
             "errorCode": data.errorCode
@@ -56,11 +56,13 @@ class Parser:
                     levelTwoChannel["page"] = pageData
                     childChannel.append(levelTwoChannel)
             levelOneChannel["child"] = childChannel
-            self.program.data.append(levelOneChannel)
+            self.channel.data.append(levelOneChannel)
 
     def page(self, pageId, clickParam):
         try:
             url = self.pageUrl
+            url.replace("{app_key}", self.appKey)
+            url.replace("{channel_code", self.channelCode)
             url.replace("{page_id}", pageId)
             res = requests.get(url=url)
             if res.status_code != 200:
@@ -117,6 +119,8 @@ class Parser:
     def content(self, contentId, clickParam, programIndex):
         try:
             url = self.contentUrl
+            url.replace("{app_key}", self.appKey)
+            url.replace("{channel_code", self.channelCode)
             url.replace("{left_content}", contentId[0, 2])
             url.replace("{right_content}", contentId[len(contentId) - 2, len(contentId)])
             url.replace("{content_id}", contentId)
@@ -163,15 +167,7 @@ class Parser:
             param.append(block)
             contentData["clickParam"] = str(param)
 
-            if contentData.contentType == "PS":
-                self.ps.append(contentData.clickParam)
-            elif contentData.contentType == "TV":
-                self.tv.append(contentData.clickParam)
-            elif contentData.contentType == "CS":
-                if contentData.seriesType == "1":
-                    self.cs_series.append(contentData.clickParam)
-                else:
-                    self.cs.append(contentData.clickParam)
+            self.program.append(contentData)
 
             return contentData
         except BaseException:
@@ -179,7 +175,10 @@ class Parser:
 
     def menu(self):
         try:
-            res = requests.get(url=self.menuUrl)
+            url = self.menuUrl
+            url.replace("{app_key}", self.appKey)
+            url.replace("{channel_code", self.channelCode)
+            res = requests.get(url=url)
             if res.status_code != 200:
                 return False
             data = json.loads(res.text)
@@ -198,3 +197,35 @@ class Parser:
             return ""
         return self.cs_series[0]
 
+    def appChannel(self, appKey, channelCode):
+        self.appKey = appKey
+        self.channelCode = channelCode
+
+    def all(self):
+        self.channel = {}
+        self.program = []
+        self.menu = {}
+        self.index()
+        self.menu()
+        if len(self.program) == 0:
+            return ""
+        ps = []
+        tv = []
+        cs = []
+        csSeries = []
+        for programData in self.program:
+            if programData.contentType == "PS":
+                ps.append(programData.clickParam)
+            elif programData.contentType == "TV":
+                tv.append(programData.clickParam)
+            elif programData.contentType == "CS":
+                if programData.seriesType == "1":
+                    csSeries.append(programData.clickParam)
+                else:
+                    cs.append(programData.clickParam)
+        psParam = ramdon.choice(ps)
+        tvParam = ramdon.choice(tv)
+        csParam = ramdon.choice(cs)
+        csSeriesParam = ramdon.choice(csSeries)
+
+        return [psParam, tvParam, csParam, csSeriesParam]
