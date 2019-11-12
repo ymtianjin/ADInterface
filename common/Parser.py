@@ -25,7 +25,7 @@ class Parser:
             data = json.loads(res.text)
             if not isinstance(data, dict):
                 return False
-            if data.errorCode != 0:
+            if data.errorCode != "0":
                 return False
             if not isinstance(data.data, list):
                 return False
@@ -70,7 +70,7 @@ class Parser:
             data = json.loads(res.text)
             if not isinstance(data, dict):
                 return False
-            if data.errorCode != 0:
+            if data.errorCode != "0":
                 return False
             if not isinstance(data.data, list):
                 return False
@@ -130,9 +130,9 @@ class Parser:
             data = json.loads(res.text)
             if not isinstance(data, dict):
                 return False
-            if data.errorCode != 0:
+            if data.errorCode != "0":
                 return False
-            if data.vipFlag == 0 or data.vipFlag is None:
+            if data.vipFlag == "0" or data.vipFlag is None:
                 return False
 
             if data.contentType == "CS" and data.seriesType == "1": #当contentType为CS的时候，seriesType为1表示剧集（需要获取subcontent），如果seriesType为0表示综艺
@@ -144,7 +144,7 @@ class Parser:
                 subcontentData = json.loads(res.text)
                 if not isinstance(subcontentData, dict):
                     return False
-                if subcontentData.errorCode != 0:
+                if subcontentData.errorCode != "0":
                     return False
                 if not isinstance(subcontentData.data, list) or len(subcontentData.data) < 3:
                     return False
@@ -184,7 +184,7 @@ class Parser:
             data = json.loads(res.text)
             if not isinstance(data, dict):
                 return False
-            if data.errorCode != 0:
+            if data.errorCode != "0":
                 return False
             if not isinstance(data.data, list):
                 return False
