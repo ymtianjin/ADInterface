@@ -134,10 +134,10 @@ class Parser:
                 return False
             if data.errorCode != "0":
                 return False
-            if data.vipFlag == "0" or data.vipFlag is None:
+            if data.data.vipFlag == "0" or data.data.vipFlag is None:
                 return False
 
-            if data.contentType == "CS" and data.seriesType == "1": #当contentType为CS的时候，seriesType为1表示剧集（需要获取subcontent），如果seriesType为0表示综艺
+            if data.data.contentType == "CS" and data.data.seriesType == "1": #当contentType为CS的时候，seriesType为1表示剧集（需要获取subcontent），如果seriesType为0表示综艺
                 url = self.subcontentUrl
                 url.replace("{content_id}", contentId)
                 res = requests.get(url=url)
@@ -170,6 +170,11 @@ class Parser:
             contentData["clickParam"] = param
 
             categoryIds = contentData.categoryIDs.split("|")
+            category = {"levelOne": [], "levelTwo": categoryIds}
+            for categoryId in categoryIds:
+                if self.category.has_key(categoryId):
+                    category.levelOne.append(self.category[categoryId])
+            contentData["category"] = category
 
             self.program.append(contentData)
 
@@ -193,15 +198,12 @@ class Parser:
             if not isinstance(data.data, list):
                 return False
 
-            levelOneCategory = []
-            levelTwoCategory = []
+            self.category = {}
             for levelOneCategoryData in data.data:
-                levelOneCategory.append(levelOneCategoryData.id)
                 if isinstance(levelOneCategoryData.child, list):
                     for levelTwoCategoryData in levelOneCategoryData.child:
-                        levelTwoCategory.append(levelTwoCategoryData.id)
+                        self.category[levelTwoCategoryData.id] = levelOneCategoryData.id
 
-            self.category = { "levelOne": levelOneCategory, "levelTwo": levelTwoCategory }
         except BaseException:
             return False
 
@@ -209,7 +211,7 @@ class Parser:
         self.appKey = appKey
         self.channelCode = channelCode
 
-    def filter(self, duration = 0, levelOneChannel = [], levelTwoChannel = [], videoType = [], videoClass = [], levelOneMenu = [], levelTwoMenu = [], series = []):
+    def filter(self, duration = 0, levelOneChannel = [], levelTwoChannel = [], videoType = [], videoClass = [], levelOneCategory = [], levelTwoCategory = [], series = []):
         self.channel = {}
         self.program = []
         self.menu = {}
@@ -235,6 +237,32 @@ class Parser:
                 continue
             if isinstance(videoClass, list) and len(videoClass) > 0 and programData.videoClass not in videoClass:
                 continue
+            if isinstance(levelOneCategory, list) and len(levelOneCategory):
+                bFound = False
+                for categoryId in programData.category.levelOne:
+                    if categoryId in levelOneCategory:
+                        bFound = True
+                        break
+                if not bFound:
+                    continue
+            if isinstance(levelTwoCategory, list) and len(levelTwoCategory) > 0:
+                bFound = False
+                for categoryId in programData.category.levelTwo:
+                    if categoryId in levelTwoCategory:
+                        bFound = True
+                        break
+                if not bFound:
+                    continue
+            if isinstance(series, list) and len(series) > 0:
+                if not isinstance(programData.subcontent, dict) or not isinstance(programData.subcontent.data, list) or len(programData.subcontent.data) == 0:
+                    continue
+                bFound = False
+                for subContent in programData.subcontent:
+                    if subContent.contentId in series:
+                        bFound = True
+                        break
+                if not bFound:
+                    continue
             if programData.contentType == "PS":
                 ps.append(programData.clickParam)
             elif programData.contentType == "TV":
