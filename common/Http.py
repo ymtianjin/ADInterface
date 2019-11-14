@@ -1,6 +1,6 @@
 # encoding=utf-8
 import unittest, requests, json, logging
-import Parser
+from common import Parser
 
 class Http:
 
@@ -200,9 +200,10 @@ class Http:
 						length = len(self.variable[name])
 						if end > begin and begin < length and end < length:
 							self.variable[name] = self.variable[name][begin:end]
-		else url == "click":
+		elif url == "click":
 			parser = Parser.Parser()
-			param = parser.csSeriesParam()
+			parser.appChannel("8acb5c18e56c1988723297b1a8dc9260", "600001")
+			param = parser.filter()
 			# 在此调用click(param)
 
 

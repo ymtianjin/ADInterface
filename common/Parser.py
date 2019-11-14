@@ -1,33 +1,33 @@
 # encoding=utf-8
-import json, requests， random
+import json, requests, random
 
 class Parser:
     def __init__(self):
         self.appKey = ""
         self.channelCode = ""
-        self.indexUrl = "http://111.32.138.57:81/api/v31/{app_key}/{channel_code}/navigation/index.json"
-        self.pageUrl = "http://testcms31.ottcn.com:30013/api/v31/{app_key}/{channel_code}/page/{page_id}.json"
-        self.contentUrl = "http://testcms31.ottcn.com:30013/api/v31/{app_key}/{channel_code}/content/{left_content}/{right_content}/{content_id}.json"
+        self.indexUrl = "http://testcms31.ottcn.com:30012/api/v31/{app_key}/{channel_code}/navigation/index.json"
+        self.pageUrl = "http://testcms31.ottcn.com:30012/api/v31/{app_key}/{channel_code}/page/{page_id}.json"
+        self.contentUrl = "http://testcms31.ottcn.com:30012/api/v31/{app_key}/{channel_code}/content/{left_content}/{right_content}/{content_id}.json"
         self.subcontentUrl = "http://testcms31.ottcn.com:30012/api/v31/{app_key}/{channel_code}/detailsubcontents/{content_id}.json?subcontenttype=subcontents"
-        self.categoryTreeUrl = "http://111.32.138.57:81/api/v31/{app_key}/{channel_code}/categorytree/categorytree.json"
+        self.categoryTreeUrl = "http://testcms31.ottcn.com:30012/api/v31/{app_key}/{channel_code}/categorytree/categorytree.json"
         self.channel = {}
         self.program = []
         self.category = {}
 
     def index(self):
         try:
-            url = self.pageUrl
-            url.replace("{app_key}", self.appKey)
-            url.replace("{channel_code", self.channelCode)
+            url = self.indexUrl
+            url = url.replace("{app_key}", self.appKey)
+            url = url.replace("{channel_code}", self.channelCode)
             res = requests.get(url=url)
             if res.status_code != 200:
                 return False
             data = json.loads(res.text)
             if not isinstance(data, dict):
                 return False
-            if data.errorCode != "0":
+            if data["errorCode"] != "0":
                 return False
-            if not isinstance(data.data, list):
+            if not isinstance(data["data"], list):
                 return False
         except BaseException:
             return False
@@ -38,7 +38,7 @@ class Parser:
         }
         for levelOneChannel in data.data:
             levelOneClickParam = {
-                "levelOneId": lenvelOneChannel.id
+                "levelOneId": lenvelOneChannel.id,
                 "levelOne": lenvelOneChannel.title
             }
             pageId = levelOneChannel.id
@@ -64,7 +64,7 @@ class Parser:
         try:
             url = self.pageUrl
             url.replace("{app_key}", self.appKey)
-            url.replace("{channel_code", self.channelCode)
+            url.replace("{channel_code}", self.channelCode)
             url.replace("{page_id}", pageId)
             res = requests.get(url=url)
             if res.status_code != 200:
@@ -186,7 +186,7 @@ class Parser:
         try:
             url = self.categoryTreeUrl
             url.replace("{app_key}", self.appKey)
-            url.replace("{channel_code", self.channelCode)
+            url.replace("{channel_code}", self.channelCode)
             res = requests.get(url=url)
             if res.status_code != 200:
                 return False

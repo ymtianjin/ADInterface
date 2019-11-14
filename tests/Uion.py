@@ -69,7 +69,7 @@ class Uion(unittest.TestCase):
                         self.http.post(address["url"], data, check, variable)
                     stepIndex = stepIndex + 1
                     stepStart = stepStart + max(len(data), len(check), len(variable)) + 1
-                    if address["method"] == "define":
+                    if address["method"] == "function":
                         continue
 
                     if self.http.success:
