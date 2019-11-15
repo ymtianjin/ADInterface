@@ -1,5 +1,5 @@
 # encoding=utf-8
-import json, requests, random
+import json, requests, random, os
 
 class Parser:
     def __init__(self):
@@ -14,8 +14,27 @@ class Parser:
         self.program = []
         self.category = {}
 
+        self.parentPath = os.path.join(os.getcwd(), "data")
+
     def index(self):
         try:
+            path = os.path.join(self.parentPath, "channel.json")
+            if os.path.exists(path):
+                with open(path, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    if isinstance(data, dict):
+                        self.channel = data
+
+            path = os.path.join(self.parentPath, "program.json")
+            if os.path.exists(path):
+                with open(path, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    if isinstance(data, list):
+                        self.program = data
+
+            if len(self.channel) > 0 and len(self.program) > 0:
+                return True
+
             url = self.indexUrl
             url = url.replace("{app_key}", self.appKey)
             url = url.replace("{channel_code}", self.channelCode)
@@ -59,6 +78,16 @@ class Parser:
                     childChannel.append(levelTwoChannel)
             levelOneChannel["child"] = childChannel
             self.channel["data"].append(levelOneChannel)
+
+        path = os.path.join(self.parentPath, "channel.json")
+        with open(path, 'w', encoding='utf-8') as f:
+            f.write(json.dumps(self.channel, ensure_ascii=False))
+
+        path = os.path.join(self.parentPath, "program.json")
+        with open(path, 'w', encoding='utf-8') as f:
+            f.write(json.dumps(self.program, ensure_ascii=False))
+
+        return True
 
     def page(self, pageId, clickParam):
         try:
@@ -187,6 +216,14 @@ class Parser:
 
     def categoryTree(self):
         try:
+            path = os.path.join(self.parentPath, "category.json")
+            if os.path.exists(path):
+                with open(path, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    if isinstance(data, dict):
+                        self.category = data
+                        return True
+
             url = self.categoryTreeUrl
             url = url.replace("{app_key}", self.appKey)
             url = url.replace("{channel_code}", self.channelCode)
@@ -207,6 +244,11 @@ class Parser:
                     for levelTwoCategoryData in levelOneCategoryData["child"]:
                         self.category[levelTwoCategoryData["id"]] = levelOneCategoryData["id"]
 
+            path = os.path.join(self.parentPath, "category.json")
+            with open(path, 'w', encoding='utf-8') as f:
+                f.write(json.dumps(self.category, ensure_ascii=False))
+
+            return True
         except BaseException:
             return False
 
