@@ -278,9 +278,9 @@ class Parser:
                 continue
             if isinstance(levelTwoChannel, list) and len(levelTwoChannel) > 0 and programData["clickParam"]["levelTwoChannelId"] not in levelTwoChannel:
                 continue
-            if isinstance(videoType, list) and len(videoType) > 0 and programData["videoType"] not in videoType:
+            if isinstance(videoType, list) and len(videoType) > 0 and programData["data"]["videoType"] not in videoType:
                 continue
-            if isinstance(videoClass, list) and len(videoClass) > 0 and programData["videoClass"] not in videoClass:
+            if isinstance(videoClass, list) and len(videoClass) > 0 and programData["data"]["videoClass"] not in videoClass:
                 continue
             if isinstance(levelOneCategory, list) and len(levelOneCategory):
                 bFound = False
@@ -308,15 +308,16 @@ class Parser:
                         break
                 if not bFound:
                     continue
-            if programData["contentType"] == "PS":
+            if programData["data"]["contentType"] == "PS":
                 ps.append(programData["clickParam"])
-            elif programData["contentType"] == "TV":
+            elif programData["data"]["contentType"] == "TV":
                 tv.append(programData["clickParam"])
-            elif programData["contentType"] == "CS":
-                if programData["seriesType"] == "1":
+            elif programData["data"]["contentType"] == "CS":
+                if programData["data"]["seriesType"] == "1":
                     csSeries.append(programData["clickParam"])
                 else:
                     cs.append(programData["clickParam"])
+
         psParam = ramdon.choice(ps)
         tvParam = ramdon.choice(tv)
         csParam = ramdon.choice(cs)
