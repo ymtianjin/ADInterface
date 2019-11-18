@@ -56,6 +56,8 @@ class Parser:
             "errorCode": data["errorCode"]
         }
         for levelOneChannel in data["data"]:
+            if not isinstance(levelOneChannel["logo"], str) or len(levelOneChannel["logo"]) > 0:
+                continue
             levelOneClickParam = {
                 "levelOneId": levelOneChannel["id"],
                 "levelOne": levelOneChannel["title"]
@@ -67,6 +69,8 @@ class Parser:
             childChannel = []
             if isinstance(levelOneChannel["child"], list):
                 for levelTwoChannel in levelOneChannel["child"]:
+                    if not isinstance(levelTwoChannel["logo"], str) or len(levelTwoChannel["logo"]) > 0:
+                        continue
                     levelTwoClickParam = levelOneClickParam
                     levelTwoClickParam["levelTwoId"] = levelTwoChannel["id"]
                     levelTwoClickParam["levelTwo"] = levelTwoChannel["title"]
@@ -105,8 +109,8 @@ class Parser:
                 return False
             if not isinstance(data["data"], list):
                 return False
-            if not isinstance(data["logo"], str) or len(data["logo"]) > 0:
-                return False
+            # if not isinstance(data["logo"], str) or len(data["logo"]) > 0:
+            #    return False
             pageData = {
                 "data": [],
                 "isNav": data["isNav"],
