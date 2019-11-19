@@ -3,6 +3,7 @@ import json, requests, random, os
 
 class Parser:
     def __init__(self):
+        self.FILTER = True
         self.appKey = ""
         self.channelCode = ""
         self.indexUrl = "http://testcms31.ottcn.com:30012/api/v31/{app_key}/{channel_code}/navigation/index.json"
@@ -56,7 +57,7 @@ class Parser:
             "errorCode": data["errorCode"]
         }
         for levelOneChannel in data["data"]:
-            if not isinstance(levelOneChannel["focusIcon"], str) or len(levelOneChannel["focusIcon"]) > 0:
+            if self.FILTER and (not isinstance(levelOneChannel["focusIcon"], str) or len(levelOneChannel["focusIcon"]) > 0):
                 continue
             levelOneClickParam = {
                 "levelOneId": levelOneChannel["id"],
@@ -69,14 +70,14 @@ class Parser:
             childChannel = []
             if isinstance(levelOneChannel["child"], list):
                 for levelTwoChannel in levelOneChannel["child"]:
-                    if not isinstance(levelTwoChannel["focusIcon"], str) or len(levelTwoChannel["focusIcon"]) > 0:
+                    if self.FILTER and (not isinstance(levelTwoChannel["focusIcon"], str) or len(levelTwoChannel["focusIcon"]) > 0):
                         continue
                     levelTwoClickParam = levelOneClickParam
                     levelTwoClickParam["levelTwoId"] = levelTwoChannel["id"]
                     levelTwoClickParam["levelTwo"] = levelTwoChannel["title"]
                     pageId = levelTwoChannel["id"]
                     pageData = self.page(pageId, levelTwoClickParam)
-                    if not pageData:
+                    if self.FILTER and not pageData:
                         continue
                     levelTwoChannel["page"] = pageData
                     childChannel.append(levelTwoChannel)
@@ -132,21 +133,21 @@ class Parser:
                 programs = []
                 if isinstance(blockData["programs"], list):
                     for programIndex, programData in enumerate(blockData["programs"]):
-                        if programData["l_actionType"] != "OPEN_DETAILS":
+                        if self.FILTER and programData["l_actionType"] != "OPEN_DETAILS":
                             continue
-                        if programData["contentType"] != "PS" and programData["contentType"] != "CS" and programData["contentType"] != "TV": #节目集类型：CS=合集、TV=电视、PS=剧集
+                        if self.FILTER and programData["contentType"] != "PS" and programData["contentType"] != "CS" and programData["contentType"] != "TV": #节目集类型：CS=合集、TV=电视、PS=剧集
                             continue
                         contentId = programData["contentId"]
                         content = self.content(contentId, clickParam, programIndex)
-                        if not content:
+                        if self.FILTER and not content:
                             continue
                         programData["content"] = content
                         programs.append(programData)
-                if len(programs) == 0:
+                if self.FILTER and len(programs) == 0:
                     continue
                 blockData["programs"] = programs
                 pageData["data"].append(blockData)
-            if len(pageData["data"]) == 0:
+            if self.FILTER and len(pageData["data"]) == 0:
                 return False
             return pageData
         except BaseException:
@@ -168,7 +169,7 @@ class Parser:
                 return False
             if data["errorCode"] != "0":
                 return False
-            if data["data"]["vipFlag"] == "0" or data["data"]["vipFlag"] is None:
+            if self.FILTER and data["data"]["vipFlag"] != "0" and data["data"]["vipFlag"] is not None:
                 return False
 
             if data["data"]["contentType"] == "CS" and data["data"]["seriesType"] == "1": #当contentType为CS的时候，seriesType为1表示剧集（需要获取subcontent），如果seriesType为0表示综艺
@@ -184,7 +185,7 @@ class Parser:
                     return False
                 if subcontentData["errorCode"] != "0":
                     return False
-                if not isinstance(subcontentData["data"], list) or len(subcontentData["data"]) < 3:
+                if self.FILTER and (not isinstance(subcontentData["data"], list) or len(subcontentData["data"]) < 3):
                     return False
                 data["subcontent"] = subcontentData
 
@@ -322,9 +323,21 @@ class Parser:
                 else:
                     cs.append(programData["clickParam"])
 
-        psParam = ramdon.choice(ps)
-        tvParam = ramdon.choice(tv)
-        csParam = ramdon.choice(cs)
-        csSeriesParam = ramdon.choice(csSeries)
+        if isinstance(ps, list) and len(ps) > 0:
+            psParam = random.choice(ps)
+        else:
+            psParam = []
+        if isinstance(tv, list) and len(tv) > 0:
+            tvParam = random.choice(tv)
+        else:
+            tvParam = []
+        if isinstance(cs, list) and len(cs) > 0:
+            csParam = random.choice(cs)
+        else:
+            csParam = []
+        if isinstance(csSeries, list) and len(csSeries) > 0:
+            csSeriesParam = random.choice(csSeries)
+        else:
+            csSeriesParam = []
 
         return [str(psParam), str(tvParam), str(csParam), str(csSeriesParam)]
