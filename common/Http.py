@@ -1,4 +1,5 @@
 # encoding=utf-8
+__author__ = 'limeng'
 import unittest, requests, json, logging
 from common import Parser
 
