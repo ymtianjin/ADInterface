@@ -628,7 +628,7 @@ class Naviage:
     def connect(self):
         try:
             desired_caps = {
-                'deviceName': "15780M580259440",  # 设备信息，adb devices命令得到的值
+                'deviceName': "14499M580068257",  # 设备信息，adb devices命令得到的值
                 'platformName': "Android",  # 系统信息，Android/IOS
                 'platformVersion': "5.1",  # 系统版本号
                 'automationName': "Appium",  # Appium
@@ -642,7 +642,9 @@ class Naviage:
 
             }
             self.driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', desired_caps)
-            self.driver.find_elements_by_xpath(self.logo_xpath)
+            # self.driver.find_elements_by_xpath(self.logo_xpath)
+
+            return True
         except Exception as e:
             logging.error("appium链接错误")
             return False
