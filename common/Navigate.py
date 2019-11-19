@@ -20,7 +20,6 @@ class Naviage:
         self.err_code_xpath = '//android.widget.FrameLayout[@index=1]/android.widget.FrameLayout[@index=0]/android.widget.TextView[@index=0]'
         # 播放鉴权失败
         self.err_auth_xpath = '//android.widget.FrameLayout[@index=1]/android.widget.FrameLayout[@index=0]/android.widget.TextView[@index=3]'
-
         # 查找导航循环次数
         self.navigation_count = 20
         # 一级导航焦点下移至二级导航时的等待时长
@@ -364,7 +363,7 @@ class Naviage:
                                 break
                             else:
                                 # 未找到要找的导航名称时右移一次焦点
-                                self.__move_direction(,1, 22)
+                                self.__move_direction(1, 22)
                             n += 1
                         except Exception as e:
                             logging.info('未定位到导航，右移焦点')
