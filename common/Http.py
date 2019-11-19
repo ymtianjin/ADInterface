@@ -1,7 +1,7 @@
 # encoding=utf-8
 __author__ = 'limeng'
 import unittest, requests, json, logging
-from common import Parser
+from common import Parser, Navigate
 
 class Http:
 
@@ -202,10 +202,14 @@ class Http:
 						if end > begin and begin < length and end < length:
 							self.variable[name] = self.variable[name][begin:end]
 		elif url == "click":
+			# 获取需要点击的内容
 			parser = Parser.Parser()
 			parser.appChannel("8acb5c18e56c1988723297b1a8dc9260", "600001")
 			param = parser.filter()
 			# 在此调用click(param)
+			navigate = Navigate.Naviage()
+			if navigate.connect():
+				navigate.click(['CCTV+','CCTV2',[['017'],['005'],['003'],['004'],['008',0]]])
 
 
 	def get(self, url, params = None, checkResult = None, variable = None):

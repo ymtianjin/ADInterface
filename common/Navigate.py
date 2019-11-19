@@ -26,7 +26,6 @@ class Naviage:
         self.navigation_wait_time = 5
 
         self.driver = None
-        self.navigation_info_dict = {}
 
     def __verify_interface_data(self, page_block_list_info):
         """
@@ -270,7 +269,7 @@ class Naviage:
         except Exception as e:
             logging.error(e)
 
-    def __get_navigation_class_xpath(self):
+    def __get_navigation_class_xpath(self, navigation_info_dict):
         """
         根据配置文件信息获取需要的导航名称对应的xpath列表NavigationName_xpath_List
         存在二级导航：[{'cctv+':'First_Navigation_Xpath1'},{'cctv5':'First_Navigation_Xpath1'}]
@@ -279,7 +278,7 @@ class Naviage:
         :return: NavigationName_xpath_List  导航列表
         """
         navigation_name_xpath_list = []
-        for key, value in self.navigation_info_dict.items():
+        for key, value in navigation_info_dict.items():
             logging.info(key, value)
             nav_name_dict = {}  # 导航名称对应xpath的字典，格式：{'cctv+':['First_Navigation_Xpath1']}
             try:
@@ -311,13 +310,13 @@ class Naviage:
                 logging.error(e)
         return navigation_name_xpath_list
 
-    def __assert_target_navigation_len(self):
+    def __assert_target_navigation_len(self, navigation_info_dict):
         """
         验证导航对应xpath的列表是否为空，如果为空直接退出程序
         不为空，返回导航对应的xpath列表及列表长度
         :return: (NavigationName_xpath_List,LenNavigationName_xpath_List)元组
         """
-        navigation_name_xpath_list = self.__get_navigation_class_xpath()
+        navigation_name_xpath_list = self.__get_navigation_class_xpath(navigation_info_dict)
         len_navigation_name_xpath_list = len(navigation_name_xpath_list)
         try:
             if len_navigation_name_xpath_list == 0:
@@ -328,13 +327,13 @@ class Naviage:
         except Exception as e:
             print(e)
 
-    def __find_target_navigation(self):
+    def __find_target_navigation(self, navigation_info_dict):
         """
         导航信息不为空时，移动导航焦点找到目标导航
         :param driver:
         :return: 目标导航列表
         """
-        navigation_name_xpath_list, len_navigation_name_xpath_list = self.__assert_target_navigation_len()
+        navigation_name_xpath_list, len_navigation_name_xpath_list = self.__assert_target_navigation_len(navigation_info_dict)
         navigation_name_list = []
         for i in range(len_navigation_name_xpath_list):
             print(navigation_name_xpath_list[i].keys())
@@ -376,14 +375,14 @@ class Naviage:
         # 返回要测试的导航名称列表
         return navigation_name_list
 
-    def __get_navigation_name(self):
+    def __get_navigation_name(self, navigation_info_dict):
         """
         判断目标导航列表是否为空，如果为空退出程序
         目标导航不为空，返回目标导航列表
         :param driver:
         :return: 导航列表
         """
-        navigation_name_list = self.__find_target_navigation()
+        navigation_name_list = self.__find_target_navigation(navigation_info_dict)
         len_navigation_name_list = len(navigation_name_list)
         try:
             if len_navigation_name_list == 0:
@@ -601,30 +600,51 @@ class Naviage:
         except Exception as e:
             logging.error(e)
 
+    def __interface_data_processing(self, interface_data):
+        '''
+        读取配置文件，将文件内容分离目标导航数据、目标导航页面数据两部分；
+        并将分离后的数据处理成目标导航字典，目标导航页面数据列表
+        :param file_path 接口数据文件名称
+        :return navigation_info_dict,page_block_list_info  目标导航字典，目标导航页面数据列表
+        '''
+        # 导航字典
+        navigation_info_dict = {'first_class_navigation': '', 'second_class_navigation': ''}
+        navigation_data = interface_data[:2]
+        navigation_info_dict['first_class_navigation'] = navigation_data[0]
+        navigation_info_dict['second_class_navigation'] = navigation_data[-1]
+        # 页面接口数据
+        page_block_list_info = interface_data[-1]
+        # print (navigation_info_dict,page_block_list_info)
+        return navigation_info_dict, page_block_list_info
+
     # 先写一个假函数把流程串起来，主要把参数传进来
     def click(self, infoDict):
-        self.navigation_info_dict = infoDict
+        navigation_info_dict,page_block_list_info = self.__interface_data_processing(infoDict)
+        navigation_name_list = self.__get_navigation_name(navigation_info_dict)
+        logging.info(navigation_name_list)
+
+        self.__page_block_traversal(navigation_name_list, page_block_list_info)
 
     def connect(self):
-        desired_caps = {
-
-            'deviceName': "15780M580259440",  # 设备信息，adb devices命令得到的值
-            'platformName': "Android",  # 系统信息，Android/IOS
-            'platformVersion': "5.1",  # 系统版本号
-            'automationName': "Appium",  # Appium
-            'appPackage': "com.newtv.cboxtv",  # 被测试apk包名
-            'appActivity': "tv.newtv.cboxtv.EntryActivity",  # 被测试apk启动页
-            'appWaitActivity': "tv.newtv.cboxtv.MainActivity",  # 填写测试包等待页
-            'noReset': True,  # 不要在会话前重置应用状态
-            'unicodeKeyboard': True,  # 使用 Unicode 输入法
-            'resetKeyboard': True,  # Unicode 测试结束后，重置输入法到原有状态
-            'newCommandTimeout': 24000,  # 设置过期时间
-
-        }
-        self.driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', desired_caps)
         try:
+            desired_caps = {
+                'deviceName': "15780M580259440",  # 设备信息，adb devices命令得到的值
+                'platformName': "Android",  # 系统信息，Android/IOS
+                'platformVersion': "5.1",  # 系统版本号
+                'automationName': "Appium",  # Appium
+                'appPackage': "com.newtv.cboxtv",  # 被测试apk包名
+                'appActivity': "tv.newtv.cboxtv.EntryActivity",  # 被测试apk启动页
+                'appWaitActivity': "tv.newtv.cboxtv.MainActivity",  # 填写测试包等待页
+                'noReset': True,  # 不要在会话前重置应用状态
+                'unicodeKeyboard': True,  # 使用 Unicode 输入法
+                'resetKeyboard': True,  # Unicode 测试结束后，重置输入法到原有状态
+                'newCommandTimeout': 24000,  # 设置过期时间
+
+            }
+            self.driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', desired_caps)
             self.driver.find_elements_by_xpath(self.logo_xpath)
         except Exception as e:
+            logging.error("appium链接错误")
             return False
 
     def channel(self, channelId):
