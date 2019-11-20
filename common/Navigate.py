@@ -1263,18 +1263,18 @@ class Naviage:
         :return:
         """
         try:
-            block_name_list = ['002_023_028', '003_026', '004_011', '008_005_025', '006_007_024']
-            for block_name_info in block_name_list:
-                if block_no_name in block_name_info:
-                    method_name = 'self.__block_' + block_name_info + '_play_focus_move'
-                    break
-                else:
-                    continue
+            if block_no_name in '002_023_028':
+                self.__block_002_023_028_play_focus_move(block_recommend_no)
+            elif block_no_name in '003_026':
+                self.__block_003_026_play_focus_move(block_recommend_no)
+            elif block_no_name in '004_011':
+                self.__block_004_011_play_focus_move(block_recommend_no)
+            elif block_no_name in '008_005_025':
+                self.__block_008_005_025_play_focus_move(block_recommend_no)
+            elif block_no_name in '006_007_024':
+                self.__block_006_007_024_play_focus_move(block_recommend_no)
             else:
-                method_name = 'self.__block_' + block_no_name + '_play_focus_move'
-
-            eval(method_name)(block_recommend_no)
-
+                logging.error("can't find " + block_no_name + " move method")
         except Exception as e:
             logging.error(e)
 
