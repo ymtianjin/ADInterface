@@ -18,7 +18,7 @@ class Parser:
 
         self.parentPath = os.path.join(os.getcwd(), "data")
 
-    def index(self):
+    def index(self):    #生成channel文件，program文件
         try:
             path = os.path.join(self.parentPath, "channel.json")
             if os.path.exists(path):
@@ -26,7 +26,6 @@ class Parser:
                     data = json.load(f)
                     if isinstance(data, dict):
                         self.channel = data
-
             path = os.path.join(self.parentPath, "program.json")
             if os.path.exists(path):
                 with open(path, 'r', encoding='utf-8') as f:
@@ -34,7 +33,7 @@ class Parser:
                     if isinstance(data, list):
                         self.program = data
 
-            if len(self.channel) > 0 and len(self.program) > 0:
+            if len(self.channel) > 0 and len(self.program) > 0:  #判断文件是否存在
                 return True
 
             url = self.indexUrl
@@ -57,8 +56,8 @@ class Parser:
             "errorMessage": data["errorMessage"],
             "errorCode": data["errorCode"]
         }
-        for levelOneChannel in data["data"]:
-            if self.FILTER and (not isinstance(levelOneChannel["focusIcon"], str) or len(levelOneChannel["focusIcon"]) > 0):
+        for levelOneChannel in data["data"]:  #在data的data数据下循环levelOneChannel
+            if self.FILTER and (not isinstance(levelOneChannel["focusIcon"], str) or len(levelOneChannel["focusIcon"]) > 0):  #levelOneChannel的focusIcon不为str 或长度>0
                 continue
             levelOneClickParam = {
                 "levelOneId": levelOneChannel["id"],
@@ -71,19 +70,19 @@ class Parser:
             childChannel = []
             if isinstance(levelOneChannel["child"], list):
                 for levelTwoChannel in levelOneChannel["child"]:
-                    if self.FILTER and (not isinstance(levelTwoChannel["focusIcon"], str) or len(levelTwoChannel["focusIcon"]) > 0):
+                    if self.FILTER and (not isinstance(levelTwoChannel["focusIcon"], str) or len(levelTwoChannel["focusIcon"]) > 0):  #g过滤焦点图片
                         continue
                     levelTwoClickParam = levelOneClickParam
                     levelTwoClickParam["levelTwoId"] = levelTwoChannel["id"]
-                    levelTwoClickParam["levelTwo"] = levelTwoChannel["title"]
-                    pageId = levelTwoChannel["id"]
+                    levelTwoClickParam["levelTwo"] = levelTwoChannel["title"]  #
+                    pageId = levelTwoChannel["id"]  #将child下 的id赋值给pageId
                     pageData = self.page(pageId, levelTwoClickParam)
                     if self.FILTER and not pageData:
                         continue
-                    levelTwoChannel["page"] = pageData
-                    childChannel.append(levelTwoChannel)
-            levelOneChannel["child"] = childChannel
-            self.channel["data"].append(levelOneChannel)
+                    levelTwoChannel["page"] = pageData  #将child下的page赋值给pageData
+                    childChannel.append(levelTwoChannel)  #将childChannel下添加child
+            levelOneChannel["child"] = childChannel  #childChannel = data下的child
+            self.channel["data"].append(levelOneChannel)  #将levelOneChannel添加至channel的data下
 
         path = os.path.join(self.parentPath, "channel.json")
         with open(path, 'w', encoding='utf-8') as f:
