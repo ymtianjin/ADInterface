@@ -1263,16 +1263,50 @@ class Naviage:
         :return:
         """
         try:
-            if block_no_name in '002_023_028':
+            if block_no_name == "001":
+                self.__block_001_play_focus_move(block_recommend_no)
+            elif block_no_name in "002_023_028":
                 self.__block_002_023_028_play_focus_move(block_recommend_no)
-            elif block_no_name in '003_026':
+            elif block_no_name in "003_026":
                 self.__block_003_026_play_focus_move(block_recommend_no)
-            elif block_no_name in '004_011':
+            elif block_no_name in "004_011":
                 self.__block_004_011_play_focus_move(block_recommend_no)
-            elif block_no_name in '008_005_025':
+            elif block_no_name in "008_005_025":
                 self.__block_008_005_025_play_focus_move(block_recommend_no)
-            elif block_no_name in '006_007_024':
+            elif block_no_name in "006_007_024":
                 self.__block_006_007_024_play_focus_move(block_recommend_no)
+            elif block_no_name == "009":
+                self.__block_009_play_focus_move(block_recommend_no)
+            elif block_no_name == "010":
+                self.__block_010_play_focus_move(block_recommend_no)
+            elif block_no_name == "012":
+                self.__block_012_play_focus_move(block_recommend_no)
+            elif block_no_name == "013":
+                self.__block_013_play_focus_move(block_recommend_no)
+            elif block_no_name == "014":
+                self.__block_014_play_focus_move(block_recommend_no)
+            elif block_no_name == "015":
+                self.__block_015_play_focus_move(block_recommend_no)
+            elif block_no_name == "016":
+                self.__block_016_play_focus_move(block_recommend_no)
+            elif block_no_name == "017":
+                self.__block_017_play_focus_move(block_recommend_no)
+            elif block_no_name == "018":
+                self.__block_018_play_focus_move(block_recommend_no)
+            elif block_no_name == "019":
+                self.__block_019_play_focus_move(block_recommend_no)
+            elif block_no_name == "021":
+                self.__block_021_play_focus_move(block_recommend_no)
+            elif block_no_name == "022":
+                self.__block_022_play_focus_move(block_recommend_no)
+            elif block_no_name == "027":
+                self.__block_027_play_focus_move(block_recommend_no)
+            elif block_no_name == "029":
+                self.__block_029_play_focus_move(block_recommend_no)
+            elif block_no_name == "030":
+                self.__block_030_play_focus_move(block_recommend_no)
+            elif block_no_name == "031":
+                self.__block_031_play_focus_move(block_recommend_no)
             else:
                 logging.error("can't find " + block_no_name + " move method")
         except Exception as e:
