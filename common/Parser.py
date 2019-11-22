@@ -273,7 +273,7 @@ class Parser:
         self.index()
 
         if len(self.program) == 0:
-            return ""
+            return []
         ps = []
         tv = []
         cs = []
@@ -342,4 +342,4 @@ class Parser:
         else:
             csSeriesParam = []
 
-        return [str(psParam), str(tvParam), str(csParam), str(csSeriesParam)]
+        return [psParam, tvParam, csParam, csSeriesParam]

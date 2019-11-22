@@ -1,6 +1,6 @@
 # encoding=utf-8
 __author__ = 'limeng'
-import unittest, requests, json, logging, time
+import unittest, requests, json, logging, time, os
 from common import Parser, Navigate, DeviceLog
 
 class Http:
@@ -202,28 +202,29 @@ class Http:
 						if end > begin and begin < length and end < length:
 							self.variable[name] = self.variable[name][begin:end]
 		elif url == "click":
-			# 通过adb记录设备日志
-			logPath = os.path.join(os.getcwd(), 'results/device_logs/')
-			logFile = os.path.join(logPath, time.strftime('%Y%m%d%H%M%S'), 'DeviceLog.log')
-			if not os.path.exist(logPath):
-				os.makedirs(logPath)
-			deviceLog = DeviceLog.DeviceLog()
-			deviceLog.connect("192.168.22.34", "14499M580068257")
-			deviceLog.clear_cache("com.newtv.cboxtv")
-			deviceLog.log_start(logFile)
-
 			# 获取cms的推荐位
 			parser = Parser.Parser()
 			parser.appChannel("8acb5c18e56c1988723297b1a8dc9260", "600001")
-			param = parser.filter()
+			clickParams = parser.filter()
 
-			# 通过appium启动遍历
-			navigate = Navigate.Naviage()
-			if navigate.connect():
-				navigate.click(['CCTV+','CCTV2',[['017'],['005'],['003'],['004'],['008',0]]])
+			for param in clickParams:
+				# 通过adb记录设备日志
+				logPath = os.path.join(os.getcwd(), 'results/device_logs/')
+				logFile = os.path.join(logPath, time.strftime('%Y%m%d%H%M%S'), 'DeviceLog.log')
+				if not os.path.exists(logPath):
+					os.makedirs(logPath)
+				deviceLog = DeviceLog.DeviceLog()
+				deviceLog.connect("192.168.22.34", "14499M580068257")
+				deviceLog.clear_cache("com.newtv.cboxtv")
+				deviceLog.log_start(logFile)
 
-			navigate.disconnect()
-			deviceLog.disconnect()
+				# 通过appium启动遍历
+				navigate = Navigate.Naviage()
+				if navigate.connect():
+					navigate.click(['CCTV+','CCTV2',[['017'],['005'],['003'],['004'],['008',0]]])
+
+				navigate.disconnect()
+				deviceLog.disconnect()
 
 
 	def get(self, url, params = None, checkResult = None, variable = None):
