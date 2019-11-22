@@ -208,6 +208,8 @@ class Http:
 			clickParams = parser.filter()
 
 			for param in clickParams:
+				if len(param) < 1:
+					continue
 				# 通过adb记录设备日志
 				logPath = os.path.join(os.getcwd(), 'results/device_logs/')
 				logFile = os.path.join(logPath, time.strftime('%Y%m%d%H%M%S'), 'DeviceLog.log')
