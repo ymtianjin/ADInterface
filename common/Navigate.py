@@ -2,7 +2,7 @@
 
 __author__ = 'limeng'
 from appium import webdriver
-import time, logging, datetime
+import time, logging
 
 class Naviage:
     def __init__(self):
@@ -1474,6 +1474,8 @@ class Naviage:
 
         self.__page_block_traversal(navigation_name_list, page_block_list_info)
 
+        self.driver.quit()
+
     def connect(self):
         try:
             desired_caps = {
@@ -1499,7 +1501,6 @@ class Naviage:
             return False
 
     def disconnect(self):
-        logging.info('用例结束运行时间为：' + str(datetime.datetime.now()))
         self.driver.quit()
 
     def channel(self, channelId):

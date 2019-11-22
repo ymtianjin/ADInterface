@@ -209,8 +209,7 @@ class Http:
 			# 在此调用click(param)
 			navigate = Navigate.Naviage()
 			if navigate.connect():
-				navigate.click(['CCTV+','CCTV2',[['017'],['005'],['003'],['004'],['008',0]]])
-            navigate.disconnect()
+				navigate.click()
 
 
 	def get(self, url, params = None, checkResult = None, variable = None):
