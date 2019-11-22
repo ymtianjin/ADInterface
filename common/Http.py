@@ -205,7 +205,8 @@ class Http:
 			# 通过adb记录设备日志
 			logPath = os.path.join(os.getcwd(), 'results/device_logs/')
 			logFile = os.path.join(logPath, time.strftime('%Y%m%d%H%M%S'), 'DeviceLog.log')
-			os.makedirs(logPath)
+			if not os.path.exist(logPath):
+				os.makedirs(logPath)
 			deviceLog = DeviceLog.DeviceLog()
 			deviceLog.connect("192.168.22.34", "14499M580068257")
 			deviceLog.clear_cache("com.newtv.cboxtv")

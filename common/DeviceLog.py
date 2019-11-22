@@ -41,7 +41,7 @@ class DeviceLog:
         # os.popen('ctrl+c')
         os.popen('adb kill-server')
 
-    def clear_cache(app_package):
+    def clear_cache(self, app_package):
         """
         清除应用缓存
          :param    app_package   apk包名
@@ -57,7 +57,7 @@ class DeviceLog:
         except Exception as e:
             print(e)
 
-    def log_start(log_file_path):
+    def log_start(self, log_file_path):
         """
         开始打印日志
         """

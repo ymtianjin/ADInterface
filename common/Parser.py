@@ -18,9 +18,9 @@ class Parser:
 
         self.parentPath = os.path.join(os.getcwd(), "data")
 
-    def index(self):    #生成channel文件，program文件
+    def index(self):    #生成channel文件，program文件，遍历导航接口，插入数据
         try:
-            path = os.path.join(self.parentPath, "channel.json")
+            path = os.path.join(self.parentPath, "channel.json")   #新建channel.json，program。json文件
             if os.path.exists(path):
                 with open(path, 'r', encoding='utf-8') as f:
                     data = json.load(f)
@@ -36,7 +36,7 @@ class Parser:
             if len(self.channel) > 0 and len(self.program) > 0:  #判断文件是否存在
                 return True
 
-            url = self.indexUrl
+            url = self.indexUrl  #发送http请求接口index并进行判断
             url = url.replace("{app_key}", self.appKey)
             url = url.replace("{channel_code}", self.channelCode)
             res = requests.get(url=url)
@@ -51,28 +51,28 @@ class Parser:
                 return False
         except BaseException:
             return False
-        self.channel = {
+        self.channel = {   #定义channel格式
             "data": [],
             "errorMessage": data["errorMessage"],
             "errorCode": data["errorCode"]
         }
-        for levelOneChannel in data["data"]:  #在data的data数据下循环levelOneChannel
-            if self.FILTER and (not isinstance(levelOneChannel["focusIcon"], str) or len(levelOneChannel["focusIcon"]) > 0):  #levelOneChannel的focusIcon不为str 或长度>0
+        for levelOneChannel in data["data"]:  #遍历data的data数据，为levelOneChannel
+            if self.FILTER and (not isinstance(levelOneChannel["focusIcon"], str) or len(levelOneChannel["focusIcon"]) > 0):  #levelOneChannel的focusIcon不为str 或长度>0，继续下一个遍历
                 continue
-            levelOneClickParam = {
+            levelOneClickParam = {    #构造点击参数，取出id和titile
                 "levelOneId": levelOneChannel["id"],
                 "levelOne": levelOneChannel["title"]
             }
-            pageId = levelOneChannel["id"]
-            pageData = self.page(pageId, levelOneClickParam)
-            if isinstance(pageData, dict) and len(pageData) > 0:
-                levelOneChannel["page"] = pageData
+            pageId = levelOneChannel["id"]  #id赋值给pageId
+            pageData = self.page(pageId, levelOneClickParam)  #oageData为
+            if isinstance(pageData, dict) and len(pageData) > 0:  #判断类型及长度
+                levelOneChannel["page"] = pageData  #pageDate赋值给
             childChannel = []
-            if isinstance(levelOneChannel["child"], list):
-                for levelTwoChannel in levelOneChannel["child"]:
+            if isinstance(levelOneChannel["child"], list):   #child为列表
+                for levelTwoChannel in levelOneChannel["child"]:  #遍历data下child
                     if self.FILTER and (not isinstance(levelTwoChannel["focusIcon"], str) or len(levelTwoChannel["focusIcon"]) > 0):  #g过滤焦点图片
                         continue
-                    levelTwoClickParam = levelOneClickParam
+                    levelTwoClickParam = levelOneClickParam  #将id和title赋值给levelTwoClickParam
                     levelTwoClickParam["levelTwoId"] = levelTwoChannel["id"]
                     levelTwoClickParam["levelTwo"] = levelTwoChannel["title"]  #
                     pageId = levelTwoChannel["id"]  #将child下 的id赋值给pageId
@@ -84,16 +84,18 @@ class Parser:
             levelOneChannel["child"] = childChannel  #childChannel = data下的child
             self.channel["data"].append(levelOneChannel)  #将levelOneChannel添加至channel的data下
 
-        path = os.path.join(self.parentPath, "channel.json")
-        with open(path, 'w', encoding='utf-8') as f:
-            f.write(json.dumps(self.channel, ensure_ascii=False))
+        path = os.path.join(self.parentPath, "channel.json")  #拼接channel路径
+        with open(path, 'w', encoding='utf-8') as f:  #
+            f.write(json.dumps(self.channel, ensure_ascii=False))  #输出真正的中文
 
-        path = os.path.join(self.parentPath, "program.json")
+        path = os.path.join(self.parentPath, "program.json")  #
         with open(path, 'w', encoding='utf-8') as f:
             f.write(json.dumps(self.program, ensure_ascii=False))
 
         return True
 
+
+#遍历页面接口，
     def page(self, pageId, clickParam):
         try:
             url = self.pageUrl
@@ -125,20 +127,20 @@ class Parser:
                 "isAd": data["isAd"],
                 "templateZT": data["templateZT"]
             }
-            clickParam["block"] = []
-            for blockData in data["data"]:
-                layoutCode = blockData["layoutCode"]
+            clickParam["block"] = []  #d定义空的点击参数中的block
+            for blockData in data["data"]:   #遍历data中的data，
+                layoutCode = blockData["layoutCode"]  #取出layout后三位赋值给blockId
                 blockId = layoutCode[-3 : ]
                 clickParam["block"].append(blockId)
                 programs = []
-                if isinstance(blockData["programs"], list):
-                    for programIndex, programData in enumerate(blockData["programs"]):
+                if isinstance(blockData["programs"], list):  #判断programs类型
+                    for programIndex, programData in enumerate(blockData["programs"]):  #遍历programs下的data，加索引
                         if self.FILTER and programData["l_actionType"] != "OPEN_DETAILS":
                             continue
                         if self.FILTER and programData["contentType"] != "PS" and programData["contentType"] != "CS" and programData["contentType"] != "TV": #节目集类型：CS=合集、TV=电视、PS=剧集
                             continue
-                        contentId = programData["contentId"]
-                        content = self.content(contentId, clickParam, programIndex)
+                        contentId = programData["contentId"]  #取出contentId
+                        content = self.content(contentId, clickParam, programIndex)   #contet由contentId，
                         if self.FILTER and not content:
                             continue
                         programData["content"] = content
@@ -200,13 +202,13 @@ class Parser:
                 param.append("")
             block = []
             for blockLayout in clickParam["block"]:
-                layout = [blockLayout]
+                layout = [blockLayout]   #layout添加进参数
                 block.append(layout)
-            block[len(block) - 1].append(programIndex)
+            block[len(block) - 1].append(programIndex)   #将位置长度-1添加进block
             param.append(block)
             contentData["clickParam"] = param
 
-            categoryIds = contentData["data"]["categoryIDs"].split("|")
+            categoryIds = contentData["data"]["categoryIDs"].split("|")  #分隔categoryIds
             category = {"levelOne": [], "levelTwo": categoryIds}
             for categoryId in categoryIds:
                 if categoryId in self.category:
