@@ -1,7 +1,8 @@
 # encoding=utf-8
+
 __author__ = 'limeng'
 from appium import webdriver
-import time, logging
+import time, logging, datetime
 
 class Naviage:
     def __init__(self):
@@ -1496,6 +1497,10 @@ class Naviage:
         except Exception as e:
             logging.error("appium链接错误")
             return False
+
+    def disconnect(self):
+        logging.info('用例结束运行时间为：' + str(datetime.datetime.now()))
+        self.driver.quit()
 
     def channel(self, channelId):
         pass
