@@ -1474,8 +1474,6 @@ class Naviage:
 
         self.__page_block_traversal(navigation_name_list, page_block_list_info)
 
-        self.driver.quit()
-
     def connect(self):
         try:
             desired_caps = {

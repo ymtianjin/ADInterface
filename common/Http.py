@@ -1,7 +1,7 @@
 # encoding=utf-8
 __author__ = 'limeng'
-import unittest, requests, json, logging
-from common import Parser, Navigate
+import unittest, requests, json, logging, time
+from common import Parser, Navigate, DeviceLog
 
 class Http:
 
@@ -202,14 +202,27 @@ class Http:
 						if end > begin and begin < length and end < length:
 							self.variable[name] = self.variable[name][begin:end]
 		elif url == "click":
-			# 获取需要点击的内容
+			# 通过adb记录设备日志
+			logPath = os.path.join(os.getcwd(), 'results/device_logs/')
+			logFile = os.path.join(logPath, time.strftime('%Y%m%d%H%M%S'), 'DeviceLog.log')
+			os.makedirs(logPath)
+			deviceLog = DeviceLog.DeviceLog()
+			deviceLog.connect("192.168.22.34", "14499M580068257")
+			deviceLog.clear_cache("com.newtv.cboxtv")
+			deviceLog.log_start(logFile)
+
+			# 获取cms的推荐位
 			parser = Parser.Parser()
 			parser.appChannel("8acb5c18e56c1988723297b1a8dc9260", "600001")
 			param = parser.filter()
-			# 在此调用click(param)
+
+			# 通过appium启动遍历
 			navigate = Navigate.Naviage()
 			if navigate.connect():
 				navigate.click()
+
+			navigate.disconnect()
+			deviceLog.disconnect()
 
 
 	def get(self, url, params = None, checkResult = None, variable = None):
