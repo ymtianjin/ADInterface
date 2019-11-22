@@ -221,7 +221,7 @@ class Http:
 				# 通过appium启动遍历
 				navigate = Navigate.Naviage()
 				if navigate.connect():
-					navigate.click(['CCTV+','CCTV2',[['017'],['005'],['003'],['004'],['008',0]]])
+					navigate.click(param)
 
 				navigate.disconnect()
 				deviceLog.disconnect()
