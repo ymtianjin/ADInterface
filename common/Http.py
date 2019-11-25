@@ -212,7 +212,7 @@ class Http:
 					continue
 				# 通过adb记录设备日志
 				logPath = os.path.join(os.getcwd(), 'results/device_logs/')
-				logFile = os.path.join(logPath, time.strftime('%Y%m%d%H%M%S'), 'DeviceLog.log')
+				logFile = os.path.join(logPath, time.strftime('%Y%m%d%H%M%S') + 'DeviceLog.log')
 				if not os.path.exists(logPath):
 					os.makedirs(logPath)
 				deviceLog = DeviceLog.DeviceLog()
