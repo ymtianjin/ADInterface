@@ -218,7 +218,9 @@ class Http:
 			# 获取cms的推荐位
 			parser = Parser.Parser()
 			parser.appChannel("8acb5c18e56c1988723297b1a8dc9260", "600001")
-			clickParams = parser.filter()
+			if not isinstance(params, dict):
+				params = {}
+			clickParams = parser.filter(params)
 
 			for param in clickParams:
 				if len(param) < 1:

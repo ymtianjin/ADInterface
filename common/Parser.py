@@ -194,10 +194,12 @@ class Parser:
             contentData = data
 
             #构造点击参数字符串：['CCTV+','CCTV5',[['017'],['005'],['008',3]]]
+            channel = {"levelOne": clickParam["levelOneId"], "levelTwo": ""}
             param = []
             param.append(clickParam["levelOne"])
             if "levelTwo" in clickParam:
                 param.append(clickParam["levelTwo"])
+                channel["levelTwo"] = clickParam["levelTwoId"]
             else:
                 param.append("")
             block = []
@@ -207,6 +209,7 @@ class Parser:
             block[len(block) - 1].append(programIndex)   #将位置长度-1添加进block
             param.append(block)
             contentData["clickParam"] = param
+            contentData["channel"] = channel
 
             categoryIds = contentData["data"]["categoryIDs"].split("|")  #分隔categoryIds
             category = {"levelOne": [], "levelTwo": categoryIds}
@@ -263,7 +266,7 @@ class Parser:
         self.appKey = appKey
         self.channelCode = channelCode
 
-    def filter(self, duration = 0, levelOneChannel = [], levelTwoChannel = [], videoType = [], videoClass = [], levelOneCategory = [], levelTwoCategory = [], series = []):
+    def filter(self, params):
         self.channel = {}
         self.program = []
         self.menu = {}
@@ -279,38 +282,38 @@ class Parser:
         cs = []
         csSeries = []
         for programData in self.program:
-            if isinstance(duration, int) and duration > 0 and int(programData["duration"]) < duration: #过滤时长
+            if params.__contains__("duration") and isinstance(params["duration"], int) and params["duration"] > 0 and int(programData["data"]["duration"]) < params["duration"]: #过滤时长
                 continue
-            if isinstance(levelOneChannel, list) and len(levelOneChannel) > 0 and programData["clickParam"]["levelOneChannelId"] not in levelOneChannel:
+            if params.__contains__("levelOneChannel") and isinstance(params["levelOneChannel"], list) and len(params["levelOneChannel"]) > 0 and programData["channel"]["levelOne"] not in params["levelOneChannel"]:
                 continue
-            if isinstance(levelTwoChannel, list) and len(levelTwoChannel) > 0 and programData["clickParam"]["levelTwoChannelId"] not in levelTwoChannel:
+            if params.__contains__("levelTwoChannel") and isinstance(params["levelTwoChannel"], list) and len(params["levelTwoChannel"]) > 0 and programData["channel"]["levelTwo"] not in params["levelTwoChannel"]:
                 continue
-            if isinstance(videoType, list) and len(videoType) > 0 and programData["data"]["videoType"] not in videoType:
+            if params.__contains__("videoType") and isinstance(params["videoType"], list) and len(params["videoType"]) > 0 and programData["data"]["videoType"] not in params["videoType"]:
                 continue
-            if isinstance(videoClass, list) and len(videoClass) > 0 and programData["data"]["videoClass"] not in videoClass:
+            if params.__contains__("videoClass") and isinstance(params["videoClass"], list) and len(params["videoClass"]) > 0 and programData["data"]["videoClass"] not in params["videoClass"]:
                 continue
-            if isinstance(levelOneCategory, list) and len(levelOneCategory):
+            if params.__contains__("levelOneCategory") and isinstance(params["levelOneCategory"], list) and len(params["levelOneCategory"]):
                 bFound = False
                 for categoryId in programData["category"]["levelOne"]:
-                    if categoryId in levelOneCategory:
+                    if categoryId in params["levelOneCategory"]:
                         bFound = True
                         break
                 if not bFound:
                     continue
-            if isinstance(levelTwoCategory, list) and len(levelTwoCategory) > 0:
+            if params.__contains__("levelTwoCategory") and isinstance(params["levelTwoCategory"], list) and len(params["levelTwoCategory"]) > 0:
                 bFound = False
                 for categoryId in programData["category"]["levelTwo"]:
-                    if categoryId in levelTwoCategory:
+                    if categoryId in params["levelTwoCategory"]:
                         bFound = True
                         break
                 if not bFound:
                     continue
-            if isinstance(series, list) and len(series) > 0:
+            if params.__contains__("series") and isinstance(params["series"], list) and len(params["series"]) > 0:
                 if not isinstance(programData["subcontent"], dict) or not isinstance(programData["subcontent"]["data"], list) or len(programData["subcontent"]["data"]) == 0:
                     continue
                 bFound = False
                 for subContent in programData["subcontent"]:
-                    if subContent["contentId"] in series:
+                    if subContent["contentId"] in params["series"]:
                         bFound = True
                         break
                 if not bFound:
