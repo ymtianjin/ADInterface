@@ -221,6 +221,9 @@ class Http:
 			if not isinstance(params, dict):
 				params = {}
 			self.init(params)
+			if not isinstance(checkResult, dict):
+				params = {}
+			self.init(checkResult)
 			clickParams = parser.filter(params)
 
 			for param in clickParams:
@@ -244,8 +247,6 @@ class Http:
 				navigate.disconnect()
 				deviceLog.disconnect()
 
-				if not isinstance(checkResult, dict):
-					checkResult = {}
 				deviceLog.log_read(logFile, checkResult)
 
 
