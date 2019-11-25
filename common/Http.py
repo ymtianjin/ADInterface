@@ -220,6 +220,7 @@ class Http:
 			parser.appChannel("8acb5c18e56c1988723297b1a8dc9260", "600001")
 			if not isinstance(params, dict):
 				params = {}
+			self.init(params)
 			clickParams = parser.filter(params)
 
 			for param in clickParams:
