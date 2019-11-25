@@ -67,6 +67,12 @@ class Http:
 		except BaseException:
 			return value
 
+	def assignData(self, data):
+		if data is None or len(data) == 0:
+			return
+		for key in data:
+			value = self.assignValue(data[key])
+			data[key] = self.evalValue(value)
 
 	def checkResult(self, result, key, value):
 		# 校验返回值是否正确，返回键按照/分解成数组，逐层去返回值中查询键值是否正确
@@ -175,14 +181,10 @@ class Http:
 
 		return True
 
-	def init(self, data):
+	def init(self, data = None):
 		self.success = False
 		self.msg = ""
-		if not data is None and len(data) > 0:
-			for key in data:
-				value = self.assignValue(data[key])
-				data[key] = self.evalValue(value)
-
+		self.assignData(data)
 
 	def finish(self, url, data, res, checkResult):
 		if res is None or res.text is None:
@@ -215,17 +217,21 @@ class Http:
 						if end > begin and begin < length and end < length:
 							self.variable[name] = self.variable[name][begin:end]
 		elif url == "click":
+			self.init()
+			if not isinstance(params, dict):
+				params = {}
+			self.assignData(params)
+			if not isinstance(checkResult, dict):
+				params = {}
+			self.assignData(checkResult)
+
 			# 获取cms的推荐位
 			parser = Parser.Parser()
 			parser.appChannel("8acb5c18e56c1988723297b1a8dc9260", "600001")
-			if not isinstance(params, dict):
-				params = {}
-			self.init(params)
-			if not isinstance(checkResult, dict):
-				params = {}
-			self.init(checkResult)
 			clickParams = parser.filter(params)
 
+			# 目前其实还只支持点击一个，因为第一次跑完后appuim就退出了，并且测试用例的结果也只支持一次，后面会覆盖前面的结果
+			# 后续改进是把每次点击都触发一个测试用例，并且单独记录结果集，并且可以自动启动appium
 			for param in clickParams:
 				if len(param) < 1:
 					continue
@@ -239,15 +245,28 @@ class Http:
 				deviceLog.clear_cache("com.newtv.cboxtv")
 				deviceLog.log_start(logFile)
 
+				bClicked = False
+
 				# 通过appium启动遍历
 				navigate = Navigate.Naviage()
 				if navigate.connect():
 					navigate.click(param)
+					bClicked = True
+				else:
+					self.success = False
+					self.msg = "device can't be connected"
 
 				navigate.disconnect()
 				deviceLog.disconnect()
 
-				deviceLog.log_read(logFile, checkResult)
+				if bClicked:
+					missionMid = deviceLog.log_read(logFile, checkResult)
+					if len(missionMid) > 0:
+						self.success = False
+						strSplit = ","
+						self.msg = "mid: " + strSplit.join(missionMid) + " can't be found"
+					else:
+						self.success = True
 
 
 	def get(self, url, params = None, checkResult = None, variable = None):

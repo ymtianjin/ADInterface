@@ -95,6 +95,7 @@ class DeviceLog:
 
     def log_read(self, log_file_path, checkResult):
         try:
+            missionMids = []
             file = open(log_file_path, "r")
             adResult = {}
             for line in file.readlines():
@@ -108,7 +109,8 @@ class DeviceLog:
                 self.__read_ad_data(request, adResult)
             for mid in checkResult:
                 if not adResult.__contains__(mid): # 说明期望的广告在日志中没有读到
-                    pass
-            return adResult
+                    missionMids.append(mid)
+            return missionMids
         except Exception as e:
             pass
+        return []
