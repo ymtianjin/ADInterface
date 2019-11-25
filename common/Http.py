@@ -244,6 +244,10 @@ class Http:
 				navigate.disconnect()
 				deviceLog.disconnect()
 
+				if not isinstance(checkResult, dict):
+					checkResult = {}
+				deviceLog.log_read(logFile, checkResult)
+
 
 	def get(self, url, params = None, checkResult = None, variable = None):
 		url = self.assignValue(url)

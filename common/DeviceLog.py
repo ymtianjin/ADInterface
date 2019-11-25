@@ -1,7 +1,7 @@
 # encoding=utf-8
 __author__ = 'limeng'
 
-import os
+import os, json
 from selenium.webdriver.common.keys import Keys
 
 class DeviceLog:
@@ -72,3 +72,43 @@ class DeviceLog:
             # pop_log = subprocess.Popen(log_cmd, shell=True)
             # # pop_log = subprocess.Popen(log_cmd, stdout=log_file_path, stderr=subprocess.PIPE)
             # return pop_log
+
+    def __read_ad_data(self, request, adResult):
+        try:
+            data = json.loads(request)
+            if not isinstance(data, dict) or not data.__contains__("adspaces"):
+                return
+            adSpaces = data["adspaces"]
+            for type, adData in adSpaces.items():
+                if not isinstance(adData, list) or len(adData) == 0:
+                    continue
+                for ad in adData:
+                    if not isinstance(ad, dict) or not ad.__contains__("mid"):
+                        continue
+                    mid = ad["mid"]
+                    if adResult.__contains__(mid):
+                        adResult[mid].append(type)
+                    else:
+                        adResult[mid] = [type]
+        except Exception as e:
+            pass
+
+    def log_read(self, log_file_path, checkResult):
+        try:
+            file = open(log_file_path, "r")
+            adResult = {}
+            for line in file.readlines():
+                line = line.strip()
+                if line.find("requestADInfoAsync data=") < 0:
+                    continue
+                content = line.split("requestADInfoAsync data=")
+                if len(content) < 2:
+                    continue
+                request = content[1].strip()
+                self.__read_ad_data(request, adResult)
+            for mid in checkResult:
+                if not adResult.__contains__(mid): # 说明期望的广告在日志中没有读到
+                    pass
+            return adResult
+        except Exception as e:
+            pass
