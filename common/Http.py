@@ -56,6 +56,17 @@ class Http:
 
 		return key
 
+	def evalValue(self, value):
+		if not isinstance(value, str):
+			return value
+		try:
+			test = json.loads(value)
+			if not isinstance(test, dict):
+				return value
+			return test
+		except BaseException:
+			return value
+
 
 	def checkResult(self, result, key, value):
 		# 校验返回值是否正确，返回键按照/分解成数组，逐层去返回值中查询键值是否正确
@@ -169,7 +180,9 @@ class Http:
 		self.msg = ""
 		if not data is None and len(data) > 0:
 			for key in data:
-				data[key] = self.assignValue(data[key])
+				value = self.assignValue(data[key])
+				data[key] = self.evalValue(value)
+
 
 	def finish(self, url, data, res, checkResult):
 		if res is None or res.text is None:
