@@ -235,6 +235,7 @@ class Http:
 			for param in clickParams:
 				if len(param) < 1:
 					continue
+				logging.info("click ad space: " + str(param))
 				# 通过adb记录设备日志
 				logPath = os.path.join(os.getcwd(), 'results/device_logs/')
 				logFile = os.path.join(logPath, time.strftime('%Y%m%d%H%M%S') + 'DeviceLog.log')
