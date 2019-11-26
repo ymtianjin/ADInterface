@@ -286,14 +286,14 @@ class Naviage:
                 if key == 'first_class_navigation' and value != '':
                     first_navigation_xpath = self.first_class_xpath
                     value_first_navigation = value
-                    logging.info("Value_First_Navigation:", value_first_navigation)
+                    logging.info("Value_First_Navigation:" + str(value_first_navigation))
                     nav_name_dict[value_first_navigation] = first_navigation_xpath
                     navigation_name_xpath_list.append(nav_name_dict)
 
                 elif key == 'second_class_navigation' and value != '':
                     second_navigation_xpath = self.second_class_xpath
                     value_second_navigation = value
-                    logging.info("Value_Second_Navigation:", value_second_navigation)
+                    logging.info("Value_Second_Navigation:" + str(value_second_navigation))
                     nav_name_dict[value_second_navigation] = second_navigation_xpath
                     navigation_name_xpath_list.append(nav_name_dict)
 
@@ -337,20 +337,17 @@ class Naviage:
         navigation_name_xpath_list, len_navigation_name_xpath_list = self.__assert_target_navigation_len(navigation_info_dict)
         navigation_name_list = []
         for i in range(len_navigation_name_xpath_list):
-            print(navigation_name_xpath_list[i].keys())
             if len(navigation_name_xpath_list[i].keys()) != 1:
                 logging.error("目标导航数据错误")
                 quit()
             else:
                 for key, value in navigation_name_xpath_list[i].items():
-                    print(key, value, i)
-                    logging.info('xpath列表:', value)
+                    logging.info('xpath列表:' + str(value))
                     n = 0
                     while n <= self.navigation_count:
                         logging.info("导航焦点右移循环次数共20次，当前次数为：%s次" % n)
                         try:
                             navigation_name = self.__find_element(value)
-                            logging.info(navigation_name.text)
                             logging.info("导航名称:", navigation_name.text)
                             if navigation_name.text == key:
                                 navigation_name_list.append(navigation_name.text)
@@ -359,7 +356,6 @@ class Naviage:
                                 else:
                                     class_name = chr(i + 20107)
                                 logging.info("找到了%s级导航%s" % (class_name, navigation_name.text))
-                                print("找到了%s级导航%s" % (class_name, navigation_name.text))
                                 break
                             else:
                                 # 未找到要找的导航名称时右移一次焦点
