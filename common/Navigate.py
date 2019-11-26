@@ -280,7 +280,7 @@ class Naviage:
         """
         navigation_name_xpath_list = []
         for key, value in navigation_info_dict.items():
-            logging.info(key, value)
+            logging.info("key = " + str(key) + "value = " + str(value))
             nav_name_dict = {}  # 导航名称对应xpath的字典，格式：{'cctv+':['First_Navigation_Xpath1']}
             try:
                 if key == 'first_class_navigation' and value != '':
