@@ -125,7 +125,6 @@ class Naviage:
                     # 推荐位内容写回-----
                     Flag = False
                     # fileProcess.interface_data_return(block_recommend_no,content_num,detail_title_name,Flag)
-                    self.__interface_data_return(Flag)
                     self.__move_direction(self.driver, 1, 4)  # 点击返回按钮，返回导航页
 
                 else:
@@ -136,7 +135,6 @@ class Naviage:
                     # 推荐位内容写回-----
                     Flag = True
                     # fileProcess.interface_data_return(block_recommend_no,content_num,detail_title_name,Flag)
-                    self.__interface_data_return(Flag)
                     self.__move_direction(self.driver, 1, 4)  # 点击返回按钮，返回导航页
 
             else:
@@ -144,7 +142,6 @@ class Naviage:
                 # 推荐位内容写回-----
                 Flag = False
                 # fileProcess.interface_data_return(block_recommend_no,content_num,Flag)
-                self.__interface_data_return(Flag)
         except Exception as e:
             print(e)
 
