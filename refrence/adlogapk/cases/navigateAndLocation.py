@@ -1,6 +1,4 @@
 # encoding=utf-8
-__author__ = 'lqq'
-# 查找导航模块
 import logging
 import time
 
@@ -13,11 +11,12 @@ class Navigation(object):
     循环遍历导航,返回导航名称列表
     """
 
-    def __init__(self,navigation_info_dict):
+    def __init__(self):
         """
         初始化时读取配置文件，获取导航信息，导航信息为字典格式
         self.navigation_info_dict = {'first_class_navigation': 'ZWYTEST', 'second_class_navigation': ''}
         """
+        navigation_info_dict = readConfig.read_config("Navigate-Focus")
         self.navigation_info_dict = navigation_info_dict
         print(self.navigation_info_dict)
         logging.info(self.navigation_info_dict)
@@ -28,7 +27,7 @@ class Navigation(object):
         存在二级导航：[{'cctv+':'First_Navigation_Xpath1'},{'cctv5':'First_Navigation_Xpath1'}]
         不存在二级导航：[{'ZWYTEST': '//android.support.v7.widget.RecyclerView[@index=2]/android.widget.FrameLayout[@index=2]/android.widget.TextView'}]
         无导航数据：[]
-        :return: NavigationName_xpath_List  导航列表
+        :return: NavigationName_xpath_List
         """
         navigation_name_xpath_list = []
         for key, value in self.navigation_info_dict.items():
@@ -98,7 +97,7 @@ class Navigation(object):
                     print(key, value, i)
                     logging.info('xpath列表:', value)
                     n = 0
-                    while n <= Const.navigation_count:
+                    while n <= 20:
                         logging.info("导航焦点右移循环次数共20次，当前次数为：%s次" % n)
                         try:
                             navigation_name = locateElement.find_element(driver, value)
@@ -122,7 +121,7 @@ class Navigation(object):
                             focusMove.move_direction(driver, 1, 22)
                             n += 1
                             print(e)
-                    time.sleep(Const.navigation_wait_time)
+                    time.sleep(5)
                     # 找到要测试的导航时，下移一次焦点
                     focusMove.move_direction(driver, 1, 20)
         # 返回要测试的导航名称列表
@@ -131,9 +130,9 @@ class Navigation(object):
     def get_navigation_name(self, driver):
         """
         判断目标导航列表是否为空，如果为空退出程序
-        目标导航不为空，返回目标导航列表
+        目标导航不为空，返回目标导航
         :param driver:
-        :return: 导航列表
+        :return: 字符格式
         """
         navigation_name_list = self.__find_target_navigation(driver)
         len_navigation_name_list = len(navigation_name_list)

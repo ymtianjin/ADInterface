@@ -1,7 +1,4 @@
 # encoding=utf-8
-__author__ = 'lqq'
-# 焦点方向
-
 import time
 import logging
 

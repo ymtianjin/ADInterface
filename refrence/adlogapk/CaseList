@@ -1,0 +1,11 @@
+DetailAndOperation#play
+DetailAndOperation#pause
+DetailAndOperation#select
+DetailAndOperation#seek
+DetailAndOperation#back
+DetailAndOperation#drop
+DetailAndOperation#reenter
+DetailAndOperation#expired
+DetailAndOperation#proceed
+DetailAndOperation#detail
+DetailAndOperation#over

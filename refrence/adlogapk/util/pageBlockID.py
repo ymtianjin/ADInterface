@@ -1,7 +1,6 @@
 # encoding=utf-8
-__author__ = 'lqq'
 import logging
-# 确定区块数量
+
 
 def page_block_id(block_no):
     """

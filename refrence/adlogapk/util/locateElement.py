@@ -1,11 +1,9 @@
 # encoding=utf-8
-__author__ = 'lqq'
-# 控件定位
 import time
 import logging
 
 
-def find_element(driver, id_or_xpath, n=20):
+def find_element(driver, id_or_xpath, n=40):
     """
     通过id或者xpath定位单个元素
     返回类型单个元素对象

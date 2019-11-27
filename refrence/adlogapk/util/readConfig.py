@@ -1,7 +1,6 @@
 # encoding=utf-8
 
-__author__ = 'lqq'
-# 读取配置文件
+__author__ = 'zhangwy'
 import os
 import configparser
 
@@ -12,7 +11,7 @@ def read_config(section):
      读取配置文件newtv.ini,将配置文件信息写成list返回
     """
 
-    # print(os.path.dirname(os.path.abspath('.')))
+    print(os.path.dirname(os.path.abspath('.')))
     root_dir = os.path.dirname(os.path.abspath('.'))  # 获取配置文件所在上级目录
 
     # config = configparser.ConfigParser()

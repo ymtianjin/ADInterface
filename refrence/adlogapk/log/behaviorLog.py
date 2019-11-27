@@ -1,7 +1,7 @@
 # encoding=utf-8
-__author__ = 'lqq'
-# 设备连接、清除缓存
 from util import readConfig
+
+__author__ = 'zhangwy'
 import os
 from appium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -58,6 +58,32 @@ def clear_cache(app_package):
     except Exception as e:
         print(e)
 
+
+def log_start(log_file_path):
+    """
+    开始打印日志
+    """
+    if os.path.exists(log_file_path):
+        os.remove(log_file_path)
+    else:
+        print("开始打印log")
+        os.popen('adb logcat -v time >'+log_file_path)
+        # os.popen('adb logcat -c')
+        # # log_file = open(log_file_path, 'w')
+        # log_cmd = 'adb logcat -v time >'+log_file_path
+        # pop_log = subprocess.Popen(log_cmd, shell=True)
+        # # pop_log = subprocess.Popen(log_cmd, stdout=log_file_path, stderr=subprocess.PIPE)
+        # return pop_log
+
+
+def log_exit():
+
+    """
+    结束打印日志,关闭adb服务
+    """
+    os.popen(Keys.CONTROL+'c')
+    # os.popen('ctrl+c')
+    os.popen('adb kill-server')
 
 
 def init_device(self, **devices):

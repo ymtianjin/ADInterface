@@ -1,16 +1,14 @@
 # encoding=utf-8
-__author__ = 'lqq'
-# 区块焦点移动
 from util import focusMove
 import logging
 
 
-def block_001_play_focus_move(driver, i):
+def block_1_play_focus_move(driver, i):
     """
     处理区遍历块推荐位时焦点的移动，1号区块
-    :param driver:
+    :param driver: 
     :param i: 区块推荐位列表序列号，即区块的第几个推荐位
-    :return:
+    :return: 
     """
     if not isinstance(i, int):
         return None
@@ -18,12 +16,12 @@ def block_001_play_focus_move(driver, i):
         logging.info('焦点不移动')
 
 
-def block_002_023_028_play_focus_move(driver, i):
+def block_2_23_28_play_focus_move(driver, i):
     """
     处理区遍历块推荐位时焦点的移动，2\23\28号区块
-    :param driver:
+    :param driver: 
     :param i: 区块推荐位列表序列号，即区块的第几个推荐位
-    :return:
+    :return: 
     """
     if i == 0:
         # 右移1次
@@ -33,14 +31,18 @@ def block_002_023_028_play_focus_move(driver, i):
         logging.info('区块最后一个推荐位')
 
 
-def block_003_026_play_focus_move(driver, i):
+def block_3_26_play_focus_move(driver, i):
     """
     处理区遍历块推荐位时焦点的移动，3\26号区块
     :param driver:
     :param i: 区块推荐位列表序列号，即区块的第几个推荐位
     :return:
     """
-    if i in [0,1]:
+    if i == 0:
+        # 右移1次
+        focusMove.move_direction(driver, 1, 22)
+        logging.info('焦点右移1次')
+    elif i == 1:
         # 右移1次
         focusMove.move_direction(driver, 1, 22)
         logging.info('焦点右移1次')
@@ -48,7 +50,7 @@ def block_003_026_play_focus_move(driver, i):
         logging.info('区块最后一个推荐位')
 
 
-def block_004_011_play_focus_move(driver, i):
+def block_4_11_play_focus_move(driver, i):
     """
      处理区遍历块推荐位时焦点的移动，4\11号区块
     :param driver:
@@ -71,7 +73,7 @@ def block_004_011_play_focus_move(driver, i):
         logging.info('区块最后一个推荐位')
 
 
-def block_008_005_025_play_focus_move(driver, i):
+def block_8_5_25_play_focus_move(driver, i):
     """
     处理区遍历块推荐位时焦点的移动，8\5\25号区块
     :param driver:
@@ -102,7 +104,7 @@ def block_008_005_025_play_focus_move(driver, i):
         logging.info('区块最后一个推荐位')
 
 
-def block_006_007_024_play_focus_move(driver, i):
+def block_6_7_24_play_focus_move(driver, i):
     """
     处理区遍历块推荐位时焦点的移动，6\7\24号区块
     :param driver:
@@ -141,7 +143,7 @@ def block_006_007_024_play_focus_move(driver, i):
         logging.info('区块最后一个推荐位')
 
 
-def block_009_play_focus_move(driver, i):
+def block_9_play_focus_move(driver, i):
     """
     处理区遍历块推荐位时焦点的移动，9号区块
     :param driver:
@@ -171,7 +173,7 @@ def block_009_play_focus_move(driver, i):
         logging.info('区块最后一个推荐位')
 
 
-def block_010_play_focus_move(driver, i):
+def block_10_play_focus_move(driver, i):
     """
     处理区遍历块推荐位时焦点的移动，10号区块
     :param driver:
@@ -212,7 +214,7 @@ def block_010_play_focus_move(driver, i):
         logging.info('区块最后一个推荐位')
 
 
-def block_012_play_focus_move(driver, i):
+def block_12_play_focus_move(driver, i):
     """
     处理区遍历块推荐位时焦点的移动，12号区块
     :param driver:
@@ -239,7 +241,7 @@ def block_012_play_focus_move(driver, i):
         logging.info('区块最后一个推荐位')
 
 
-def block_013_play_focus_move(driver, i):
+def block_13_play_focus_move(driver, i):
     """
     处理区遍历块推荐位时焦点的移动，13号区块
     :param driver:
@@ -273,7 +275,7 @@ def block_013_play_focus_move(driver, i):
         logging.info('区块最后一个推荐位')
 
 
-def block_014_play_focus_move(driver, i):
+def block_14_play_focus_move(driver, i):
     """
     处理区遍历块推荐位时焦点的移动，14号区块
     :param driver:
@@ -305,7 +307,7 @@ def block_014_play_focus_move(driver, i):
         logging.info('区块最后一个推荐位')
 
 
-def block_015_play_focus_move(driver, i):
+def block_15_play_focus_move(driver, i):
     """
     处理区遍历块推荐位时焦点的移动，15号区块
     :param driver:
@@ -346,7 +348,7 @@ def block_015_play_focus_move(driver, i):
         logging.info('区块最后一个推荐位')
 
 
-def block_016_play_focus_move(driver, i):
+def block_16_play_focus_move(driver, i):
     """
     处理区遍历块推荐位时焦点的移动，16号区块
     :param driver:
@@ -387,7 +389,7 @@ def block_016_play_focus_move(driver, i):
         logging.info('区块最后一个推荐位')
 
 
-def block_017_play_focus_move(driver, i):
+def block_17_play_focus_move(driver, i):
     """
     处理区遍历块推荐位时焦点的移动，17号区块
     :param driver:
@@ -435,7 +437,7 @@ def block_017_play_focus_move(driver, i):
         logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
 
 
-def block_018_play_focus_move(driver, i):
+def block_18_play_focus_move(driver, i):
     """
     处理区遍历块推荐位时焦点的移动，18号区块
     :param driver:
@@ -469,7 +471,7 @@ def block_018_play_focus_move(driver, i):
         logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
 
 
-def block_019_play_focus_move(driver, i):
+def block_19_play_focus_move(driver, i):
     """
     处理区遍历块推荐位时焦点的移动，19号区块
     :param driver:
@@ -506,7 +508,7 @@ def block_019_play_focus_move(driver, i):
         logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
 
 
-def block_021_play_focus_move(driver, i):
+def block_21_play_focus_move(driver, i):
     """
     处理区遍历块推荐位时焦点的移动，21号区块
     :param driver:
@@ -552,7 +554,7 @@ def block_021_play_focus_move(driver, i):
         logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
 
 
-def block_022_play_focus_move(driver, i):
+def block_22_play_focus_move(driver, i):
     """
     处理区遍历块推荐位时焦点的移动，22号区块
     :param driver:
@@ -605,7 +607,7 @@ def block_022_play_focus_move(driver, i):
         logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
 
 
-def block_027_play_focus_move(driver, i):
+def block_27_play_focus_move(driver, i):
     """
     处理区遍历块推荐位时焦点的移动，27号区块
     :param driver:
@@ -643,7 +645,7 @@ def block_027_play_focus_move(driver, i):
         logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
 
 
-def block_029_play_focus_move(driver, i):
+def block_29_play_focus_move(driver, i):
     """
     处理区遍历块推荐位时焦点的移动，29号区块
     :param driver:
@@ -709,7 +711,7 @@ def block_029_play_focus_move(driver, i):
         logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
 
 
-def block_030_play_focus_move(driver, i):
+def block_30_play_focus_move(driver, i):
     """
     处理区遍历块推荐位时焦点的移动，30号区块
     :param driver:
@@ -780,7 +782,7 @@ def block_030_play_focus_move(driver, i):
         logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
 
 
-def block_031_play_focus_move(driver, i):
+def block_31_play_focus_move(driver, i):
     """
     处理区遍历块推荐位时焦点的移动，31号区块
     :param driver:

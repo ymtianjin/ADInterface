@@ -1,10 +1,6 @@
 # encoding=utf-8
 import logging
 
-__author__ = 'lqq'
-# 程序运行日志
-
-
 
 def create_pro_log(path):
     """
@@ -35,3 +31,8 @@ def create_pro_log(path):
 
     return log_root
 
+
+def error_log(e):
+    logging.error('发生错误的文件：', e.__traceback__.tb_frame.f_globals['__file__'])
+    logging.error('错误所在的行号：', e.__traceback__.tb_lineno)
+    logging.error('错误信息：', e)
