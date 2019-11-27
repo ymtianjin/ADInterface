@@ -25,7 +25,6 @@ class Http:
 		return -1
 
 	def assignValue(self, key):
-		return key
 		if not isinstance(key, str) or len(key) < 10:
 			return key
 
