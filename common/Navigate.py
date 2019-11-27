@@ -348,7 +348,7 @@ class Naviage:
                         logging.info("导航焦点右移循环次数共20次，当前次数为：%s次" % n)
                         try:
                             navigation_name = self.__find_element(value)
-                            logging.info("导航名称:", navigation_name.text)
+                            logging.info("导航名称:" + navigation_name.text)
                             if navigation_name.text == key:
                                 navigation_name_list.append(navigation_name.text)
                                 if i == 0:
