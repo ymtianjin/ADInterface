@@ -63,10 +63,11 @@ class Parser:
                 "levelOneId": levelOneChannel["id"],
                 "levelOne": levelOneChannel["title"]
             }
-            pageId = levelOneChannel["id"]  #id赋值给pageId
-            pageData = self.page(pageId, levelOneClickParam)  #oageData为
-            if isinstance(pageData, dict) and len(pageData) > 0:  #判断类型及长度
-                levelOneChannel["page"] = pageData  #pageDate赋值给
+            if not isinstance(levelOneChannel["child"], list) or len(levelOneChannel["child"]) == 0:
+                pageId = levelOneChannel["id"]  #id赋值给pageId
+                pageData = self.page(pageId, levelOneClickParam)  #oageData为
+                if isinstance(pageData, dict) and len(pageData) > 0:  #判断类型及长度
+                    levelOneChannel["page"] = pageData  #pageDate赋值给
             childChannel = []
             if isinstance(levelOneChannel["child"], list):   #child为列表
                 for levelTwoChannel in levelOneChannel["child"]:  #遍历data下child
