@@ -25,6 +25,7 @@ class Http:
 		return -1
 
 	def assignValue(self, key):
+		return key
 		if not isinstance(key, str) or len(key) < 10:
 			return key
 
@@ -38,21 +39,22 @@ class Http:
 			if end < 0:
 				break
 			name = key[begin:end]
-			if self.variable.__contains__(name):
-				value = self.variable[name]
-				if isinstance(value, list) and len(key) > (end + 3) and key[end + 1] == '[':
-					begin = end + 2
-					end = key.find(']', begin)
-					if end > begin:
-						index = key[begin:end]
-						if index.isdigit() and 0 <= int(index) < len(value):
-							name = "{$" + name + "}[" + index + "]"
-							key = key.replace(name, value[int(index)])
-                else:
-                    name = "{$" + name + "}"
-                    key = key.replace(name, str(value))
-
 			prev = end + 1
+			if not self.variable.__contains__(name):
+				continue
+			value = self.variable[name]
+			if isinstance(value, list) and len(key) > (end + 3) and key[end + 1] == '[':
+				begin = end + 2
+				end = key.find(']', begin)
+				index = -1
+				if end > begin:
+					index = key[begin:end]
+				if index.isdigit() and 0 <= int(index) < len(value):
+					name = "{$" + name + "}[" + index + "]"
+					key = key.replace(name, value[int(index)])
+			else:
+				name = "{$" + name + "}"
+				key = key.replace(name, str(value))
 
 		return key
 
