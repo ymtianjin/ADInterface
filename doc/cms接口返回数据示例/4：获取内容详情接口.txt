@@ -1,0 +1,246 @@
+1：获取内容详情接口
+请求方式	GET
+接口描述	获取内容详情数据，包括节目，节目集，节目合集，节目集合集，直播，轮播，电视栏目，人物
+请求地址	http://host:port/api/v31/{appkey}/{channelCode}/content/{left(contentID,2)}/{right(contentID,2)}/{contentID}.json
+测试地址	http://testcms31.ottcn.com:30013/api/v31/8acb5c18e56c1988723297b1a8dc9260/600001/content/11/54/11546554.json
+以下是可供测试的各类型数据的contentID
+PS:4329022 CG:4595758 CP:4329028 PG:4335749 FG:4328598 TV:4598904
+请求参数说明：
+参数名称	参数含义	参数类型	是否必填	备注
+appkey	APP标识	String	是	AppKey定义
+channelCode	渠道标识	String	是	ChannelId定义
+left(contentID,2)	contentID值截取前2位	String	是	
+right(contentID,2)	contentID值截取最后2位	String	是	
+contentID	内容标识	String	是	
+返回结果举例：
+{
+  "data": {
+    "contentId": "20712074",
+    "description": "法国影像记录典籍。",
+    "language": "普通话",
+    "title": "法国影像记录典籍",
+    "MAMID": "wuxi",
+    "duration": "0",
+    "is4k": 0,
+    "recentMsg": "已完结",
+    "categoryIDs": "93|90",
+    "subTitle": "",
+    "backgroundImg": null,
+    "vImage": "http://img.cloud.ottcn.com/n3images/2018/12/03/6f84e0b9f8184019925694c97537489a_1543816336928.jpg",
+    "movieLevel": "1",
+    "seriesType": "0",
+    "definition": "HD",
+    "vipProductId": "322",
+    "contentType": "PS",
+    "area": "法国",
+    "new_realExclusive": "0",
+    "priceNum": "",
+    "videoType": "纪录片",
+    "director": "无",
+    "csContentIDs": "",
+    "tags": "纪录片 探索",
+    "actors": "无",
+    "airtime": "2012",
+    "contentSource": "播放内容来自：未来电视",
+    "grade": "9.9",
+    "premiereChannel": "佳韵社",
+    "contentUUID": "170903",
+    "hImage": "http://img.cloud.ottcn.com/n3images/2018/12/03/6f84e0b9f8184019925694c97537489a_1543816336928.jpg",
+    "videoClass": "探索",
+    "vipFlag": "3"
+  },
+  "errorMessage": "成功",
+  "errorCode": "0"
+}
+返回参数说明：
+1：contentType = PS（节目集）、CG（节目合集）
+	参数名	参数含义	类型	备注
+1	errorCode	状态码	String	0：成功
+2	errorMessage	状态信息	String	
+3	data	节目集（合集）	Object	
+4	contentId	内容ID	String	cms系统中的ID
+5	language	语言	String	
+6	subTitle	副标题	String	
+7	vImage	竖海报	String	
+8	priceNum	最新付费节目数量	String	设置最后几集收费
+9	contentUUID	源系统ID	String	同cms1.0中的outsourceId，腾讯cId或vId
+10	contentType	内容类型	String	参考：内容类型
+11	area	国家地区	String	
+12	videoType	一级分类	String	电影、电视剧
+终端根据一级分类的值，展示不同的详情页，比如资讯没有评分，电影有导演、主演
+13	director	导演	String	多个中间用竖线分割
+14	tags	标签	String	
+15	actors	主演	String	多个中间用竖线分割
+16	grade	评分	String	
+17	premiereChannel	首播频道	String	
+18	videoClass	二级分类	String	动作、爱情、搞笑
+19	vipFlag	付费标识	String	
+20	description	描述	String	
+21	title	标题	String	
+22	MAMID	内容来源	String	参考：MAMID定义
+如果是tx，终端需要用腾讯SDK播放
+23	duration	时长	String	单位：秒
+24	movieLevel	影片等级	String	影片等级 1、正片，2、预告片，3、花絮
+25	seriesSum	总集数	int	
+26	definition	清晰度	String	SD：标清、HD：高清
+27	vipProductId	产品包ID	String	BOSS系统的产品包唯一标识
+28	airtime	年代	String	
+29	hImage	横海报	String	
+30	 csContentIDs	 所属节目集合集ID	 String	 节目集所属合集contentID   |  分隔   
+31	categoryIDs	所属栏目ID	String	多个id之间用 | 分割
+32	seriesType	节目集类型	String	0：显示名称
+1：显示集号
+33	 recentNum	 最新集数	 String	已删除
+34	 updateDate	 旗下节目最新更新至	 String	 
+35	 new_realExclusive	 内容标识	 String	 
+36	 is4k	 是否4k	 int	 
+37	 backgroundImg	 背景图片	 String	 
+38	recentMsg	更新信息	String	
+39	 contentSource	 内容来源	 String	 
+
+2：contentType = CP，PG
+
+参数名	参数含义	类型	备注
+errorCode	状态码	String	0：成功
+errorMessage	状态说明	String	 
+data	节目	Object	 
+language	语言	String	
+subTitle	副标题	String	
+vImage	竖海报	String	
+contentUUID	源系统ID	String	
+contentType	内容类型	String	参考：内容类型
+area	国家地区	String	
+videoType	一级分类	String	电影、电视剧
+director	导演	String	多个中间用竖线分割
+tags	标签	String	
+actors	主演	String	多个中间用竖线分割
+grade	评分	String	
+premiereChannel	首播频道	String	
+videoClass	二级分类	String	动作、爱情、搞笑
+vipFlag	付费标识	String	
+freeDuration	试播时长	String	单位：秒
+description	描述	String	
+title	内容标题	String	
+MAMID	内容来源	String	参考：MAMID定义
+如果是tx，终端需要用腾讯SDK播放
+duration	时长	String	单位：秒
+movieLevel	影片等级	String	影片等级 1、正片，2、预告片，3、花絮
+periods	集号	String	
+definition	清晰度	String	SD：标清、HD：高清
+vipProductId	产品包ID	String	
+airtime	年代	String	
+contentId	内容Id	String	 
+hImage	横海报	String	 
+ crytokey	 加密字段	 String	 
+ csContentIDs	 所属节目集ID	 String	 节目所属节目集contentID   |  分隔   
+categoryIDs	所属栏目ID	String	多个id之间用 | 分割
+cgContentIDs	所属节目合集ID	String	多个id之间用 | 分割
+tvContentIDs	所属电视栏目ID	String	多个id之间用 | 分割
+CDNURL	分发任务返回的CDN播放地址	String	见下表的CDNURL说明
+ new_realExclusive	 内容标识	 String	 
+ is4k	 是否4k	 int	 
+ contentSource	 内容来源	 String	 
+CDNURL  JSON格式说明：
+参数名	参数含义	类型	备注
+CDNId	CDN平台ID	int	 
+mediaType	渠道定义的清晰度	String	 
+playURL	视频播放地址	String	公网为完整CDN的视频播放地址，
+渠道业务按各分省的实际规则兑换播放地址。
+3：contentType = FG
+参数名	参数含义	类型	备注
+errorCode	状态码	String	0：成功
+errorMessage	状态说明	String	 
+data	数据	Object	 
+contentId	内容ID	String	
+ title	 标题	 String	 
+ contentUUID	 UUID	 String	 
+ contentType	 内容类型	 String	 
+ country	 国家	 String	 
+ description	 描述	 String	 
+ vImage	 竖海报	 String	 
+ district	 市	 String	 
+  new_realExclusive	 内容标识	 String	 
+	背景图	String	
+ contentSource	 内容来源	 String	 
+4：contentType = LV（直播）
+
+参数名	参数含义	类型	备注
+contentId	id	int	
+title	标题	String	
+ playUrl	 播放地址	 String	 
+  new_realExclusive	 内容标识	 String	 
+ categoryIds	 栏目id	 String	 
+ alternateNumber	 台号	 String	 
+ hImage	 横海报	String 	 
+ vImage	 竖海报	 String	 
+ audioUrl	 音频地址	 String	 
+ channelId	 频道	 String	 
+ contentSource	 内容来源	 String	 
+5：contentType = TV
+参数名	参数含义	类型	备注
+errorCode	状态码	String	0：成功
+errorMessage	状态说明	String	 
+data	节目	Object	 
+liveLoopType	直播循环类型	String	
+ description	 描述	 String	 
+ liveParam	 直播循环参数	 String	 [
+{
+"liveParam":"1|2|3",
+"playStartTime":"2018-09-10 20:00:00",
+"playEndTime":"2018-09-10 21:00:00"
+},
+{
+"liveParam":"5|6",
+"playStartTime":"2018-09-10 20:00:00",
+"playEndTime":"2018-09-10 22:00:00"
+}
+]
+liveParam：直播循环参数，配置星期几，中间用竖线分割
+playStartTime：直播开始时间
+playEndTime：直播结束时间
+1：当liveParam为空时，该直播为一次性直播，即从开始时间一直播放到结束时间
+2：当liveParam不为空时，按照循环的星期数和开始结束时间的时间进行循环
+ language	 语言	 String	 
+ title	 标题	 String	 
+ MAMID	 数据来源（表示数据来源于哪个系统：Newtv：自建媒资，tx：腾讯，wuxi：央视无锡	 String	 
+lvID	直播id	 String	 
+ playStartTime	 直播开始时间	 String	 
+ subTitle	 副标题	 String	 
+ vImage	 竖海报	 String	 
+ contentId	内容ID	 String	 
+ contentType	 内容类型	 String	 
+ area	 地区	 String	 
+ presenter	 主持人	 String	 
+ videoType	 一级分类	 String	 
+ director	 导演	 String	 
+ playEndTime	 直播结束时间	 String	 
+ tags	 标签	 String	 
+ actors	 主演	 String	 
+ grade	 评分	 String	 
+ premiereChannel	 首播频道	 String	 
+ contentUUID	 UUID	 String	 
+ premiereTime	 首播时间	 String	 
+ hImage	 横海报	 String	 
+  new_realExclusive	 内容标识	 String	 
+ seriesType	 电视栏目类型	 String	 
+ backgroundImg	 背景图片	 String	
+ contentSource	 内容来源	 String	 
+6：contenttype=LB
+参数名	参数含义	类型	备注
+contentId	id	String	
+title	标题	String	
+contentUUID	uuid	String	
+contentType	内容类型	String	
+vImage	海报	String	
+vipFlag	付费信息	String	
+vipProductId	付费信息	String	
+description	描述	String	
+alternateNumber	台号	String	
+  new_realExclusive	 内容标识	 String	 
+ categoryIDs	 所属栏目ids	 String	 |分隔
+ origin	 来源	 String	 
+ contentSource	 内容来源	String 	 
+
+
+
+

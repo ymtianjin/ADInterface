@@ -1,0 +1,15 @@
+3：获取栏目下内容列表
+请求方式	GET
+接口描述	获取栏目下的内容列表
+请求地址	http://host:port/api/v31/{appkey}/{channelCode}/categorycontents/{left(categoryID,2)}/{right(categoryID,2)}/{categoryID}.json
+测试地址	http://111.32.138.57:81/api/v31/8acb5c18e56c1988723297b1a8dc9260/600001/categorycontents/68/68/68.json
+cms查询逻辑	根据栏目id查询配置的指定内容类型，如果没有配置，则查询全部（子节目除外）
+请求参数说明：
+参数名称	参数含义	参数类型	是否必填	备注
+appkey	APP标识	String	是	AppKey定义
+channelCode	渠道标识	String	是	ChannelCode定义
+left(categoryID,2)	栏目ID前两位	String	是	
+right(categoryID,2)	栏目ID后两位	String	是	
+categoryID	栏目ID	String	是	
+返回参数参考：内容列表接口返回值说明
+

@@ -1,0 +1,368 @@
+2：获取栏目树（不带节目集和电视栏目）
+
+请求方式	GET
+接口描述	获取指定EPG下栏目树，包含一级栏目和二级栏目
+请求地址	http://host:port/api/v31/{appkey}/{channelCode}/categorytree/categorytree.json?searchFlag=1
+测试地址	http://111.32.138.57:81/api/v31/8acb5c18e56c1988723297b1a8dc9260/600001/categorytree/categorytree.json
+cms查询逻辑	查询栏目表中，已发布上线的栏目树
+请求参数说明：
+参数名称	参数含义	参数类型	是否必填	备注
+appkey	APP标识	String	是	AppKey定义
+channelCode	渠道标识	String	是	ChannelId定义
+ searchFlag	 栏目筛选项参数	 String	 否	 值为1时是栏目筛选项用，每一层级加入“全部”节点
+返回结果举例：
+
+  "data": [
+    {
+      "addrCode": null,
+      "cateType": "0",
+      "searchCondition": "1",
+      "id": "78",
+      "title": "卫视",
+      "child": [
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "80",
+          "title": "安徽卫视",a
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "81",
+          "title": "天津卫视",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "82",
+          "title": "浙江卫视",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "83",
+          "title": "北京卫视",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "84",
+          "title": "广东卫视",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "85",
+          "title": "甘肃卫视",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "86",
+          "title": "广西卫视",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "87",
+          "title": "黑龙江",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "88",
+          "title": "旅游卫视",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "89",
+          "title": "湖南卫视",
+          "child": []
+        }
+      ]
+    },
+    {
+      "addrCode": null,
+      "cateType": "0",
+      "searchCondition": "1",
+      "id": "79",
+      "title": "影音",
+      "child": [
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "90",
+          "title": "精选",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "91",
+          "title": "小央视频",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "92",
+          "title": "电影网",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "93",
+          "title": "佳韵社",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "94",
+          "title": "中录文化",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "95",
+          "title": "奥飞娱乐",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "96",
+          "title": "搏击世界",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "97",
+          "title": "更多",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "98",
+          "title": "炫舞未来",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "99",
+          "title": "车家在线",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "100",
+          "title": "精品购物",
+          "child": []
+        }
+      ]
+    },
+    {
+      "categoryType": "LB",
+      "addrCode": null,
+      "cateType": "1",
+      "searchCondition": "1",
+      "id": "425",
+      "title": "电视+",
+      "child": [
+        {
+          "addrCode": null,
+          "cateType": "1",
+          "searchCondition": "1",
+          "id": "494",
+          "title": "我家电视",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "1",
+          "searchCondition": "1",
+          "id": "426",
+          "title": "电影",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "491",
+          "title": "电视剧",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "1",
+          "searchCondition": "1",
+          "id": "577",
+          "title": "传记",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "492",
+          "title": "综艺",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "493",
+          "title": "体育哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "495",
+          "title": "资讯",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "496",
+          "title": "财经大大",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "497",
+          "title": "少儿",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "499",
+          "title": "动漫",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "498",
+          "title": "教育",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "500",
+          "title": "纪录片",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "501",
+          "title": "生活",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "502",
+          "title": "曲艺",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "503",
+          "title": "音乐",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "504",
+          "title": "购物",
+          "child": []
+        },
+        {
+          "addrCode": null,
+          "cateType": "0",
+          "searchCondition": "1",
+          "id": "505",
+          "title": "汽车",
+          "child": []
+        }
+      ]
+    }
+  ],
+  "errorMessage": "成功",
+  "errorCode": "0",
+  "updateTime": 1570959937792
+}
+
+
+
+返回参数说明
+参数名	参数含义	类型	备注
+errorCode	错误码	String	0：成功
+errorMessage	错误信息	String	
+data	栏目数组	Array	
+id	栏目ID	String	
+title	栏目名称	String	
+ cateType	 栏目类型	 String	 0：普通，1：轮播(央视影音)，2：频道(资讯)，3：地区(资讯)，4：第三方栏目(新视听)，5：锁定(资讯)
+addrCode	地区码	String	资讯app使用
+ searchCondition	 筛选条件	 String	 CP栏目获取栏目数据附加条件(新视听) 格式：json串
+child	子栏目数组	Array	
+ categoryType	 当一级栏目名称是 电视+ 时才有此字段	 String	 值为LB
+
