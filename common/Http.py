@@ -275,6 +275,7 @@ class Http:
 	def get(self, url, params = None, checkResult = None, variable = None):
 		url = self.assignValue(url)
 		self.init(params)
+		res = None
 		try:
 			res = requests.get(url = url, params = params)
 			self.success = self.checkResponse(res, checkResult)
@@ -290,6 +291,7 @@ class Http:
 	def  post(self, url, data = None, checkResult = None, variable = None):
 		url = self.assignValue(url)
 		self.init(data)
+		res = None
 		try:
 			headers = {'Content-Type': 'application/json'}
 			res = requests.post(url = url, data = json.dumps(data), headers = headers)
