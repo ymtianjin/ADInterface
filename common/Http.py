@@ -40,10 +40,7 @@ class Http:
 			name = key[begin:end]
 			if self.variable.__contains__(name):
 				value = self.variable[name]
-				if isinstance(value, str):
-					name = "{$" + name + "}"
-					key = key.replace(name, value)
-				elif isinstance(value, list) and len(key) > (end + 3) and key[end + 1] == '[':
+				if isinstance(value, list) and len(key) > (end + 3) and key[end + 1] == '[':
 					begin = end + 2
 					end = key.find(']', begin)
 					if end > begin:
@@ -51,6 +48,9 @@ class Http:
 						if index.isdigit() and 0 <= int(index) < len(value):
 							name = "{$" + name + "}[" + index + "]"
 							key = key.replace(name, value[int(index)])
+                else:
+                    name = "{$" + name + "}"
+                    key = key.replace(name, str(value))
 
 			prev = end + 1
 
