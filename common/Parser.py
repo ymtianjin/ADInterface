@@ -174,7 +174,7 @@ class Parser:
             if self.FILTER and data["data"]["vipFlag"] != "0" and data["data"]["vipFlag"] is not None:
                 return False
 
-            if data["data"]["contentType"] == "CS" and data["data"]["seriesType"] == "1": #当contentType为CS的时候，seriesType为1表示剧集（需要获取subcontent），如果seriesType为0表示综艺
+            if data["data"]["contentType"] == "PS" and data["data"]["seriesType"] == "1": #当contentType为CS的时候，seriesType为1表示剧集（需要获取subcontent），如果seriesType为0表示综艺
                 url = self.subcontentUrl
                 url = url.replace("{app_key}", self.appKey)
                 url = url.replace("{channel_code}", self.channelCode)
@@ -278,9 +278,9 @@ class Parser:
         if len(self.program) == 0:
             return []
         ps = []
+        psSeries = []
         tv = []
         cs = []
-        csSeries = []
         for programData in self.program:
             if params.__contains__("duration") and isinstance(params["duration"], int) and params["duration"] > 0 and int(programData["data"]["duration"]) < params["duration"]: #过滤时长
                 continue
@@ -319,14 +319,14 @@ class Parser:
                 if not bFound:
                     continue
             if programData["data"]["contentType"] == "PS":
-                ps.append(programData["clickParam"])
+                if programData["data"]["seriesType"] == "1":
+                    psSeries.append(programData["clickParam"])
+                else:
+                    ps.append(programData["clickParam"])
             elif programData["data"]["contentType"] == "TV":
                 tv.append(programData["clickParam"])
             elif programData["data"]["contentType"] == "CS":
-                if programData["data"]["seriesType"] == "1":
-                    csSeries.append(programData["clickParam"])
-                else:
-                    cs.append(programData["clickParam"])
+                cs.append(programData["clickParam"])
 
         if isinstance(ps, list) and len(ps) > 0:
             psParam = random.choice(ps)
@@ -340,9 +340,9 @@ class Parser:
             csParam = random.choice(cs)
         else:
             csParam = []
-        if isinstance(csSeries, list) and len(csSeries) > 0:
-            csSeriesParam = random.choice(csSeries)
+        if isinstance(psSeries, list) and len(psSeries) > 0:
+            psSeriesParam = random.choice(psSeries)
         else:
-            csSeriesParam = []
+            psSeriesParam = []
 
-        return [psParam, tvParam, csParam, csSeriesParam]
+        return [psParam, tvParam, csParam, psSeriesParam]
