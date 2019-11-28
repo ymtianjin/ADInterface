@@ -25,6 +25,8 @@ class Naviage:
         self.navigation_count = 20
         # 一级导航焦点下移至二级导航时的等待时长
         self.navigation_wait_time = 5
+        # 暂无内容
+        self.empty_view_id = 'com.newtv.cboxtv:id/id_empty_view'
 
         self.driver = None
 
@@ -106,8 +108,18 @@ class Naviage:
             logging.info('testCase:' + '获取详情页页面属性' + detail_page_attr)
 
             if list_page_attr != detail_page_attr:
-                detail_title_name = self.driver.find_element_by_id(self.detail_title_id).text
-                logging.info('testCase:' + '获取详情页标题' + detail_title_name)
+                try:
+                    detail_title_name = self.__find_element_by_id(self.detail_title_id).text
+                    if detail_title_name:
+                        logging.info('testCase:' + '获取详情页标题' + detail_title_name)
+                    else:
+                        logging.info('页面无详情页标题，进入页面不合要求')
+                        Flag = False
+                        self.__interface_data_return(Flag)
+                        self.__move_direction(1, 4)  # 点击返回按钮，返回导航页
+                        quit()
+                except Exception as e:
+                    logging.info(e)
 
                 # # 推荐位内容写回-----
                 # fileProcess.interface_data_return(detail_title_name)
@@ -203,6 +215,20 @@ class Naviage:
                 print(e)
                 continue
         return err_name
+
+    def __element_id(self, id, n):
+        '''
+        判断是否存在“暂无数据”
+        '''
+        for i in range(n):
+            try:
+                ret = self.__find_element_by_id(id)
+                print(ret.text, '退出程序')
+                quit()
+            except Exception as e:
+                time.sleep(0.5)
+                print(e)
+                continue
 
     def __return_proper(self, element):
         """
@@ -359,13 +385,17 @@ class Naviage:
                                 self.__move_direction(1, 22)
                             n += 1
                         except Exception as e:
-                            logging.info('未定位到导航，右移焦点')
-                            self.__move_direction(1, 22)
-                            n += 1
-                            print(e)
+                            if n == 20:
+                                logging.info('未定位到导航，已到最大循环次数%s，退出' % n)
+                                quit()
+                            else:
+                                logging.info('未定位到导航，右移焦点')
+                                self.__move_direction(1, 22)
+                                n += 1
+                                print(e)
                     time.sleep(self.navigation_wait_time)
-                    # 找到要测试的导航时，下移一次焦点
-                    self.__move_direction(1, 20)
+                    # 判断导航页有无区块
+                    self.__element_id(self.empty_view_id, n)
         # 返回要测试的导航名称列表
         return navigation_name_list
 
@@ -434,12 +464,19 @@ class Naviage:
                         self.__move_direction(1, 4)
                 break
 
+    # encoding=utf-8
+    __author__ = 'lqq'
+    # 区块焦点移动
+    from util import focusMove
+    import logging
+
     def __block_001_play_focus_move(self, i):
         """
         处理区遍历块推荐位时焦点的移动，1号区块
         :param driver:
         :param i: 区块推荐位列表序列号，即区块的第几个推荐位
         :return:
+        lqq
         """
         if not isinstance(i, int):
             return None
@@ -452,6 +489,7 @@ class Naviage:
         :param driver:
         :param i: 区块推荐位列表序列号，即区块的第几个推荐位
         :return:
+        lqq
         """
         if i == 0:
             # 右移1次
@@ -466,6 +504,7 @@ class Naviage:
         :param driver:
         :param i: 区块推荐位列表序列号，即区块的第几个推荐位
         :return:
+        lqq
         """
         if i in [0, 1]:
             # 右移1次
@@ -480,6 +519,7 @@ class Naviage:
         :param driver:
         :param i: 区块推荐位列表序列号，即区块的第几个推荐位
         :return:
+        lqq
         """
         if i == 0:
             # 右移1次
@@ -600,36 +640,72 @@ class Naviage:
         :param i:区块推荐位列表序列号，即区块的第几个推荐位
         :return:
         """
+        # if i == 0:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        # elif i == 1:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 2:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        #     # 上移1次
+        #     self.__move_direction(1, 19)
+        #     logging.info('焦点上移1次')
+        # elif i == 3:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 4:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 5:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 6:
+        #     logging.info('区块最后一个推荐位')
         if i == 0:
             # 右移1次
             self.__move_direction(1, 22)
             logging.info('焦点右移1次')
+            # self.__move_direction(1, 19)
+            # logging.info('焦点上移1次')
         elif i == 1:
-            # 下移1次
-            self.__move_direction(1, 20)
-            logging.info('焦点下移1次')
+            # 右移1次
+            self.__move_direction(1, 22)
+            logging.info('焦点右移1次')
+
         elif i == 2:
             # 右移1次
             self.__move_direction(1, 22)
             logging.info('焦点右移1次')
-            # 上移1次
-            self.__move_direction(1, 19)
-            logging.info('焦点上移1次')
+
         elif i == 3:
+            # 左移2次
+            self.__move_direction(2, 21)
+            logging.info('左移2次')
             # 下移1次
             self.__move_direction(1, 20)
             logging.info('焦点下移1次')
+
         elif i == 4:
             # 右移1次
             self.__move_direction(1, 22)
             logging.info('焦点右移1次')
-            # 下移1次
-            self.__move_direction(1, 20)
-            logging.info('焦点下移1次')
+
         elif i == 5:
-            # 下移1次
-            self.__move_direction(1, 20)
-            logging.info('焦点下移1次')
+            # 右移1次
+            self.__move_direction(1, 22)
+            logging.info('焦点右移1次')
+
         elif i == 6:
             logging.info('区块最后一个推荐位')
 
@@ -640,22 +716,43 @@ class Naviage:
         :param i: 区块推荐位列表序列号，即区块的第几个推荐位
         :return:
         """
+        # if i == 0:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 1:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        # elif i == 2:
+        #     # 上移1次
+        #     self.__move_direction(1, 19)
+        #     logging.info('焦点上移1次')
+        # elif i == 3:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 4:
+        #     logging.info('区块最后一个推荐位')
         if i == 0:
-            # 下移1次
-            self.__move_direction(1, 20)
-            logging.info('焦点下移1次')
-        elif i == 1:
             # 右移1次
             self.__move_direction(1, 22)
             logging.info('焦点右移1次')
-        elif i == 2:
-            # 上移1次
-            self.__move_direction(1, 19)
-            logging.info('焦点上移1次')
-        elif i == 3:
+        elif i == 1:
             # 下移1次
             self.__move_direction(1, 20)
             logging.info('焦点下移1次')
+            # 右移1次
+            self.__move_direction(2, 21)
+            logging.info('焦点左移2次')
+        elif i == 2:
+            # 右移1次
+            self.__move_direction(1, 22)
+            logging.info('焦点右移1次')
+        elif i == 3:
+            # 右移1次
+            self.__move_direction(1, 22)
+            logging.info('焦点右移1次')
         elif i == 4:
             logging.info('区块最后一个推荐位')
 
@@ -666,25 +763,51 @@ class Naviage:
         :param i: 区块推荐位列表序列号，即区块的第几个推荐位
         :return:
         """
+        # if i == 0:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 1:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        # elif i == 2:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        #     # 上移1次
+        #     self.__move_direction(1, 19)
+        #     logging.info('焦点上移1次')
+        # elif i == 3:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 4:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        # elif i == 5:
+        #     logging.info('区块最后一个推荐位')
+
         if i == 0:
-            # 下移1次
-            self.__move_direction(1, 20)
-            logging.info('焦点下移1次')
-        elif i == 1:
             # 右移1次
             self.__move_direction(1, 22)
             logging.info('焦点右移1次')
+        elif i == 1:
+            # 下移1次
+            self.__move_direction(1, 20)
+            logging.info('焦点下移1次')
+            # 右移1次
+            self.__move_direction(4, 21)
+            logging.info('焦点左移4次')
         elif i == 2:
             # 右移1次
             self.__move_direction(1, 22)
             logging.info('焦点右移1次')
-            # 上移1次
-            self.__move_direction(1, 19)
-            logging.info('焦点上移1次')
         elif i == 3:
-            # 下移1次
-            self.__move_direction(1, 20)
-            logging.info('焦点下移1次')
+            # 右移1次
+            self.__move_direction(1, 22)
+            logging.info('焦点右移1次')
         elif i == 4:
             # 右移1次
             self.__move_direction(1, 22)
@@ -700,14 +823,37 @@ class Naviage:
         ***恢复焦点时多下移一次***
         :return:
         """
+        # if i == 0:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 1:
+        #     # 上移1次
+        #     self.__move_direction(1, 19)
+        #     logging.info('焦点上移1次')
+        # elif i == 2:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        # elif i == 3:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 4:
+        #     # 上移1次
+        #     self.__move_direction(1, 19)
+        #     logging.info('焦点上移1次')
+        # elif i == 5:
+        #     logging.info('区块最后一个推荐位')
+
         if i == 0:
-            # 下移1次
-            self.__move_direction(1, 20)
-            logging.info('焦点下移1次')
+            # 右移1次
+            self.__move_direction(1, 22)
+            logging.info('焦点右移1次')
         elif i == 1:
-            # 上移1次
-            self.__move_direction(1, 19)
-            logging.info('焦点上移1次')
+            # 右移1次
+            self.__move_direction(1, 22)
+            logging.info('焦点右移1次')
         elif i == 2:
             # 右移1次
             self.__move_direction(1, 22)
@@ -716,10 +862,14 @@ class Naviage:
             # 下移1次
             self.__move_direction(1, 20)
             logging.info('焦点下移1次')
+            # 右移1次
+            self.__move_direction(1, 21)
+            logging.info('焦点左移1次')
+
         elif i == 4:
-            # 上移1次
-            self.__move_direction(1, 19)
-            logging.info('焦点上移1次')
+            # 右移1次
+            self.__move_direction(1, 22)
+            logging.info('焦点右移1次')
         elif i == 5:
             logging.info('区块最后一个推荐位')
 
@@ -730,36 +880,68 @@ class Naviage:
         :param i: 区块推荐位列表序列号，即区块的第几个推荐位
         :return:
         """
+        # if i == 0:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 1:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        # elif i == 2:
+        #     # 上移1次
+        #     self.__move_direction(1, 19)
+        #     logging.info('焦点上移1次')
+        # elif i == 3:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        # elif i == 4:
+        #     # 上移1次
+        #     self.__move_direction(1, 19)
+        #     logging.info('焦点上移1次')
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        # elif i == 5:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 6:
+        #     logging.info('区块最后一个推荐位')
+
         if i == 0:
-            # 下移1次
-            self.__move_direction(1, 20)
-            logging.info('焦点下移1次')
+            # 右移1次
+            self.__move_direction(1, 22)
+            logging.info('焦点右移1次')
         elif i == 1:
             # 右移1次
             self.__move_direction(1, 22)
             logging.info('焦点右移1次')
         elif i == 2:
-            # 上移1次
-            self.__move_direction(1, 19)
-            logging.info('焦点上移1次')
-        elif i == 3:
             # 下移1次
             self.__move_direction(1, 20)
             logging.info('焦点下移1次')
+
+            # 左移4次
+            self.__move_direction(4, 21)
+            logging.info('焦点左移4次')
+        elif i == 3:
             # 右移1次
             self.__move_direction(1, 22)
             logging.info('焦点右移1次')
+
         elif i == 4:
-            # 上移1次
-            self.__move_direction(1, 19)
-            logging.info('焦点上移1次')
             # 右移1次
             self.__move_direction(1, 22)
             logging.info('焦点右移1次')
         elif i == 5:
-            # 下移1次
-            self.__move_direction(1, 20)
-            logging.info('焦点下移1次')
+            # 右移1次
+            self.__move_direction(1, 22)
+            logging.info('焦点右移1次')
         elif i == 6:
             logging.info('区块最后一个推荐位')
 
@@ -770,36 +952,68 @@ class Naviage:
         :param i: 区块推荐位列表序列号，即区块的第几个推荐位
         :return:
         """
+        # if i == 0:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 1:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        # elif i == 2:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        #     # 上移1次
+        #     self.__move_direction(1, 19)
+        #     logging.info('焦点上移1次')
+        # elif i == 3:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 4:
+        #     # 上移1次
+        #     self.__move_direction(1, 19)
+        #     logging.info('焦点上移1次')
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        # elif i == 5:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 6:
+        #     logging.info('区块最后一个推荐位')
+
         if i == 0:
-            # 下移1次
-            self.__move_direction(1, 20)
-            logging.info('焦点下移1次')
+            # 右移1次
+            self.__move_direction(1, 22)
+            logging.info('焦点右移1次')
         elif i == 1:
             # 右移1次
             self.__move_direction(1, 22)
             logging.info('焦点右移1次')
         elif i == 2:
-            # 右移1次
-            self.__move_direction(1, 22)
-            logging.info('焦点右移1次')
-            # 上移1次
-            self.__move_direction(1, 19)
-            logging.info('焦点上移1次')
-        elif i == 3:
             # 下移1次
             self.__move_direction(1, 20)
             logging.info('焦点下移1次')
+
+            # 左移4次
+            self.__move_direction(4, 21)
+            logging.info('焦点左移4次')
+        elif i == 3:
+            # 右移1次
+            self.__move_direction(1, 22)
+            logging.info('焦点右移1次')
+
         elif i == 4:
-            # 上移1次
-            self.__move_direction(1, 19)
-            logging.info('焦点上移1次')
             # 右移1次
             self.__move_direction(1, 22)
             logging.info('焦点右移1次')
         elif i == 5:
-            # 下移1次
-            self.__move_direction(1, 20)
-            logging.info('焦点下移1次')
+            # 右移1次
+            self.__move_direction(1, 22)
+            logging.info('焦点右移1次')
         elif i == 6:
             logging.info('区块最后一个推荐位')
 
@@ -858,14 +1072,36 @@ class Naviage:
         ***恢复焦点时多下移一次**
         :return:
         """
+        # if i == 0:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 1:
+        #     # 上移1次
+        #     self.__move_direction(1, 19)
+        #     logging.info('焦点上移1次')
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        # elif i == 2:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 3:
+        #     # 上移1次
+        #     self.__move_direction(1, 19)
+        #     logging.info('焦点上移1次')
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        # elif i == 4:
+        #     logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
+
         if i == 0:
-            # 下移1次
-            self.__move_direction(1, 20)
-            logging.info('焦点下移1次')
+            # 右移1次
+            self.__move_direction(1, 22)
+            logging.info('焦点右移1次')
         elif i == 1:
-            # 上移1次
-            self.__move_direction(1, 19)
-            logging.info('焦点上移1次')
             # 右移1次
             self.__move_direction(1, 22)
             logging.info('焦点右移1次')
@@ -873,15 +1109,17 @@ class Naviage:
             # 下移1次
             self.__move_direction(1, 20)
             logging.info('焦点下移1次')
+
+            # 左移4次
+            self.__move_direction(4, 21)
+            logging.info('焦点左移4次')
         elif i == 3:
-            # 上移1次
-            self.__move_direction(1, 19)
-            logging.info('焦点上移1次')
             # 右移1次
             self.__move_direction(1, 22)
             logging.info('焦点右移1次')
+
         elif i == 4:
-            logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
+            logging.info('区块最后一个推荐位')
 
     def __block_019_play_focus_move(self, i):
         """
@@ -890,34 +1128,64 @@ class Naviage:
         :param i: 区块推荐位列表序列号，即区块的第几个推荐位
         :return:
         """
+        # if i == 0:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 1:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        # elif i == 2:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        #     # 上移1次
+        #     self.__move_direction(1, 19)
+        #     logging.info('焦点上移1次')
+        # elif i == 3:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        #     # 左移1次
+        #     self.__move_direction(1, 21)
+        #     logging.info('焦点左移1次')
+        # elif i == 4:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        # elif i == 5:
+        #     logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
+
         if i == 0:
-            # 下移1次
-            self.__move_direction(1, 20)
-            logging.info('焦点下移1次')
+            # 右移1次
+            self.__move_direction(1, 22)
+            logging.info('焦点右移1次')
         elif i == 1:
-            # 右移1次
-            self.__move_direction(1, 22)
-            logging.info('焦点右移1次')
-        elif i == 2:
-            # 右移1次
-            self.__move_direction(1, 22)
-            logging.info('焦点右移1次')
-            # 上移1次
-            self.__move_direction(1, 19)
-            logging.info('焦点上移1次')
-        elif i == 3:
             # 下移1次
             self.__move_direction(1, 20)
             logging.info('焦点下移1次')
-            # 左移1次
-            self.__move_direction(1, 21)
-            logging.info('焦点左移1次')
+
+            # 左移4次
+            self.__move_direction(4, 21)
+            logging.info('焦点左移4次')
+        elif i == 3:
+            # 右移1次
+            self.__move_direction(1, 22)
+            logging.info('焦点右移1次')
+
         elif i == 4:
             # 右移1次
             self.__move_direction(1, 22)
             logging.info('焦点右移1次')
+
         elif i == 5:
-            logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
+            # 右移1次
+            self.__move_direction(1, 22)
+            logging.info('焦点右移1次')
+
+        elif i == 6:
+            logging.info('区块最后一个推荐位')
 
     def __block_021_play_focus_move(self, i):
         """
@@ -971,50 +1239,99 @@ class Naviage:
         :param i: 区块推荐位列表序列号，即区块的第几个推荐位
         :return:
         """
+        # if i == 0:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 1:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        # elif i == 2:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        # elif i == 3:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        #     # 上移2次
+        #     self.__move_direction(2, 19)
+        #     logging.info('焦点上移2次')
+        # elif i == 4:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 5:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 6:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        #     # 上移2次
+        #     self.__move_direction(2, 19)
+        #     logging.info('焦点上移2次')
+        # elif i == 7:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 8:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 9:
+        #     logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
+
         if i == 0:
-            # 下移1次
-            self.__move_direction(1, 20)
-            logging.info('焦点下移1次')
+            # 右移1次
+            self.__move_direction(1, 22)
+            logging.info('焦点右移1次')
         elif i == 1:
             # 右移1次
             self.__move_direction(1, 22)
             logging.info('焦点右移1次')
         elif i == 2:
-            # 右移1次
-            self.__move_direction(1, 22)
-            logging.info('焦点右移1次')
+            # 下移1次
+            self.__move_direction(1, 20)
+            logging.info('焦点下移1次')
+            # 左移一次
+            self.__move_direction(1, 21)
+            logging.info('焦点左移1次')
+
         elif i == 3:
             # 右移1次
             self.__move_direction(1, 22)
             logging.info('焦点右移1次')
-            # 上移2次
-            self.__move_direction(2, 19)
-            logging.info('焦点上移2次')
+
         elif i == 4:
             # 下移1次
             self.__move_direction(1, 20)
             logging.info('焦点下移1次')
+
+            # 左移一次
+            self.__move_direction(4, 21)
+            logging.info('焦点左移4次')
+
         elif i == 5:
-            # 下移1次
-            self.__move_direction(1, 20)
-            logging.info('焦点下移1次')
+            # 右移1次
+            self.__move_direction(1, 22)
+            logging.info('焦点右移1次')
         elif i == 6:
             # 右移1次
             self.__move_direction(1, 22)
             logging.info('焦点右移1次')
-            # 上移2次
-            self.__move_direction(2, 19)
-            logging.info('焦点上移2次')
         elif i == 7:
-            # 下移1次
-            self.__move_direction(1, 20)
-            logging.info('焦点下移1次')
+            # 右移1次
+            self.__move_direction(1, 22)
+            logging.info('焦点右移1次')
         elif i == 8:
-            # 下移1次
-            self.__move_direction(1, 20)
-            logging.info('焦点下移1次')
+            # 右移1次
+            self.__move_direction(1, 22)
+            logging.info('焦点右移1次')
         elif i == 9:
-            logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
+            logging.info('最后一个推荐位')
 
     def __block_027_play_focus_move(self, i):
         """
@@ -1060,35 +1377,90 @@ class Naviage:
         :param i: 区块推荐位列表序列号，即区块的第几个推荐位
         :return:
         """
+        # if i == 0:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        #     # 左移1次
+        #     self.__move_direction(1, 21)
+        #     logging.info('焦点左移1次')
+        # elif i == 1:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        # elif i == 2:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        #     # 上移2次
+        #     self.__move_direction(2, 19)
+        #     logging.info('焦点上移2次')
+        # elif i == 3:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 4:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        #     # 左移1次
+        #     self.__move_direction(1, 21)
+        #     logging.info('焦点左移1次')
+        # elif i == 5:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        # elif i == 6:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        #     # 上移2次
+        #     self.__move_direction(2, 19)
+        #     logging.info('焦点上移2次')
+        # elif i == 7:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 8:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        #     # 左移1次
+        #     self.__move_direction(1, 21)
+        #     logging.info('焦点左移1次')
+        # elif i == 9:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        # elif i == 10:
+        #     logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
+
         if i == 0:
-            # 下移1次
-            self.__move_direction(1, 20)
-            logging.info('焦点下移1次')
-            # 左移1次
-            self.__move_direction(1, 21)
-            logging.info('焦点左移1次')
+            # 右移1次
+            self.__move_direction(1, 22)
+            logging.info('焦点右移1次')
         elif i == 1:
             # 右移1次
             self.__move_direction(1, 22)
             logging.info('焦点右移1次')
         elif i == 2:
-            # 右移1次
-            self.__move_direction(1, 22)
-            logging.info('焦点右移1次')
-            # 上移2次
-            self.__move_direction(2, 19)
-            logging.info('焦点上移2次')
-        elif i == 3:
-            # 下移1次
-            self.__move_direction(1, 20)
-            logging.info('焦点下移1次')
-        elif i == 4:
             # 下移1次
             self.__move_direction(1, 20)
             logging.info('焦点下移1次')
             # 左移1次
             self.__move_direction(1, 21)
             logging.info('焦点左移1次')
+        elif i == 3:
+            # 右移1次
+            self.__move_direction(1, 22)
+            logging.info('焦点右移1次')
+        elif i == 4:
+            # 下移1次
+            self.__move_direction(1, 20)
+            logging.info('焦点下移1次')
+            # 左移1次
+            self.__move_direction(6, 21)
+            logging.info('焦点左移6次')
         elif i == 5:
             # 右移1次
             self.__move_direction(1, 22)
@@ -1097,26 +1469,21 @@ class Naviage:
             # 右移1次
             self.__move_direction(1, 22)
             logging.info('焦点右移1次')
-            # 上移2次
-            self.__move_direction(2, 19)
-            logging.info('焦点上移2次')
+
         elif i == 7:
-            # 下移1次
-            self.__move_direction(1, 20)
-            logging.info('焦点下移1次')
+            # 右移1次
+            self.__move_direction(1, 22)
+            logging.info('焦点右移1次')
         elif i == 8:
-            # 下移1次
-            self.__move_direction(1, 20)
-            logging.info('焦点下移1次')
-            # 左移1次
-            self.__move_direction(1, 21)
-            logging.info('焦点左移1次')
+            # 右移1次
+            self.__move_direction(1, 22)
+            logging.info('焦点右移1次')
         elif i == 9:
             # 右移1次
             self.__move_direction(1, 22)
             logging.info('焦点右移1次')
         elif i == 10:
-            logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
+            logging.info('最后一个推荐位，焦点需要移动到当前行的第一个位置')
 
     def __block_030_play_focus_move(self, i):
         """
@@ -1125,6 +1492,69 @@ class Naviage:
         :param i: 区块推荐位列表序列号，即区块的第几个推荐位
         :return:
         """
+        # if i == 0:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 1:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        #     # 上移1次
+        #     self.__move_direction(1, 19)
+        #     logging.info('焦点上移1次')
+        # elif i == 2:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 3:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        #     # 上移1次
+        #     self.__move_direction(1, 19)
+        #     logging.info('焦点上移1次')
+        # elif i == 4:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 5:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        #     # 上移1次
+        #     self.__move_direction(1, 19)
+        #     logging.info('焦点上移1次')
+        # elif i == 6:
+        #
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 7:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        #     # 上移1次
+        #     self.__move_direction(1, 19)
+        #     logging.info('焦点上移1次')
+        # elif i == 8:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 9:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        #     # 上移1次
+        #     self.__move_direction(1, 19)
+        #     logging.info('焦点上移1次')
+        # elif i == 10:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 11:
+        #     logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
+
         if i == 0:
             # 下移1次
             self.__move_direction(1, 20)
@@ -1186,7 +1616,7 @@ class Naviage:
             self.__move_direction(1, 20)
             logging.info('焦点下移1次')
         elif i == 11:
-            logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
+            logging.info('最后一个推荐位，焦点需要移动到当前行的第一个位置')
 
     def __block_031_play_focus_move(self, i):
         """
@@ -1195,10 +1625,67 @@ class Naviage:
         :param i: 区块推荐位列表序列号，即区块的第几个推荐位
         :return:
         """
+        # if i == 0:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        # elif i == 1:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 2:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 3:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 4:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        #     # 上移1次
+        #     self.__move_direction(1, 19)
+        #     logging.info('焦点上移1次')
+        # elif i == 5:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        # elif i == 6:
+        #     # 下移1次
+        #     self.__move_direction(1, 20)
+        #     logging.info('焦点下移1次')
+        #     # 左移1次
+        #     self.__move_direction(3, 21)
+        #     logging.info('焦点左移3次')
+        # elif i == 7:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        # elif i == 8:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        # elif i == 9:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        # elif i == 10:
+        #     # 右移1次
+        #     self.__move_direction(1, 22)
+        #     logging.info('焦点右移1次')
+        # elif i == 11:
+        #     logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
+
         if i == 0:
             # 右移1次
             self.__move_direction(1, 22)
             logging.info('焦点右移1次')
+
+            # 上移1次
+            self.__move_direction(1, 19)
+            logging.info('焦点上移1次')
         elif i == 1:
             # 下移1次
             self.__move_direction(1, 20)
@@ -1242,11 +1729,38 @@ class Naviage:
             self.__move_direction(1, 22)
             logging.info('焦点右移1次')
         elif i == 10:
+
+            logging.info('最后一个推荐位，焦点需要移动到当前行的第一个位置')
+
+    def __block_032_play_focus_move(self, i):
+        '''
+        32号区块为轮播区块无详情页
+        焦点从上边的区块下移时，有需要2次下移，有时需要1次下移，该区块不稳定也不符合进入详情页的需求
+        该区块需要在接口中过滤掉
+        '''
+
+        if i == 0:
             # 右移1次
             self.__move_direction(1, 22)
             logging.info('焦点右移1次')
-        elif i == 11:
-            logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
+        elif i == 1:
+            # 下移1次
+            self.__move_direction(1, 20)
+            logging.info('焦点下移1次')
+        elif i == 2:
+            # 下移1次
+            self.__move_direction(1, 20)
+            logging.info('焦点下移1次')
+        elif i == 3:
+            # 下移1次
+            self.__move_direction(1, 20)
+            logging.info('焦点下移1次')
+        elif i == 4:
+            # 下移1次
+            self.__move_direction(1, 20)
+            logging.info('焦点下移1次')
+        elif i == 5:
+            logging.info('最后一个推荐位，焦点需要移动到当前行的第一个位置')
 
     def __page_block_focus_move(self, block_no_name, block_recommend_no):
         """
@@ -1342,18 +1856,13 @@ class Naviage:
             self.__move_direction(7, 21)
             logging.info('左移7次')
 
+
         elif block_name == '014':
-            # 下移1次
-            self.__move_direction(1, 20)
-            logging.info('下移1次')
             # 左移2次
-            self.__move_direction(2, 21)
-            logging.info('左移2次')
+            self.__move_direction(1, 21)
+            logging.info('左移1次')
 
         elif block_name == '018':
-            # 下移1次
-            self.__move_direction(1, 20)
-            logging.info('下移1次')
             # 左移1次
             self.__move_direction(1, 21)
             logging.info('左移1次')
@@ -1367,7 +1876,20 @@ class Naviage:
             logging.info('左移4次')
 
         elif block_name == '032':
-            logging.info('not found num 32')
+            # 左移1次
+            self.__move_direction(1, 21)
+            logging.info('左移1次')
+
+    def __page_block_focus_move_init(self, block_no_name):
+        '''
+        :param driver ---驱动
+        :param  block_no_name  区块名称--编号
+        初始化区块焦点
+        '''
+        if block_no_name == '011':
+            pass
+        else:
+            self.__move_direction(4, 21)
 
     def __block_recommend_travel_have_target(self, list_block_number, block_no_name, block_no_content_list):
         """
@@ -1378,6 +1900,10 @@ class Naviage:
         :param block_no_content_list    推荐位信息列表
         :return:
         """
+
+        # 初始化区块焦点
+        self.__page_block_focus_move_init(block_no_name)
+
         # 遍历当前区块推荐位
         for block_recommend_no in range(list_block_number):
             block_recommend_num = block_recommend_no + 1  # 遍历数从0开始，为了显示数量从1开始计数
