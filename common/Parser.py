@@ -268,6 +268,9 @@ class Parser:
         self.channelCode = channelCode
 
     def filter(self, params):
+        if params.__contains__("position") and isinstance(params["position"], list) and len(params["position"]) > 0:
+            return [params["position"]]
+
         self.channel = {}
         self.program = []
         self.menu = {}
