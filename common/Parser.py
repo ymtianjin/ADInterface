@@ -360,4 +360,4 @@ class Parser:
         else:
             cgParam = []
 
-        return [psParam, tvParam, csParam, psSeriesParam, cgParam]
+        return [psParam, tvParam, psSeriesParam, cgParam]
