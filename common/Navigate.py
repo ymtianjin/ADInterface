@@ -114,7 +114,7 @@ class Naviage:
 
                 # 进入详情页成功，判断视频是否正常播放(是否存在错误码和播放鉴权失败提示)
                 elements = [self.err_code_xpath, self.err_auth_xpath]
-                err_name_text = self.__elements_exist(self.driver, elements)
+                err_name_text = self.__elements_exist(elements)
                 print(err_name_text)
                 logging.info('testCase:' + '错误码' + err_name_text)
                 if err_name_text != '' and (u'失败' or u'错误' in err_name_text):
