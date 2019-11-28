@@ -464,12 +464,6 @@ class Naviage:
                         self.__move_direction(1, 4)
                 break
 
-    # encoding=utf-8
-    __author__ = 'lqq'
-    # 区块焦点移动
-    from util import focusMove
-    import logging
-
     def __block_001_play_focus_move(self, i):
         """
         处理区遍历块推荐位时焦点的移动，1号区块
