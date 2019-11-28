@@ -7,12 +7,12 @@ class Param:
 	def __init__(self, testCase, path = None, sheet = None):
 		self.testCase = testCase
 
-		if not path is None:
+		if path is not None:
 			self.excel = xlrd.open_workbook(path)
 		else:
 			self.excel = None
 
-		if not path is None and not sheet is None:
+		if path is not None and sheet is not None:
 			self.sheet = self.excel.sheet_by_name(sheet)
 		else:
 			self.sheet = None

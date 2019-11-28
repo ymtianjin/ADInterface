@@ -1,7 +1,7 @@
 # encoding=utf-8
 __author__ = 'limeng'
 
-import os, json
+import os, json, time
 from selenium.webdriver.common.keys import Keys
 
 class DeviceLog:
@@ -46,16 +46,17 @@ class DeviceLog:
         清除应用缓存
          :param    app_package   apk包名
         """
-
-        try:
-            while True:
+        for i in range(10):
+            try:
                 clear_cache_cmd = os.popen('adb shell pm clear ' + app_package)
                 clear_cache_result = clear_cache_cmd.readline().strip()
                 if clear_cache_result == 'Success':
                     print("清理缓存成功")
                     break
-        except Exception as e:
-            print(e)
+                time.sleep(2)
+            except Exception as e:
+                print(e)
+                break
 
     def log_start(self, log_file_path):
         """

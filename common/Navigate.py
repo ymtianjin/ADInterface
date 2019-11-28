@@ -2012,7 +2012,8 @@ class Naviage:
             return False
 
     def disconnect(self):
-        self.driver.quit()
+        if self.driver is not None:
+            self.driver.quit()
 
     def channel(self, channelId):
         pass
