@@ -140,7 +140,7 @@ class Parser:
                     for programIndex, programData in enumerate(blockData["programs"]):  #遍历programs下的data，加索引
                         if self.FILTER and programData["l_actionType"] != "OPEN_DETAILS":
                             continue
-                        if self.FILTER and programData["contentType"] != "PS" and programData["contentType"] != "CS" and programData["contentType"] != "TV": #节目集类型：CS=合集、TV=电视、PS=剧集
+                        if self.FILTER and programData["contentType"] not in ["PS", "CS", "TV", "CG"]: #节目集类型：CS=合集、TV=电视、PS=剧集、CG=节目合集
                             continue
                         contentId = programData["contentId"]  #取出contentId
                         content = self.content(contentId, clickParam, programIndex)   #contet由contentId，
@@ -289,6 +289,7 @@ class Parser:
         psSeries = []
         tv = []
         cs = []
+        cg = []
         for programData in self.program:
             if params.__contains__("duration") and isinstance(params["duration"], int) and params["duration"] > 0 and int(programData["data"]["duration"]) < params["duration"]: #过滤时长
                 continue
@@ -335,6 +336,8 @@ class Parser:
                 tv.append(programData["clickParam"])
             elif programData["data"]["contentType"] == "CS":
                 cs.append(programData["clickParam"])
+            elif programData["data"]["contentType"] == "CG":
+                cg.append(programData["clickParam"])
 
         if isinstance(ps, list) and len(ps) > 0:
             psParam = random.choice(ps)
@@ -352,5 +355,9 @@ class Parser:
             psSeriesParam = random.choice(psSeries)
         else:
             psSeriesParam = []
+        if isinstance(cg, list) and len(cg) > 0:
+            cgParam = random.choice(cg)
+        else:
+            cgParam = []
 
-        return [psParam, tvParam, csParam, psSeriesParam]
+        return [psParam, tvParam, csParam, psSeriesParam, cgParam]
