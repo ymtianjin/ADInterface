@@ -8,9 +8,9 @@ import logging
 def find_element(driver, id_or_xpath, n=20):
     """
     通过id或者xpath定位单个元素
-    返回类型单个元素对象
+    返回类型单个元素对象Design by lqq
     :param driver: 
-    :param id_or_xpath: 
+    :param id_or_xpath: Design by lqq
     :param n: 
     :return: 
     """
@@ -67,6 +67,22 @@ def elements_exist(driver, elements):
             print(e)
             continue
     return err_name
+
+
+
+def element_id(driver,id,n):
+    '''
+    判断是否存在“暂无数据”
+    '''
+    for i in range(n):
+        try:
+            ret = driver.find_element_by_id(id)
+            print(ret.text,'退出程序')
+            quit()
+        except Exception as e:
+            time.sleep(0.5)
+            print(e)
+            continue
 
 
 def return_proper(driver, element):

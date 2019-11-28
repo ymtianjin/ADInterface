@@ -84,7 +84,7 @@ def interface_data_return(*args,file_path0 = 'interfaceData',file_path1 = 'inter
     #     content = fp.read()
     # # 文件内容字符串转化为list
     # interface_data = eval(content)
-    # # 处理读取后的文件数据
+    # # 处理读取后的文件数据  Design by lqq
     # for block in interface_data[-1]:
     #     if len(block)>1:
     #         # print(block[-1])
@@ -92,7 +92,7 @@ def interface_data_return(*args,file_path0 = 'interfaceData',file_path1 = 'inter
     #             block[-1][key][-1]=detail_title_name
     # print(interface_data)
 
-    # 写回的文件路径
+    # 写回的文件路径Design by lqq
     # date = datetime.datetime.now().strftime('%Y%m%d%H%M')
     # interface_data_file_path1 = os.getcwd()[:-4]+'config\\'+file_path1+date
     interface_data_file_path1 = os.getcwd()[:-4]+'config\\'+file_path1
@@ -100,7 +100,7 @@ def interface_data_return(*args,file_path0 = 'interfaceData',file_path1 = 'inter
 
 
     # 文件内容写回去
-    with open(interface_data_file_path1,'a+',encoding='UTF-8') as fp:
+    with open(interface_data_file_path1,'w+',encoding='UTF-8') as fp:
         # content = fp.write(str(interface_data)+':'+str(Flag)+'\n')
         # fp.write(str(interface_data)+':'+str(Flag)+'\n')
         cons = ''

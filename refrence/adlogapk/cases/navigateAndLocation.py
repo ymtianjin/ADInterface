@@ -29,6 +29,7 @@ class Navigation(object):
         不存在二级导航：[{'ZWYTEST': '//android.support.v7.widget.RecyclerView[@index=2]/android.widget.FrameLayout[@index=2]/android.widget.TextView'}]
         无导航数据：[]
         :return: NavigationName_xpath_List  导航列表
+        lqq
         """
         navigation_name_xpath_list = []
         for key, value in self.navigation_info_dict.items():
@@ -68,6 +69,7 @@ class Navigation(object):
         验证导航对应xpath的列表是否为空，如果为空直接退出程序
         不为空，返回导航对应的xpath列表及列表长度
         :return: (NavigationName_xpath_List,LenNavigationName_xpath_List)元组
+        lqq
         """
         navigation_name_xpath_list = self.__get_navigation_class_xpath()
         len_navigation_name_xpath_list = len(navigation_name_xpath_list)
@@ -118,11 +120,19 @@ class Navigation(object):
                                 focusMove.move_direction(driver, 1, 22)
                             n += 1
                         except Exception as e:
-                            logging.info('未定位到导航，右移焦点')
-                            focusMove.move_direction(driver, 1, 22)
-                            n += 1
-                            print(e)
+                            if n == 20:
+                                logging.info('未定位到导航，已到最大循环次数%s，退出'%n)
+                                quit()
+                            else:
+                                logging.info('未定位到导航，右移焦点')
+                                focusMove.move_direction(driver, 1, 22)
+                                n += 1
+                                print(e)
+                    # 需要增加循环等待，页面有内容时下移焦点
                     time.sleep(Const.navigation_wait_time)
+                    #判断导航页有无区块
+                    locateElement.element_id(driver,Const.id,n)
+
                     # 找到要测试的导航时，下移一次焦点
                     focusMove.move_direction(driver, 1, 20)
         # 返回要测试的导航名称列表

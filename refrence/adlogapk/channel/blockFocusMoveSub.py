@@ -11,6 +11,7 @@ def block_001_play_focus_move(driver, i):
     :param driver:
     :param i: 区块推荐位列表序列号，即区块的第几个推荐位
     :return:
+    lqq
     """
     if not isinstance(i, int):
         return None
@@ -24,6 +25,7 @@ def block_002_023_028_play_focus_move(driver, i):
     :param driver:
     :param i: 区块推荐位列表序列号，即区块的第几个推荐位
     :return:
+    lqq
     """
     if i == 0:
         # 右移1次
@@ -39,6 +41,7 @@ def block_003_026_play_focus_move(driver, i):
     :param driver:
     :param i: 区块推荐位列表序列号，即区块的第几个推荐位
     :return:
+    lqq
     """
     if i in [0,1]:
         # 右移1次
@@ -54,6 +57,7 @@ def block_004_011_play_focus_move(driver, i):
     :param driver:
     :param i: 区块推荐位列表序列号，即区块的第几个推荐位
     :return:
+    lqq
     """
     if i == 0:
         # 右移1次
@@ -178,38 +182,77 @@ def block_010_play_focus_move(driver, i):
     :param i:区块推荐位列表序列号，即区块的第几个推荐位
     :return:
     """
+    # if i == 0:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    # elif i == 1:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 2:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    #     # 上移1次
+    #     focusMove.move_direction(driver, 1, 19)
+    #     logging.info('焦点上移1次')
+    # elif i == 3:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 4:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 5:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 6:
+    #     logging.info('区块最后一个推荐位')
     if i == 0:
         # 右移1次
         focusMove.move_direction(driver, 1, 22)
         logging.info('焦点右移1次')
-    elif i == 1:
-        # 下移1次
-        focusMove.move_direction(driver, 1, 20)
-        logging.info('焦点下移1次')
-    elif i == 2:
+        # focusMove.move_direction(driver, 1, 19)
+        # logging.info('焦点上移1次')
+    elif i ==1:
         # 右移1次
         focusMove.move_direction(driver, 1, 22)
         logging.info('焦点右移1次')
-        # 上移1次
-        focusMove.move_direction(driver, 1, 19)
-        logging.info('焦点上移1次')
-    elif i == 3:
-        # 下移1次
-        focusMove.move_direction(driver, 1, 20)
-        logging.info('焦点下移1次')
-    elif i == 4:
+
+    elif i ==2:
         # 右移1次
         focusMove.move_direction(driver, 1, 22)
         logging.info('焦点右移1次')
+
+    elif i ==3:
+        # 左移2次
+        focusMove.move_direction(driver, 2, 21)
+        logging.info('左移2次')
         # 下移1次
         focusMove.move_direction(driver, 1, 20)
         logging.info('焦点下移1次')
-    elif i == 5:
-        # 下移1次
-        focusMove.move_direction(driver, 1, 20)
-        logging.info('焦点下移1次')
-    elif i == 6:
+
+    elif i ==4:
+        # 右移1次
+        focusMove.move_direction(driver, 1, 22)
+        logging.info('焦点右移1次')
+
+    elif i ==5:
+        # 右移1次
+        focusMove.move_direction(driver, 1, 22)
+        logging.info('焦点右移1次')
+
+    elif i ==6:
         logging.info('区块最后一个推荐位')
+
+
+
 
 
 def block_012_play_focus_move(driver, i):
@@ -219,22 +262,43 @@ def block_012_play_focus_move(driver, i):
     :param i: 区块推荐位列表序列号，即区块的第几个推荐位
     :return:
     """
+    # if i == 0:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 1:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    # elif i == 2:
+    #     # 上移1次
+    #     focusMove.move_direction(driver, 1, 19)
+    #     logging.info('焦点上移1次')
+    # elif i == 3:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 4:
+    #     logging.info('区块最后一个推荐位')
     if i == 0:
-        # 下移1次
-        focusMove.move_direction(driver, 1, 20)
-        logging.info('焦点下移1次')
-    elif i == 1:
         # 右移1次
         focusMove.move_direction(driver, 1, 22)
         logging.info('焦点右移1次')
-    elif i == 2:
-        # 上移1次
-        focusMove.move_direction(driver, 1, 19)
-        logging.info('焦点上移1次')
-    elif i == 3:
+    elif i == 1:
         # 下移1次
         focusMove.move_direction(driver, 1, 20)
         logging.info('焦点下移1次')
+        # 右移1次
+        focusMove.move_direction(driver, 2, 21)
+        logging.info('焦点左移2次')
+    elif i == 2:
+        # 右移1次
+        focusMove.move_direction(driver, 1, 22)
+        logging.info('焦点右移1次')
+    elif i == 3:
+        # 右移1次
+        focusMove.move_direction(driver, 1, 22)
+        logging.info('焦点右移1次')
     elif i == 4:
         logging.info('区块最后一个推荐位')
 
@@ -246,31 +310,58 @@ def block_013_play_focus_move(driver, i):
     :param i: 区块推荐位列表序列号，即区块的第几个推荐位
     :return:
     """
+    # if i == 0:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 1:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    # elif i == 2:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    #     # 上移1次
+    #     focusMove.move_direction(driver, 1, 19)
+    #     logging.info('焦点上移1次')
+    # elif i == 3:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 4:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    # elif i == 5:
+    #     logging.info('区块最后一个推荐位')
+
     if i == 0:
-        # 下移1次
-        focusMove.move_direction(driver, 1, 20)
-        logging.info('焦点下移1次')
-    elif i == 1:
         # 右移1次
         focusMove.move_direction(driver, 1, 22)
         logging.info('焦点右移1次')
+    elif i == 1:
+        # 下移1次
+        focusMove.move_direction(driver, 1, 20)
+        logging.info('焦点下移1次')
+        # 右移1次
+        focusMove.move_direction(driver, 4, 21)
+        logging.info('焦点左移4次')
     elif i == 2:
         # 右移1次
         focusMove.move_direction(driver, 1, 22)
         logging.info('焦点右移1次')
-        # 上移1次
-        focusMove.move_direction(driver, 1, 19)
-        logging.info('焦点上移1次')
     elif i == 3:
-        # 下移1次
-        focusMove.move_direction(driver, 1, 20)
-        logging.info('焦点下移1次')
+        # 右移1次
+        focusMove.move_direction(driver, 1, 22)
+        logging.info('焦点右移1次')
     elif i == 4:
         # 右移1次
         focusMove.move_direction(driver, 1, 22)
         logging.info('焦点右移1次')
     elif i == 5:
         logging.info('区块最后一个推荐位')
+
 
 
 def block_014_play_focus_move(driver, i):
@@ -281,14 +372,37 @@ def block_014_play_focus_move(driver, i):
     ***恢复焦点时多下移一次***
     :return:
     """
+    # if i == 0:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 1:
+    #     # 上移1次
+    #     focusMove.move_direction(driver, 1, 19)
+    #     logging.info('焦点上移1次')
+    # elif i == 2:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    # elif i == 3:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 4:
+    #     # 上移1次
+    #     focusMove.move_direction(driver, 1, 19)
+    #     logging.info('焦点上移1次')
+    # elif i == 5:
+    #     logging.info('区块最后一个推荐位')
+
     if i == 0:
-        # 下移1次
-        focusMove.move_direction(driver, 1, 20)
-        logging.info('焦点下移1次')
+        # 右移1次
+        focusMove.move_direction(driver, 1, 22)
+        logging.info('焦点右移1次')
     elif i == 1:
-        # 上移1次
-        focusMove.move_direction(driver, 1, 19)
-        logging.info('焦点上移1次')
+        # 右移1次
+        focusMove.move_direction(driver, 1, 22)
+        logging.info('焦点右移1次')
     elif i == 2:
         # 右移1次
         focusMove.move_direction(driver, 1, 22)
@@ -297,12 +411,19 @@ def block_014_play_focus_move(driver, i):
         # 下移1次
         focusMove.move_direction(driver, 1, 20)
         logging.info('焦点下移1次')
+        # 右移1次
+        focusMove.move_direction(driver, 1, 21)
+        logging.info('焦点左移1次')
+
     elif i == 4:
-        # 上移1次
-        focusMove.move_direction(driver, 1, 19)
-        logging.info('焦点上移1次')
+        # 右移1次
+        focusMove.move_direction(driver, 1, 22)
+        logging.info('焦点右移1次')
     elif i == 5:
         logging.info('区块最后一个推荐位')
+
+
+
 
 
 def block_015_play_focus_move(driver, i):
@@ -312,38 +433,73 @@ def block_015_play_focus_move(driver, i):
     :param i: 区块推荐位列表序列号，即区块的第几个推荐位
     :return:
     """
+    # if i == 0:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 1:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    # elif i == 2:
+    #     # 上移1次
+    #     focusMove.move_direction(driver, 1, 19)
+    #     logging.info('焦点上移1次')
+    # elif i == 3:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    # elif i == 4:
+    #     # 上移1次
+    #     focusMove.move_direction(driver, 1, 19)
+    #     logging.info('焦点上移1次')
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    # elif i == 5:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 6:
+    #     logging.info('区块最后一个推荐位')
+
+
     if i == 0:
-        # 下移1次
-        focusMove.move_direction(driver, 1, 20)
-        logging.info('焦点下移1次')
+        # 右移1次
+        focusMove.move_direction(driver, 1, 22)
+        logging.info('焦点右移1次')
     elif i == 1:
         # 右移1次
         focusMove.move_direction(driver, 1, 22)
         logging.info('焦点右移1次')
     elif i == 2:
-        # 上移1次
-        focusMove.move_direction(driver, 1, 19)
-        logging.info('焦点上移1次')
-    elif i == 3:
         # 下移1次
         focusMove.move_direction(driver, 1, 20)
         logging.info('焦点下移1次')
+
+        # 左移4次
+        focusMove.move_direction(driver, 4, 21)
+        logging.info('焦点左移4次')
+    elif i == 3:
         # 右移1次
         focusMove.move_direction(driver, 1, 22)
         logging.info('焦点右移1次')
+
     elif i == 4:
-        # 上移1次
-        focusMove.move_direction(driver, 1, 19)
-        logging.info('焦点上移1次')
         # 右移1次
         focusMove.move_direction(driver, 1, 22)
         logging.info('焦点右移1次')
     elif i == 5:
-        # 下移1次
-        focusMove.move_direction(driver, 1, 20)
-        logging.info('焦点下移1次')
+        # 右移1次
+        focusMove.move_direction(driver, 1, 22)
+        logging.info('焦点右移1次')
     elif i == 6:
         logging.info('区块最后一个推荐位')
+
+
 
 
 def block_016_play_focus_move(driver, i):
@@ -353,38 +509,72 @@ def block_016_play_focus_move(driver, i):
     :param i: 区块推荐位列表序列号，即区块的第几个推荐位
     :return:
     """
+    # if i == 0:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 1:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    # elif i == 2:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    #     # 上移1次
+    #     focusMove.move_direction(driver, 1, 19)
+    #     logging.info('焦点上移1次')
+    # elif i == 3:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 4:
+    #     # 上移1次
+    #     focusMove.move_direction(driver, 1, 19)
+    #     logging.info('焦点上移1次')
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    # elif i == 5:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 6:
+    #     logging.info('区块最后一个推荐位')
+
     if i == 0:
-        # 下移1次
-        focusMove.move_direction(driver, 1, 20)
-        logging.info('焦点下移1次')
+        # 右移1次
+        focusMove.move_direction(driver, 1, 22)
+        logging.info('焦点右移1次')
     elif i == 1:
         # 右移1次
         focusMove.move_direction(driver, 1, 22)
         logging.info('焦点右移1次')
     elif i == 2:
-        # 右移1次
-        focusMove.move_direction(driver, 1, 22)
-        logging.info('焦点右移1次')
-        # 上移1次
-        focusMove.move_direction(driver, 1, 19)
-        logging.info('焦点上移1次')
-    elif i == 3:
         # 下移1次
         focusMove.move_direction(driver, 1, 20)
         logging.info('焦点下移1次')
+
+        # 左移4次
+        focusMove.move_direction(driver, 4, 21)
+        logging.info('焦点左移4次')
+    elif i == 3:
+        # 右移1次
+        focusMove.move_direction(driver, 1, 22)
+        logging.info('焦点右移1次')
+
     elif i == 4:
-        # 上移1次
-        focusMove.move_direction(driver, 1, 19)
-        logging.info('焦点上移1次')
         # 右移1次
         focusMove.move_direction(driver, 1, 22)
         logging.info('焦点右移1次')
     elif i == 5:
-        # 下移1次
-        focusMove.move_direction(driver, 1, 20)
-        logging.info('焦点下移1次')
+        # 右移1次
+        focusMove.move_direction(driver, 1, 22)
+        logging.info('焦点右移1次')
     elif i == 6:
         logging.info('区块最后一个推荐位')
+
+
 
 
 def block_017_play_focus_move(driver, i):
@@ -443,14 +633,38 @@ def block_018_play_focus_move(driver, i):
     ***恢复焦点时多下移一次**
     :return:
     """
+    # if i == 0:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 1:
+    #     # 上移1次
+    #     focusMove.move_direction(driver, 1, 19)
+    #     logging.info('焦点上移1次')
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    # elif i == 2:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 3:
+    #     # 上移1次
+    #     focusMove.move_direction(driver, 1, 19)
+    #     logging.info('焦点上移1次')
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    # elif i == 4:
+    #     logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
+
+
+
     if i == 0:
-        # 下移1次
-        focusMove.move_direction(driver, 1, 20)
-        logging.info('焦点下移1次')
+        # 右移1次
+        focusMove.move_direction(driver, 1, 22)
+        logging.info('焦点右移1次')
     elif i == 1:
-        # 上移1次
-        focusMove.move_direction(driver, 1, 19)
-        logging.info('焦点上移1次')
         # 右移1次
         focusMove.move_direction(driver, 1, 22)
         logging.info('焦点右移1次')
@@ -458,15 +672,22 @@ def block_018_play_focus_move(driver, i):
         # 下移1次
         focusMove.move_direction(driver, 1, 20)
         logging.info('焦点下移1次')
+
+        # 左移4次
+        focusMove.move_direction(driver, 4, 21)
+        logging.info('焦点左移4次')
     elif i == 3:
-        # 上移1次
-        focusMove.move_direction(driver, 1, 19)
-        logging.info('焦点上移1次')
         # 右移1次
         focusMove.move_direction(driver, 1, 22)
         logging.info('焦点右移1次')
+
     elif i == 4:
-        logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
+        logging.info('区块最后一个推荐位')
+
+
+
+
+
 
 
 def block_019_play_focus_move(driver, i):
@@ -476,34 +697,66 @@ def block_019_play_focus_move(driver, i):
     :param i: 区块推荐位列表序列号，即区块的第几个推荐位
     :return:
     """
+    # if i == 0:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 1:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    # elif i == 2:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    #     # 上移1次
+    #     focusMove.move_direction(driver, 1, 19)
+    #     logging.info('焦点上移1次')
+    # elif i == 3:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    #     # 左移1次
+    #     focusMove.move_direction(driver, 1, 21)
+    #     logging.info('焦点左移1次')
+    # elif i == 4:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    # elif i == 5:
+    #     logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
+
     if i == 0:
-        # 下移1次
-        focusMove.move_direction(driver, 1, 20)
-        logging.info('焦点下移1次')
+        # 右移1次
+        focusMove.move_direction(driver, 1, 22)
+        logging.info('焦点右移1次')
     elif i == 1:
-        # 右移1次
-        focusMove.move_direction(driver, 1, 22)
-        logging.info('焦点右移1次')
-    elif i == 2:
-        # 右移1次
-        focusMove.move_direction(driver, 1, 22)
-        logging.info('焦点右移1次')
-        # 上移1次
-        focusMove.move_direction(driver, 1, 19)
-        logging.info('焦点上移1次')
-    elif i == 3:
         # 下移1次
         focusMove.move_direction(driver, 1, 20)
         logging.info('焦点下移1次')
-        # 左移1次
-        focusMove.move_direction(driver, 1, 21)
-        logging.info('焦点左移1次')
+
+        # 左移4次
+        focusMove.move_direction(driver, 4, 21)
+        logging.info('焦点左移4次')
+    elif i == 3:
+        # 右移1次
+        focusMove.move_direction(driver, 1, 22)
+        logging.info('焦点右移1次')
+
     elif i == 4:
         # 右移1次
         focusMove.move_direction(driver, 1, 22)
         logging.info('焦点右移1次')
+
     elif i == 5:
-        logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
+        # 右移1次
+        focusMove.move_direction(driver, 1, 22)
+        logging.info('焦点右移1次')
+
+    elif i == 6:
+        logging.info('区块最后一个推荐位')
+
+
 
 
 def block_021_play_focus_move(driver, i):
@@ -559,50 +812,101 @@ def block_022_play_focus_move(driver, i):
     :param i: 区块推荐位列表序列号，即区块的第几个推荐位
     :return:
     """
+    # if i == 0:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 1:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    # elif i == 2:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    # elif i == 3:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    #     # 上移2次
+    #     focusMove.move_direction(driver, 2, 19)
+    #     logging.info('焦点上移2次')
+    # elif i == 4:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 5:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 6:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    #     # 上移2次
+    #     focusMove.move_direction(driver, 2, 19)
+    #     logging.info('焦点上移2次')
+    # elif i == 7:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 8:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 9:
+    #     logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
+
+
+
     if i == 0:
-        # 下移1次
-        focusMove.move_direction(driver, 1, 20)
-        logging.info('焦点下移1次')
+        # 右移1次
+        focusMove.move_direction(driver, 1, 22)
+        logging.info('焦点右移1次')
     elif i == 1:
         # 右移1次
         focusMove.move_direction(driver, 1, 22)
         logging.info('焦点右移1次')
     elif i == 2:
-        # 右移1次
-        focusMove.move_direction(driver, 1, 22)
-        logging.info('焦点右移1次')
+        # 下移1次
+        focusMove.move_direction(driver, 1, 20)
+        logging.info('焦点下移1次')
+        #左移一次
+        focusMove.move_direction(driver, 1, 21)
+        logging.info('焦点左移1次')
+
     elif i == 3:
         # 右移1次
         focusMove.move_direction(driver, 1, 22)
         logging.info('焦点右移1次')
-        # 上移2次
-        focusMove.move_direction(driver, 2, 19)
-        logging.info('焦点上移2次')
+
     elif i == 4:
         # 下移1次
         focusMove.move_direction(driver, 1, 20)
         logging.info('焦点下移1次')
+
+        #左移一次
+        focusMove.move_direction(driver, 4, 21)
+        logging.info('焦点左移4次')
+
     elif i == 5:
-        # 下移1次
-        focusMove.move_direction(driver, 1, 20)
-        logging.info('焦点下移1次')
+        # 右移1次
+        focusMove.move_direction(driver, 1, 22)
+        logging.info('焦点右移1次')
     elif i == 6:
         # 右移1次
         focusMove.move_direction(driver, 1, 22)
         logging.info('焦点右移1次')
-        # 上移2次
-        focusMove.move_direction(driver, 2, 19)
-        logging.info('焦点上移2次')
     elif i == 7:
-        # 下移1次
-        focusMove.move_direction(driver, 1, 20)
-        logging.info('焦点下移1次')
+        # 右移1次
+        focusMove.move_direction(driver, 1, 22)
+        logging.info('焦点右移1次')
     elif i == 8:
-        # 下移1次
-        focusMove.move_direction(driver, 1, 20)
-        logging.info('焦点下移1次')
+        # 右移1次
+        focusMove.move_direction(driver, 1, 22)
+        logging.info('焦点右移1次')
     elif i == 9:
-        logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
+        logging.info('最后一个推荐位')
 
 
 def block_027_play_focus_move(driver, i):
@@ -650,35 +954,90 @@ def block_029_play_focus_move(driver, i):
     :param i: 区块推荐位列表序列号，即区块的第几个推荐位
     :return:
     """
+    # if i == 0:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    #     # 左移1次
+    #     focusMove.move_direction(driver, 1, 21)
+    #     logging.info('焦点左移1次')
+    # elif i == 1:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    # elif i == 2:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    #     # 上移2次
+    #     focusMove.move_direction(driver, 2, 19)
+    #     logging.info('焦点上移2次')
+    # elif i == 3:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 4:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    #     # 左移1次
+    #     focusMove.move_direction(driver, 1, 21)
+    #     logging.info('焦点左移1次')
+    # elif i == 5:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    # elif i == 6:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    #     # 上移2次
+    #     focusMove.move_direction(driver, 2, 19)
+    #     logging.info('焦点上移2次')
+    # elif i == 7:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 8:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    #     # 左移1次
+    #     focusMove.move_direction(driver, 1, 21)
+    #     logging.info('焦点左移1次')
+    # elif i == 9:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    # elif i == 10:
+    #     logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
+
     if i == 0:
-        # 下移1次
-        focusMove.move_direction(driver, 1, 20)
-        logging.info('焦点下移1次')
-        # 左移1次
-        focusMove.move_direction(driver, 1, 21)
-        logging.info('焦点左移1次')
+        # 右移1次
+        focusMove.move_direction(driver, 1, 22)
+        logging.info('焦点右移1次')
     elif i == 1:
         # 右移1次
         focusMove.move_direction(driver, 1, 22)
         logging.info('焦点右移1次')
     elif i == 2:
-        # 右移1次
-        focusMove.move_direction(driver, 1, 22)
-        logging.info('焦点右移1次')
-        # 上移2次
-        focusMove.move_direction(driver, 2, 19)
-        logging.info('焦点上移2次')
-    elif i == 3:
-        # 下移1次
-        focusMove.move_direction(driver, 1, 20)
-        logging.info('焦点下移1次')
-    elif i == 4:
         # 下移1次
         focusMove.move_direction(driver, 1, 20)
         logging.info('焦点下移1次')
         # 左移1次
         focusMove.move_direction(driver, 1, 21)
         logging.info('焦点左移1次')
+    elif i == 3:
+        # 右移1次
+        focusMove.move_direction(driver, 1, 22)
+        logging.info('焦点右移1次')
+    elif i == 4:
+        # 下移1次
+        focusMove.move_direction(driver, 1, 20)
+        logging.info('焦点下移1次')
+        # 左移1次
+        focusMove.move_direction(driver, 6, 21)
+        logging.info('焦点左移6次')
     elif i == 5:
         # 右移1次
         focusMove.move_direction(driver, 1, 22)
@@ -687,26 +1046,24 @@ def block_029_play_focus_move(driver, i):
         # 右移1次
         focusMove.move_direction(driver, 1, 22)
         logging.info('焦点右移1次')
-        # 上移2次
-        focusMove.move_direction(driver, 2, 19)
-        logging.info('焦点上移2次')
+
     elif i == 7:
-        # 下移1次
-        focusMove.move_direction(driver, 1, 20)
-        logging.info('焦点下移1次')
+        # 右移1次
+        focusMove.move_direction(driver, 1, 22)
+        logging.info('焦点右移1次')
     elif i == 8:
-        # 下移1次
-        focusMove.move_direction(driver, 1, 20)
-        logging.info('焦点下移1次')
-        # 左移1次
-        focusMove.move_direction(driver, 1, 21)
-        logging.info('焦点左移1次')
+        # 右移1次
+        focusMove.move_direction(driver, 1, 22)
+        logging.info('焦点右移1次')
     elif i == 9:
         # 右移1次
         focusMove.move_direction(driver, 1, 22)
         logging.info('焦点右移1次')
     elif i == 10:
-        logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
+        logging.info('最后一个推荐位，焦点需要移动到当前行的第一个位置')
+
+
+
 
 
 def block_030_play_focus_move(driver, i):
@@ -716,6 +1073,70 @@ def block_030_play_focus_move(driver, i):
     :param i: 区块推荐位列表序列号，即区块的第几个推荐位
     :return:
     """
+    # if i == 0:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 1:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    #     # 上移1次
+    #     focusMove.move_direction(driver, 1, 19)
+    #     logging.info('焦点上移1次')
+    # elif i == 2:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 3:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    #     # 上移1次
+    #     focusMove.move_direction(driver, 1, 19)
+    #     logging.info('焦点上移1次')
+    # elif i == 4:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 5:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    #     # 上移1次
+    #     focusMove.move_direction(driver, 1, 19)
+    #     logging.info('焦点上移1次')
+    # elif i == 6:
+    #
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 7:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    #     # 上移1次
+    #     focusMove.move_direction(driver, 1, 19)
+    #     logging.info('焦点上移1次')
+    # elif i == 8:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 9:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    #     # 上移1次
+    #     focusMove.move_direction(driver, 1, 19)
+    #     logging.info('焦点上移1次')
+    # elif i == 10:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 11:
+    #     logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
+
+
     if i == 0:
         # 下移1次
         focusMove.move_direction(driver, 1, 20)
@@ -777,7 +1198,10 @@ def block_030_play_focus_move(driver, i):
         focusMove.move_direction(driver, 1, 20)
         logging.info('焦点下移1次')
     elif i == 11:
-        logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
+        logging.info('最后一个推荐位，焦点需要移动到当前行的第一个位置')
+
+
+
 
 
 def block_031_play_focus_move(driver, i):
@@ -787,10 +1211,68 @@ def block_031_play_focus_move(driver, i):
     :param i: 区块推荐位列表序列号，即区块的第几个推荐位
     :return:
     """
+    # if i == 0:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    # elif i == 1:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 2:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 3:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 4:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    #     # 上移1次
+    #     focusMove.move_direction(driver, 1, 19)
+    #     logging.info('焦点上移1次')
+    # elif i == 5:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    # elif i == 6:
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('焦点下移1次')
+    #     # 左移1次
+    #     focusMove.move_direction(driver, 3, 21)
+    #     logging.info('焦点左移3次')
+    # elif i == 7:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    # elif i == 8:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    # elif i == 9:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    # elif i == 10:
+    #     # 右移1次
+    #     focusMove.move_direction(driver, 1, 22)
+    #     logging.info('焦点右移1次')
+    # elif i == 11:
+    #     logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
+
+
     if i == 0:
         # 右移1次
         focusMove.move_direction(driver, 1, 22)
         logging.info('焦点右移1次')
+
+        # 上移1次
+        focusMove.move_direction(driver, 1, 19)
+        logging.info('焦点上移1次')
     elif i == 1:
         # 下移1次
         focusMove.move_direction(driver, 1, 20)
@@ -834,8 +1316,36 @@ def block_031_play_focus_move(driver, i):
         focusMove.move_direction(driver, 1, 22)
         logging.info('焦点右移1次')
     elif i == 10:
+
+        logging.info('最后一个推荐位，焦点需要移动到当前行的第一个位置')
+
+
+def block_032_play_focus_move(driver, i):
+    '''
+    32号区块为轮播区块无详情页
+    焦点从上边的区块下移时，有需要2次下移，有时需要1次下移，该区块不稳定也不符合进入详情页的需求
+    该区块需要在接口中过滤掉
+    '''
+
+    if i == 0:
         # 右移1次
         focusMove.move_direction(driver, 1, 22)
         logging.info('焦点右移1次')
-    elif i == 11:
-        logging.info('左后一个推荐位，焦点需要移动到当前行的第一个位置')
+    elif i == 1:
+        # 下移1次
+        focusMove.move_direction(driver, 1, 20)
+        logging.info('焦点下移1次')
+    elif i == 2:
+        # 下移1次
+        focusMove.move_direction(driver, 1, 20)
+        logging.info('焦点下移1次')
+    elif i == 3:
+        # 下移1次
+        focusMove.move_direction(driver, 1, 20)
+        logging.info('焦点下移1次')
+    elif i == 4:
+        # 下移1次
+        focusMove.move_direction(driver, 1, 20)
+        logging.info('焦点下移1次')
+    elif i == 5:
+        logging.info('最后一个推荐位，焦点需要移动到当前行的第一个位置')

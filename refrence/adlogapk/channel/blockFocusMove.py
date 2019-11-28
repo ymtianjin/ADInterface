@@ -14,6 +14,7 @@ def page_block_focus_move(driver,block_no_name, block_recommend_no):
     :param block_num: 区块号
     :param recommended_num: 推荐位号
     :return:
+    lqq
     """
     try:
         block_name_list = ['002_023_028','003_026','004_011','008_005_025','006_007_024']
@@ -68,18 +69,28 @@ def page_block_focus_move_return(driver, block_name):
         focusMove.move_direction(driver, 7, 21)
         logging.info('左移7次')
 
+    # elif block_name == '014':
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('下移1次')
+    #     # 左移2次
+    #     focusMove.move_direction(driver, 2, 21)
+    #     logging.info('左移2次')
+
     elif block_name == '014':
-        # 下移1次
-        focusMove.move_direction(driver, 1, 20)
-        logging.info('下移1次')
         # 左移2次
-        focusMove.move_direction(driver, 2, 21)
-        logging.info('左移2次')
+        focusMove.move_direction(driver, 1, 21)
+        logging.info('左移1次')
+
+    # elif block_name == '018':
+    #     # 下移1次
+    #     focusMove.move_direction(driver, 1, 20)
+    #     logging.info('下移1次')
+    #     # 左移1次
+    #     focusMove.move_direction(driver, 1, 21)
+    #     logging.info('左移1次')
 
     elif block_name == '018':
-        # 下移1次
-        focusMove.move_direction(driver, 1, 20)
-        logging.info('下移1次')
         # 左移1次
         focusMove.move_direction(driver, 1, 21)
         logging.info('左移1次')
@@ -93,6 +104,18 @@ def page_block_focus_move_return(driver, block_name):
         logging.info('左移4次')
 
     elif block_name == '032':
-        logging.info('not found num 32')
+        # 左移1次
+        focusMove.move_direction(driver, 1, 21)
+        logging.info('左移1次')
 
 
+def page_block_focus_move_init(driver,block_no_name):
+    '''
+    :param driver ---驱动
+    :param  block_no_name  区块名称--编号
+    初始化区块焦点
+    '''
+    if block_no_name == '011':
+        pass
+    else:
+        focusMove.move_direction(driver, 4, 21)

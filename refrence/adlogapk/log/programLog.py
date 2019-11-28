@@ -10,7 +10,8 @@ def create_pro_log(path):
     """
     创建运行日志，记录程序运行过程
     :param path: 日志存储路径
-    :return: 
+    :return:
+    by lqq
     """
     # 获取根日志,不指定名称，默认返回root
     log_root = logging.getLogger()

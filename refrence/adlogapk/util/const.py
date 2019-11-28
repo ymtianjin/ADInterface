@@ -8,6 +8,7 @@ from util import fileProcess, readConfig
 class Const(object):
     """
     常用变量、常量类
+    lqq
     """
     pro_log_file_path = fileProcess.get_file_dir('Program') + '.log'  # 运行过程日志记录文件路径
 
@@ -37,9 +38,12 @@ class Const(object):
                          '/android.support.v7.widget.RecyclerView[@index=0]/android.widget.RelativeLayout[@index=3]/android.widget.TextView'
 
     # 查找导航循环次数
-    navigation_count= 20
+    navigation_count= 40
     # 一级导航焦点下移至二级导航时的等待时长
     navigation_wait_time = 5
+
+    # 暂无内容
+    id = 'com.newtv.cboxtv:id/id_empty_view'
 
 
 

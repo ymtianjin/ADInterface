@@ -12,6 +12,7 @@ def adb_connect(device_ip, device_name):
     启动adb服务，连接设备
     :param    device_ip   需要连接的设备ip
     :param    device_name   设备名称，通过adb device获得
+    lqq
     """
 
     os.popen('adb start-server')  # 启动adb服务
@@ -46,6 +47,7 @@ def clear_cache(app_package):
     """
     清除应用缓存
      :param    app_package   apk包名
+     lqq
     """
 
     try:

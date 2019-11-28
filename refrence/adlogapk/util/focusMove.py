@@ -11,7 +11,7 @@ def move_direction(driver, num, direction, duration=0.5):
     焦点移动
     :param driver:
     :param num: 焦点移动次数
-    :param direction: 焦点移动方向
+    :param direction: 焦点移动方向Design by lqq
     :param duration:
     :return:
     """

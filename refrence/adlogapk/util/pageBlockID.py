@@ -6,8 +6,8 @@ import logging
 def page_block_id(block_no):
     """
     获取推荐位id列表
-    :param block_no: 区块号
-    :return: 区块id列表
+    :param block_no: 区块号Design by lqq
+    :return: 区块id列表Design by lqq
     """
     list_block_number = ''
     block_no_dict = {

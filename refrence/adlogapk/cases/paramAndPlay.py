@@ -21,6 +21,7 @@ def verify(driver,block_recommend_no,content_num):
     # :param content_type:节目类型
     # :param  content_name :详情页标题
     :return:
+    lqq
     """
     try:
         list_page_attr = driver.current_activity  # 获取导航页页面属性
@@ -35,8 +36,20 @@ def verify(driver,block_recommend_no,content_num):
         logging.info('testCase:' + '获取详情页页面属性' + detail_page_attr)
 
         if list_page_attr != detail_page_attr:
-            detail_title_name = driver.find_element_by_id(Const.detail_title_id).text
-            logging.info('testCase:' + '获取详情页标题' + detail_title_name)
+            try:
+                detail_title_name = driver.find_element_by_id(Const.detail_title_id).text
+                if detail_title_name:
+                    logging.info('testCase:' + '获取详情页标题' + detail_title_name)
+                else:
+                    logging.info('页面无详情页标题，进入页面不合要求')
+                    Flag = False
+                    fileProcess.interface_data_return(Flag)
+                    focusMove.move_direction(driver, 1, 4)  # 点击返回按钮，返回导航页
+                    quit()
+            except Exception as e:
+                logging.info(e)
+
+
 
             # # 推荐位内容写回-----
             # fileProcess.interface_data_return(detail_title_name)

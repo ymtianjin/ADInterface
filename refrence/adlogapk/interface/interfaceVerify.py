@@ -12,6 +12,7 @@ def verify_interface_data(page_block_list_info,driver):
     :param navigation_name_list:
     :param driver:
     :return:
+    lqq
     """
     try:
         if not isinstance(page_block_list_info, list):  # 判断接口返回是否为列表

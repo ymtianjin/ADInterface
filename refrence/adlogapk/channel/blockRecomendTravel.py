@@ -9,9 +9,6 @@ import logging
 
 
 
-
-
-
 def interface_block_no_content_travel(driver, block_no_content_list, block_recommend_no):
     """
     遍历接口与当前遍历推荐位对比
@@ -19,6 +16,7 @@ def interface_block_no_content_travel(driver, block_no_content_list, block_recom
     :param block_no_content_list: 推荐位信息列表
     :param block_recommend_no: 推荐位编号
     :return:
+    lqq
     """
     # 遍历接口信息：需要测试的推荐位内容
     # for content_dict_no in range(len(block_no_content_list)):
@@ -69,7 +67,13 @@ def block_recommend_travel_have_target(driver, list_block_number, block_no_name,
     :param block_no_name      区块名称
     :param block_no_content_list    推荐位信息列表
     :return:
+    lqq
     """
+    # 初始化区块焦点
+    blockFocusMove.page_block_focus_move_init(driver,block_no_name)
+
+
+
     # 遍历当前区块推荐位
     for block_recommend_no in range(list_block_number):
         block_recommend_num = block_recommend_no+1  # 遍历数从0开始，为了显示数量从1开始计数
@@ -88,5 +92,7 @@ def block_recommend_travel_have_target(driver, list_block_number, block_no_name,
 
     # 2.6、区块推荐位遍历完成恢复区块焦点位置
     blockFocusMove.page_block_focus_move_return(driver, block_no_name)
+
     # 向下移动焦点
     focusMove.move_direction(driver, 1, 20)
+

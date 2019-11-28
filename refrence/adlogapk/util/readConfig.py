@@ -25,7 +25,7 @@ def read_config(section):
 
 class MyConfigParser(configparser.ConfigParser):
     """
-    继承configparser类，对类进行重写(调用原始类，读取配置文件，key全部变为小写)
+    继承configparser类，对类进行重写(调用原始类，读取配置文件，key全部变为小写)Design by lqq
     """
     def optionxform(self, optionstr):
         return optionstr
