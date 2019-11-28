@@ -132,6 +132,8 @@ class Parser:
             for blockData in data["data"]:   #遍历data中的data，
                 layoutCode = blockData["layoutCode"]  #取出layout后三位赋值给blockId
                 blockId = layoutCode[-3 : ]
+                if blockId in ["009", "010", "032"]:
+                    continue
                 clickParam["block"].append(blockId)
                 programs = []
                 if isinstance(blockData["programs"], list):  #判断programs类型
@@ -143,6 +145,8 @@ class Parser:
                         contentId = programData["contentId"]  #取出contentId
                         content = self.content(contentId, clickParam, programIndex)   #contet由contentId，
                         if self.FILTER and not content:
+                            continue
+                        if blockId == "008" and content["data"]["blockType"] == 0:
                             continue
                         programData["content"] = content
                         programs.append(programData)
