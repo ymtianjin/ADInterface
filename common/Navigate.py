@@ -227,7 +227,6 @@ class Naviage:
         try:
             ret = self.__find_element(id)
             if ret is not None:
-                print(ret.text + '退出程序')
                 return ret
         except Exception as e:
             time.sleep(0.5)
