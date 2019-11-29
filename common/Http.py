@@ -283,7 +283,6 @@ class Http:
 		elif url == "click":
 			self.click_proc(params, checkResult, variable)
 
-
 	def get(self, url, params = None, checkResult = None, variable = None):
 		url = self.assignValue(url)
 		self.init(params)
