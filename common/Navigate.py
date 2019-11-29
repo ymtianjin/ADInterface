@@ -465,15 +465,6 @@ class Naviage:
                 # paramAndPlay.verify(driver, content_type, content_name)
                 self.__verify(block_recommend_no, content_num)
 
-                # 判断当前页面是否为频道页
-                while True:
-                    try:
-                        if self.__find_element(self.first_class_xpath):
-                            print('在频道页移动焦点到下一个推荐位')
-                            break
-                    except Exception as e:
-                        print(e)
-                        self.__move_direction(1, 4)
                 break
 
     def __block_001_play_focus_move(self, i):
