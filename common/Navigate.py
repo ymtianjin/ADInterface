@@ -22,7 +22,7 @@ class Naviage:
         # 播放鉴权失败
         self.err_auth_xpath = '//android.widget.FrameLayout[@index=1]/android.widget.FrameLayout[@index=0]/android.widget.TextView[@index=3]'
         # 查找导航循环次数
-        self.navigation_count = 20
+        self.navigation_count = 40
         # 一级导航焦点下移至二级导航时的等待时长
         self.navigation_wait_time = 5
         # 暂无内容
