@@ -396,6 +396,8 @@ class Naviage:
                     time.sleep(self.navigation_wait_time)
                     # 判断导航页有无区块
                     self.__element_id(self.empty_view_id, n)
+                    # 找到要测试的导航时，下移一次焦点
+                    self.__move_direction(1, 20)
         # 返回要测试的导航名称列表
         return navigation_name_list
 
