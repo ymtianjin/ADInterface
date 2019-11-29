@@ -252,7 +252,6 @@ class Http:
 				if navigate.startup():
 					navigate.click(param)
 					deviceLog.disconnect()
-					navigate.quit()
 				else:
 					self.success = False
 					self.msg = "device can't be connected"

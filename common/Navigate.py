@@ -1982,6 +1982,28 @@ class Naviage:
         # print (navigation_info_dict,page_block_list_info)
         return navigation_info_dict, page_block_list_info
 
+    def __quit(self, navigation_name_list):
+        '''
+            :param  navigation_name_list  需要查找导航的列表
+            退出apk
+            '''
+        try:
+            self.__find_element(self.first_class_xpath)  # 1、判断当前页面是否是频道页
+            len_navigation = len(navigation_name_list)
+            print(len_navigation)
+            self.__move_direction(len_navigation + 1, 4)  # 2、判断是几级导航,按几次返回
+            okButton = self.__find_element(self.out_of_app_id, n=20)  # 3、是否有确定按钮
+            if okButton is not None and okButton.is_selected():  # 4、是否选中了确定按钮，未选中的时候选中确定按钮
+                okButton.click()
+            else:
+                self.__move_direction(1, 21)
+                okButton.click()
+            logo_element = self.__find_element(self.logo_xpath)  # 5、判断是否有logo控件
+            if not logo_element:
+                logging.info('已退出apk')  # 6、没有则退出app
+        except Exception as e:
+            logging.info(e)
+
     # 先写一个假函数把流程串起来，主要把参数传进来
     def click(self, infoDict):
         navigation_info_dict,page_block_list_info = self.__interface_data_processing(infoDict)
@@ -1989,6 +2011,7 @@ class Naviage:
         logging.info(navigation_name_list)
 
         self.__page_block_traversal(navigation_name_list, page_block_list_info)
+        self.__quit(navigation_name_list)
 
     def startup(self):
         try:
@@ -2013,28 +2036,6 @@ class Naviage:
         except Exception as e:
             logging.error("appium链接错误")
             return False
-
-    def quit(self, navigation_name_list):
-        '''
-            :param  navigation_name_list  需要查找导航的列表
-            退出apk
-            '''
-        try:
-            self.__find_element(self.first_class_xpath)  # 1、判断当前页面是否是频道页
-            len_navigation = len(navigation_name_list)
-            print(len_navigation)
-            self.__move_direction(len_navigation + 1, 4)  # 2、判断是几级导航,按几次返回
-            okButton = self.__find_element(self.out_of_app_id, n=20)  # 3、是否有确定按钮
-            if okButton is not None and okButton.is_selected():  # 4、是否选中了确定按钮，未选中的时候选中确定按钮
-                okButton.click()
-            else:
-                self.__move_direction(1, 21)
-                okButton.click()
-            logo_element = self.__find_element(self.logo_xpath)  # 5、判断是否有logo控件
-            if not logo_element:
-                logging.info('已退出apk')  # 6、没有则退出app
-        except Exception as e:
-            logging.info(e)
 
     def disconnect(self):
         if self.driver is not None:
