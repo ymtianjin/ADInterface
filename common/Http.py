@@ -221,6 +221,11 @@ class Http:
 						self.variable[name] = self.variable[name][begin:end]
 
 	def click_proc(self, params=None, checkResult=None, variable=None):
+		# 测试日志
+		logFile = "D:\\work\\ADInterface\\results\\device_logs\\20191129205158DeviceLog.log"
+		deviceLog = DeviceLog.DeviceLog()
+		missionMid = deviceLog.log_read(logFile, checkResult)
+
 		self.init()
 		if not isinstance(params, dict):
 			params = {}
