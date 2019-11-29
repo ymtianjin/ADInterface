@@ -2011,7 +2011,7 @@ class Naviage:
         logging.info(navigation_name_list)
 
         self.__page_block_traversal(navigation_name_list, page_block_list_info)
-        self.__quit(navigation_name_list)
+        self.driver.close_app()
 
     def startup(self):
         try:
