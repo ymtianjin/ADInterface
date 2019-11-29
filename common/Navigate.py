@@ -109,8 +109,12 @@ class Naviage:
 
             if list_page_attr != detail_page_attr:
                 try:
-                    detail_title_name = self.__find_element_by_id(self.detail_title_id).text
-                    if detail_title_name:
+                    detail_title_element = self.__find_element(self.detail_title_id)
+                    if detail_title_element is not None:
+                        detail_title_name = detail_title_element.text
+                    else:
+                        detail_title_name = None
+                    if detail_title_name is not None:
                         logging.info('testCase:' + '获取详情页标题' + detail_title_name)
                     else:
                         logging.info('页面无详情页标题，进入页面不合要求')
@@ -222,8 +226,9 @@ class Naviage:
         '''
         for i in range(n):
             try:
-                ret = self.__find_element_by_id(id)
-                print(ret.text, '退出程序')
+                ret = self.__find_element(id)
+                if ret is not None:
+                    print(ret.text + '退出程序')
                 quit()
             except Exception as e:
                 time.sleep(0.5)
