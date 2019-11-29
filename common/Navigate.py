@@ -220,20 +220,18 @@ class Naviage:
                 continue
         return err_name
 
-    def __element_id(self, id, n):
+    def __element_id(self, id):
         '''
         判断是否存在
         '''
-        for i in range(n):
-            try:
-                ret = self.__find_element(id)
-                if ret is not None:
-                    print(ret.text + '退出程序')
-                    return ret
-            except Exception as e:
-                time.sleep(0.5)
-                print(e)
-                continue
+        try:
+            ret = self.__find_element(id)
+            if ret is not None:
+                print(ret.text + '退出程序')
+                return ret
+        except Exception as e:
+            time.sleep(0.5)
+            print(e)
                 
         return None
 
@@ -402,7 +400,7 @@ class Naviage:
                                 print(e)
                     time.sleep(self.navigation_wait_time)
                     # 判断导航页有无区块
-                    emptyView = self.__element_id(self.empty_view_id, n)
+                    emptyView = self.__element_id(self.empty_view_id)
                     if emptyView is not None:  # 有空页面错误，退出程序
                         quit()
                     # 找到要测试的导航时，下移一次焦点
