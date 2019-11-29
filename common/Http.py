@@ -195,78 +195,93 @@ class Http:
 		self.msg = (len(self.msg) > 0 and self.msg + ", " or "") + "data: " + str(data) + ", response: " + strData + ", except: " + str(checkResult);
 		logging.info(url + ", result: " + str(self.success) + ", " + self.msg)
 
+	def define_proc(self, params = None, checkResult = None, variable = None):
+		for name in params:
+			self.variable[name] = self.assignValue(params[name])
+
+	def split_proc(self, params=None, checkResult=None, variable=None):
+		for name in params:
+			if self.variable.__contains__(name) and isinstance(self.variable[name], str):
+				self.variable[name] = self.variable[name].split(params[name])
+
+	def join_proc(self, params=None, checkResult=None, variable=None):
+		for name in params:
+			if self.variable.__contains__(name) and isinstance(self.variable[name], list):
+				self.variable[name] = params[name].join(self.variable[name])
+
+	def substr_proc(self, params=None, checkResult=None, variable=None):
+		for name in params:
+			if self.variable.__contains__(name) and isinstance(self.variable[name], str):
+				seq = params[name].split(":")
+				if len(seq) == 2:
+					begin = int(seq[0])
+					end = int(seq[1])
+					length = len(self.variable[name])
+					if end > begin and begin < length and end < length:
+						self.variable[name] = self.variable[name][begin:end]
+
+	def click_proc(self, params=None, checkResult=None, variable=None):
+		self.init()
+		if not isinstance(params, dict):
+			params = {}
+		self.assignData(params)
+		if not isinstance(checkResult, dict):
+			params = {}
+		self.assignData(checkResult)
+
+		# 获取cms的推荐位
+		parser = Parser.Parser()
+		parser.appChannel("8acb5c18e56c1988723297b1a8dc9260", "600001")
+		clickParams = parser.filter(params)
+
+		# 目前其实还只支持点击一个，因为第一次跑完后appuim就退出了，并且测试用例的结果也只支持一次，后面会覆盖前面的结果
+		# 后续改进是把每次点击都触发一个测试用例，并且单独记录结果集，并且可以自动启动appium
+		navigate = Navigate.Naviage()
+		for param in clickParams:
+			if len(param) < 1:
+				continue
+			logging.info("click ad space: " + str(param))
+			# 通过adb记录设备日志
+			logPath = os.path.join(os.getcwd(), 'results/device_logs/')
+			logFile = os.path.join(logPath, time.strftime('%Y%m%d%H%M%S') + 'DeviceLog.log')
+			if not os.path.exists(logPath):
+				os.makedirs(logPath)
+			deviceLog = DeviceLog.DeviceLog()
+			deviceLog.connect("192.168.22.34", "14499M580068257")
+			deviceLog.clear_cache("com.newtv.cboxtv")
+			deviceLog.log_start(logFile)
+
+			# 通过appium启动遍历
+			if navigate.startup():
+				navigate.click(param)
+				deviceLog.disconnect()
+			else:
+				self.success = False
+				self.msg = "device can't be connected"
+				deviceLog.disconnect()
+				continue
+
+			missionMid = deviceLog.log_read(logFile, checkResult)
+			if len(missionMid) > 0:
+				self.success = False
+				strSplit = ","
+				self.msg = "mid: " + strSplit.join(missionMid) + " can't be found"
+			else:
+				self.success = True
+
+		navigate.disconnect()
+
 	def function(self, url, params = None, checkResult = None, variable = None):
 		if url == "define" and params is not None:
-			for name in params:
-				self.variable[name] = self.assignValue(params[name])
+			self.define_proc(params, checkResult, variable)
 		elif url == "split" and params is not None:
-			for name in params:
-				if self.variable.__contains__(name) and isinstance(self.variable[name], str):
-					self.variable[name] = self.variable[name].split(params[name])
+			self.split_proc(params, checkResult, variable)
 		elif url == "join" and params is not None:
-			for name in params:
-				if self.variable.__contains__(name) and isinstance(self.variable[name], list):
-					self.variable[name] = params[name].join(self.variable[name])
+			self.join_proc(params, checkResult, variable)
 		elif url == "substr" and params is not None:
-			for name in params:
-				if self.variable.__contains__(name) and isinstance(self.variable[name], str):
-					seq = params[name].split(":")
-					if len(seq) == 2:
-						begin = int(seq[0])
-						end = int(seq[1])
-						length = len(self.variable[name])
-						if end > begin and begin < length and end < length:
-							self.variable[name] = self.variable[name][begin:end]
+			self.substr_proc(params, checkResult, variable)
 		elif url == "click":
-			self.init()
-			if not isinstance(params, dict):
-				params = {}
-			self.assignData(params)
-			if not isinstance(checkResult, dict):
-				params = {}
-			self.assignData(checkResult)
-
-			# 获取cms的推荐位
-			parser = Parser.Parser()
-			parser.appChannel("8acb5c18e56c1988723297b1a8dc9260", "600001")
-			clickParams = parser.filter(params)
-
-			# 目前其实还只支持点击一个，因为第一次跑完后appuim就退出了，并且测试用例的结果也只支持一次，后面会覆盖前面的结果
-			# 后续改进是把每次点击都触发一个测试用例，并且单独记录结果集，并且可以自动启动appium
-			navigate = Navigate.Naviage()
-			for param in clickParams:
-				if len(param) < 1:
-					continue
-				logging.info("click ad space: " + str(param))
-				# 通过adb记录设备日志
-				logPath = os.path.join(os.getcwd(), 'results/device_logs/')
-				logFile = os.path.join(logPath, time.strftime('%Y%m%d%H%M%S') + 'DeviceLog.log')
-				if not os.path.exists(logPath):
-					os.makedirs(logPath)
-				deviceLog = DeviceLog.DeviceLog()
-				deviceLog.connect("192.168.22.34", "14499M580068257")
-				deviceLog.clear_cache("com.newtv.cboxtv")
-				deviceLog.log_start(logFile)
-
-				# 通过appium启动遍历
-				if navigate.startup():
-					navigate.click(param)
-					deviceLog.disconnect()
-				else:
-					self.success = False
-					self.msg = "device can't be connected"
-					deviceLog.disconnect()
-					continue
-
-				missionMid = deviceLog.log_read(logFile, checkResult)
-				if len(missionMid) > 0:
-					self.success = False
-					strSplit = ","
-					self.msg = "mid: " + strSplit.join(missionMid) + " can't be found"
-				else:
-					self.success = True
-
-			navigate.disconnect()
+			self.click_proc(params, checkResult, variable)
 
 
 	def get(self, url, params = None, checkResult = None, variable = None):
