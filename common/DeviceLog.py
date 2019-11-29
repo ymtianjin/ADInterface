@@ -97,9 +97,11 @@ class DeviceLog:
     def log_read(self, log_file_path, checkResult):
         try:
             missionMids = []
-            file = open(log_file_path, mode="r", encoding='utf-8')
+            file = open(log_file_path, mode="r")
+            content = file.read()
+            lines = content.split("\n")
             adResult = {}
-            for line in file.readlines():
+            for line in lines:
                 line = line.strip()
                 if line.find("requestADInfoAsync data=") < 0:
                     continue
