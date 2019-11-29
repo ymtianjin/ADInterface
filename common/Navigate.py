@@ -375,7 +375,7 @@ class Naviage:
                     logging.info('xpath列表:' + str(value))
                     n = 0
                     while n <= self.navigation_count:
-                        logging.info("导航焦点右移循环次数共20次，当前次数为：%s次" % n)
+                        logging.info("导航焦点右移循环次数共%d次，当前次数为：%d次" % (self.navigation_count, n))
                         try:
                             navigation_name = self.__find_element(value)
                             logging.info("导航名称:" + navigation_name.text)
