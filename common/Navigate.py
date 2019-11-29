@@ -55,6 +55,8 @@ class Naviage:
                                 logging.error('区块名称应为字符')
                                 quit()
                         elif block_n == 1:
+                            if isinstance(block_list[block_n], str):
+                                block_list[block_n] = int(block_list[block_n])
                             if not isinstance(block_list[block_n], int):  # 判断推荐位位置是否为整形
                                 logging.error("推荐位信息应为整形")
                                 quit()
