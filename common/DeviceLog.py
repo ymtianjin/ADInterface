@@ -97,9 +97,9 @@ class DeviceLog:
     def log_read(self, log_file_path, checkResult):
         try:
             missionMids = []
-            file = open(log_file_path, mode="r")
-            content = file.read()
-            lines = content.split("\n")
+            file = open(log_file_path, mode="rb")
+            content = str(file.read())
+            lines = content.split("\\r\\n")
             adResult = {}
             for line in lines:
                 line = line.strip()
