@@ -113,5 +113,5 @@ class DeviceLog:
                     missionMids.append(mid)
             return missionMids
         except Exception as e:
-            pass
+            logging.info(e)
         return []
