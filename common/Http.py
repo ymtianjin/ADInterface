@@ -233,6 +233,7 @@ class Http:
 
 			# 目前其实还只支持点击一个，因为第一次跑完后appuim就退出了，并且测试用例的结果也只支持一次，后面会覆盖前面的结果
 			# 后续改进是把每次点击都触发一个测试用例，并且单独记录结果集，并且可以自动启动appium
+			navigate = Navigate.Naviage()
 			for param in clickParams:
 				if len(param) < 1:
 					continue
@@ -247,28 +248,25 @@ class Http:
 				deviceLog.clear_cache("com.newtv.cboxtv")
 				deviceLog.log_start(logFile)
 
-				bClicked = False
-
 				# 通过appium启动遍历
-				navigate = Navigate.Naviage()
-				if navigate.connect():
+				if navigate.startup():
 					navigate.click(param)
-					bClicked = True
+                    deviceLog.disconnect()
 				else:
 					self.success = False
 					self.msg = "device can't be connected"
+                    deviceLog.disconnect()
+                    continue
 
-				navigate.disconnect()
-				deviceLog.disconnect()
+                missionMid = deviceLog.log_read(logFile, checkResult)
+                if len(missionMid) > 0:
+                    self.success = False
+                    strSplit = ","
+                    self.msg = "mid: " + strSplit.join(missionMid) + " can't be found"
+                else:
+                    self.success = True
 
-				if bClicked:
-					missionMid = deviceLog.log_read(logFile, checkResult)
-					if len(missionMid) > 0:
-						self.success = False
-						strSplit = ","
-						self.msg = "mid: " + strSplit.join(missionMid) + " can't be found"
-					else:
-						self.success = True
+            navigate.disconnect()
 
 
 	def get(self, url, params = None, checkResult = None, variable = None):
