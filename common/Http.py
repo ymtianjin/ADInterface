@@ -251,22 +251,23 @@ class Http:
 				# 通过appium启动遍历
 				if navigate.startup():
 					navigate.click(param)
-                    deviceLog.disconnect()
+					deviceLog.disconnect()
+					navigate.quit()
 				else:
 					self.success = False
 					self.msg = "device can't be connected"
-                    deviceLog.disconnect()
-                    continue
+					deviceLog.disconnect()
+					continue
 
-                missionMid = deviceLog.log_read(logFile, checkResult)
-                if len(missionMid) > 0:
-                    self.success = False
-                    strSplit = ","
-                    self.msg = "mid: " + strSplit.join(missionMid) + " can't be found"
-                else:
-                    self.success = True
+				missionMid = deviceLog.log_read(logFile, checkResult)
+				if len(missionMid) > 0:
+					self.success = False
+					strSplit = ","
+					self.msg = "mid: " + strSplit.join(missionMid) + " can't be found"
+				else:
+					self.success = True
 
-            navigate.disconnect()
+			navigate.disconnect()
 
 
 	def get(self, url, params = None, checkResult = None, variable = None):
