@@ -1,7 +1,7 @@
 # encoding=utf-8
 __author__ = 'limeng'
 
-import os, json, time
+import os, json, time, logging
 from selenium.webdriver.common.keys import Keys
 
 class DeviceLog:
@@ -92,7 +92,7 @@ class DeviceLog:
                     else:
                         adResult[mid] = [type]
         except Exception as e:
-            pass
+            logging.info(e)
 
     def log_read(self, log_file_path, checkResult):
         try:
