@@ -269,7 +269,7 @@ class Http:
 			else:
 				self.success = True
 
-		navigate.disconnect()
+		# navigate.disconnect()
 
 	def function(self, url, params = None, checkResult = None, variable = None):
 		if url == "define" and params is not None:
