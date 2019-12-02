@@ -2,7 +2,7 @@
 
 __author__ = 'limeng'
 from appium import webdriver
-import time, logging
+import time, logging, os
 
 class Naviage:
     def __init__(self):
@@ -2015,6 +2015,11 @@ class Naviage:
 
     def startup(self):
         try:
+            # 启动Appium
+            appiumPath = os.path.join(os.getcwd(), 'common/startAppiumServer.bat')
+            os.system("start " + appiumPath)
+            time.sleep(15);
+
             desired_caps = {
                 'deviceName': "14499M580068257",  # 设备信息，adb devices命令得到的值
                 'platformName': "Android",  # 系统信息，Android/IOS
