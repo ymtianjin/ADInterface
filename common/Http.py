@@ -260,10 +260,12 @@ class Http:
 			if navigate.startup():
 				navigate.click(param)
 				deviceLog.disconnect()
+				navigate.disconnect()
 			else:
 				self.success = False
 				self.msg = "device can't be connected"
 				deviceLog.disconnect()
+				navigate.disconnect()
 				continue
 
 			missionMid = deviceLog.log_read(logFile, checkResult)
