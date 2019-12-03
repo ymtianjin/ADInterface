@@ -2046,8 +2046,6 @@ class Naviage:
         if self.driver is not None:
             self.driver.quit()
 
-    def channel(self, channelId):
-        pass
-
-    def program(self, contentId):
-        pass
+        # 停止Appium
+        appiumPath = os.path.join(os.getcwd(), 'common/stopAppiumServer.bat')
+        os.system("start " + appiumPath)
