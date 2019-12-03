@@ -2016,9 +2016,9 @@ class Naviage:
     def startup(self):
         try:
             # 启动Appium
-            appiumPath = os.path.join(os.getcwd(), 'common/startAppiumServer.bat')
-            os.system("start " + appiumPath)
-            time.sleep(15);
+            #appiumPath = os.path.join(os.getcwd(), 'common/startAppiumServer.bat')
+            #os.system("start " + appiumPath)
+            #time.sleep(15);
 
             desired_caps = {
                 'deviceName': "14499M580068257",  # 设备信息，adb devices命令得到的值
@@ -2039,13 +2039,18 @@ class Naviage:
 
             return True
         except Exception as e:
-            logging.error("appium链接错误")
+            logging.error("appium链接错误：" + e)
             return False
 
     def disconnect(self):
-        if self.driver is not None:
-            self.driver.quit()
+        try:
+            if self.driver is not None:
+                self.driver.quit()
+        except Exception as e:
+            logging.error("appium断开错误：" + e)
+
+        self.driver = None
 
         # 停止Appium
-        appiumPath = os.path.join(os.getcwd(), 'common/stopAppiumServer.bat')
-        os.system("start " + appiumPath)
+        #appiumPath = os.path.join(os.getcwd(), 'common/stopAppiumServer.bat')
+        #os.system("start " + appiumPath)
