@@ -257,7 +257,7 @@ class Http:
 			deviceLog = DeviceLog.DeviceLog()
 			deviceLog.connect("192.168.22.34", "14499M580068257")
 			deviceLog.clear_cache("com.newtv.cboxtv")
-			deviceLog.log_start(logFile)
+			deviceLog.log_start("14499M580068257", logFile)
 
 			# 通过appium启动遍历
 			if not navigate.startup():

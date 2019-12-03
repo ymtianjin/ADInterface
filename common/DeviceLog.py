@@ -58,7 +58,7 @@ class DeviceLog:
                 print(e)
                 break
 
-    def log_start(self, log_file_path):
+    def log_start(self, device_id, log_file_path):
         """
         开始打印日志
         """
@@ -66,7 +66,7 @@ class DeviceLog:
             os.remove(log_file_path)
         else:
             print("开始打印log")
-            os.popen('adb logcat -v time >' + log_file_path)
+            os.popen("adb -s " + device_id + " logcat -v time > " + log_file_path)
             # os.popen('adb logcat -c')
             # # log_file = open(log_file_path, 'w')
             # log_cmd = 'adb logcat -v time >'+log_file_path
