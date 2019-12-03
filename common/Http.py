@@ -242,6 +242,9 @@ class Http:
 		# 目前其实还只支持点击一个，因为第一次跑完后appuim就退出了，并且测试用例的结果也只支持一次，后面会覆盖前面的结果
 		# 后续改进是把每次点击都触发一个测试用例，并且单独记录结果集，并且可以自动启动appium
 		navigate = Navigate.Naviage()
+		clickSuccess = []
+		clickFail = []
+		clickMsg = []
 		for param in clickParams:
 			if len(param) < 1:
 				continue
@@ -257,26 +260,35 @@ class Http:
 			deviceLog.log_start(logFile)
 
 			# 通过appium启动遍历
-			if navigate.startup():
-				navigate.click(param)
-				deviceLog.disconnect()
-				navigate.disconnect()
-			else:
-				self.success = False
-				self.msg = "device can't be connected"
+			if not navigate.startup():
+				clickFail.append(False)
+				clickMsg.append("device can't be connected")
 				deviceLog.disconnect()
 				navigate.disconnect()
 				continue
 
+			navigate.click(param)
+			deviceLog.disconnect()
+			navigate.disconnect()
+
 			missionMid = deviceLog.log_read(logFile, checkResult)
 			if len(missionMid) > 0:
-				self.success = False
 				strSplit = ","
-				self.msg = "mid: " + strSplit.join(missionMid) + " can't be found"
+				clickFail.append(False)
+				clickMsg.append("mid: " + strSplit.join(missionMid) + " can't be found")
 			else:
-				self.success = True
+				clickSuccess.append(True)
 
-		# navigate.disconnect()
+		if len(clickSuccess) == 0 and len(clickFail) == 0:
+			self.success = False
+			self.msg = "no content to click"
+		elif len(clickFail) > 0:
+			self.success = False
+			strSplit = "<br>"
+			self.msg = strSplit.join(clickMsg)
+		else:
+			self.success = True
+
 
 	def function(self, url, params = None, checkResult = None, variable = None):
 		if url == "define" and params is not None:
