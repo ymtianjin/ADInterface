@@ -1961,6 +1961,9 @@ class Naviage:
                     block_no_content_list = page_block_list[block_num_serial][1:]  # 推荐位信息列表
                     logging.info(block_no_content_list)
                     self.__block_recommend_travel_have_target(list_block_number, block_no_name, block_no_content_list)
+
+            # 退出之前等待15秒
+            time.sleep(15)
             print("=====退出=====")
         except Exception as e:
             logging.error(e)
