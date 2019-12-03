@@ -73,7 +73,7 @@ class Uion(unittest.TestCase):
                         logging.info(e)
                     stepIndex = stepIndex + 1
                     stepStart = stepStart + max(len(data), len(check), len(variable)) + 1
-                    if address["method"] == "function":
+                    if address["method"] == "function" and address["url"] != "click":
                         continue
 
                     if self.http.success:

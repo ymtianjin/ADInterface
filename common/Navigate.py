@@ -2039,7 +2039,7 @@ class Naviage:
 
             return True
         except Exception as e:
-            logging.error("appium链接错误：" + e)
+            logging.error(e)
             return False
 
     def disconnect(self):
@@ -2047,7 +2047,7 @@ class Naviage:
             if self.driver is not None:
                 self.driver.quit()
         except Exception as e:
-            logging.error("appium断开错误：" + e)
+            logging.error(e)
 
         self.driver = None
 
