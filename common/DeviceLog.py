@@ -112,7 +112,9 @@ class DeviceLog:
                 self.__read_ad_data(request, adResult)
             for mid in checkResult:
                 if not adResult.__contains__(mid): # 说明期望的广告在日志中没有读到
-                    missionMids.append(mid)
+                    missionMids.append(mid + "：" + checkResult[mid] + "：node mission")
+                elif adResult[mid] != checkResult[mid]:
+                    missionMids.append(mid + "：" + checkResult[mid] + "：value dismatch")
             return missionMids
         except Exception as e:
             logging.info(e)
