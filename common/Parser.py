@@ -49,7 +49,8 @@ class Parser:
                 return False
             if not isinstance(data["data"], list):
                 return False
-        except BaseException:
+        except BaseException as e:
+            logging.error(e)
             return False
         self.channel = {   #定义channel格式
             "data": [],
@@ -157,7 +158,8 @@ class Parser:
             if self.FILTER and len(pageData["data"]) == 0:
                 return False
             return pageData
-        except BaseException:
+        except BaseException as e:
+            logging.error(e)
             return False
 
     def content(self, contentId, clickParam, programIndex):
@@ -226,7 +228,8 @@ class Parser:
             self.program.append(contentData)
 
             return contentData
-        except BaseException:
+        except BaseException as e:
+            logging.error(e)
             return False
 
     def categoryTree(self):
@@ -264,7 +267,8 @@ class Parser:
                 f.write(json.dumps(self.category, ensure_ascii=False))
 
             return True
-        except BaseException:
+        except BaseException as e:
+            logging.error(e)
             return False
 
     def appChannel(self, appKey, channelCode):
