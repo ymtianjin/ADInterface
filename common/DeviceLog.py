@@ -66,7 +66,7 @@ class DeviceLog:
             os.remove(log_file_path)
         else:
             print("开始打印log")
-            os.popen("adb -s " + device_id + " logcat -v time | find '" + app_name + "' > " + log_file_path)
+            os.popen("adb -s " + device_id + " logcat -v time *:s " + app_name + " > " + log_file_path)
             # os.popen('adb logcat -c')
             # # log_file = open(log_file_path, 'w')
             # log_cmd = 'adb logcat -v time >'+log_file_path
