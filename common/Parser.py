@@ -1,6 +1,6 @@
 # encoding=utf-8
 __author__ = 'limeng'
-import json, requests, random, os
+import json, requests, random, os, logging
 
 class Parser:
     def __init__(self):
@@ -178,7 +178,7 @@ class Parser:
                 return False
             if data["errorCode"] != "0":
                 return False
-            if self.FILTER and data["data"]["vipFlag"] != "0" and data["data"]["vipFlag"] is not None:
+            if self.FILTER and data["data"].__contains__("vipFlag") and data["data"]["vipFlag"] != "0" and data["data"]["vipFlag"] is not None:
                 return False
 
             if data["data"]["contentType"] == "PS" and data["data"]["seriesType"] == "1": #当contentType为CS的时候，seriesType为1表示剧集（需要获取subcontent），如果seriesType为0表示综艺
