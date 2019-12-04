@@ -74,7 +74,7 @@ class DeviceLog:
             # # pop_log = subprocess.Popen(log_cmd, stdout=log_file_path, stderr=subprocess.PIPE)
             # return pop_log
 
-    def __read_ad_data(self, request, adResult):
+    def __check_ad_data(self, request, checkResult, adResult):
         try:
             data = json.loads(request)
             if not isinstance(data, dict) or not data.__contains__("adspaces"):
@@ -84,13 +84,15 @@ class DeviceLog:
                 if not isinstance(adData, list) or len(adData) == 0:
                     continue
                 for ad in adData:
-                    if not isinstance(ad, dict) or not ad.__contains__("mid"):
+                    if not isinstance(ad, dict):
                         continue
-                    mid = ad["mid"]
-                    if adResult.__contains__(mid):
-                        adResult[mid].append(type)
-                    else:
-                        adResult[mid] = [type]
+                    for check, value in checkResult.items():
+                        if not ad.__contains__(check):
+                            continue
+                        if not adResult.__contains__(check):
+                            adResult[check] = [ad[check]]
+                        else:
+                            adResult[check].append(ad[check])
         except Exception as e:
             logging.info(e)
 
@@ -103,18 +105,30 @@ class DeviceLog:
             adResult = {}
             for line in lines:
                 line = line.strip()
-                if line.find("requestADInfoAsync data=") < 0:
+                if not isinstance(line, str) or len(line) < 130:
                     continue
-                content = line.split("requestADInfoAsync data=")
-                if len(content) < 2:
+                start = line.find("{\"adspaces\":")
+                end = line.rfind("}")
+                if start < 0 or end < 0 or start > end:
                     continue
-                request = content[1].strip()
-                self.__read_ad_data(request, adResult)
-            for mid in checkResult:
-                if not adResult.__contains__(mid): # 说明期望的广告在日志中没有读到
-                    missionMids.append(mid + "：" + checkResult[mid] + "：node mission")
-                elif adResult[mid] != checkResult[mid]:
-                    missionMids.append(mid + "：" + checkResult[mid] + "：value dismatch")
+                request = line[start:end + 1].strip()
+                request = request.replace("\\\\\"", "\"")
+                request = request.replace("\"{", "{")
+                request = request.replace("}\"", "}")
+                request = request.replace("\\x", "x")
+                self.__check_ad_data(request, checkResult, adResult)
+            for type, value in checkResult.items():
+                if not adResult.__contains__(type): # 说明期望的广告在日志中没有读到
+                    missionMids.append(type + "：" + str(value) + "：node mission")
+                else:
+                    result = adResult[type]
+                    if isinstance(value, list) and len(value) > 0:
+                        for v in value:
+                            if v not in result:
+                                missionMids.append(type + "：" + str(v) + "：value dismatch")
+                    elif isinstance(value, str):
+                        if value != result[0]:
+                            missionMids.append(type + "：" + value + "：value dismatch")
             return missionMids
         except Exception as e:
             logging.info(e)

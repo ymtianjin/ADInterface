@@ -62,9 +62,9 @@ class Http:
 			return value
 		try:
 			test = json.loads(value)
-			if not isinstance(test, dict):
-				return value
-			return test
+			if isinstance(test, dict) or isinstance(test, list):
+				return test
+			return str(value)
 		except BaseException:
 			return value
 
@@ -221,11 +221,6 @@ class Http:
 						self.variable[name] = self.variable[name][begin:end]
 
 	def click_proc(self, params=None, checkResult=None, variable=None):
-		# 测试日志
-		#logFile = "D:\\work\\ADInterface\\results\\device_logs\\20191129195708DeviceLog.log"
-		#deviceLog = DeviceLog.DeviceLog()
-		#missionMid = deviceLog.log_read(logFile, checkResult)
-
 		self.init()
 		if not isinstance(params, dict):
 			params = {}
@@ -233,6 +228,11 @@ class Http:
 		if not isinstance(checkResult, dict):
 			params = {}
 		self.assignData(checkResult)
+
+		# 测试日志
+		#logFile = "/Users/xiongyi/Downloads/20191204183834DeviceLog.log"
+		#deviceLog = DeviceLog.DeviceLog()
+		#missionMid = deviceLog.log_read(logFile, checkResult)
 
 		# 获取cms的推荐位
 		parser = Parser.Parser()
