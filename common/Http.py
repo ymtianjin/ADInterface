@@ -275,9 +275,10 @@ class Http:
 			if len(missionMid) > 0:
 				strSplit = ","
 				clickFail.append(False)
-				clickMsg.append("mid: " + strSplit.join(missionMid) + " can't be found")
+				clickMsg.append(str(param) + "，fail，mid: " + strSplit.join(missionMid) + " can't be found")
 			else:
 				clickSuccess.append(True)
+				clickMsg.append(str(param) + "，pass")
 
 		if len(clickSuccess) == 0 and len(clickFail) == 0:
 			self.success = False
@@ -288,6 +289,8 @@ class Http:
 			self.msg = strSplit.join(clickMsg)
 		else:
 			self.success = True
+			strSplit = "<br>"
+			self.msg = strSplit.join(clickMsg)
 
 
 	def function(self, url, params = None, checkResult = None, variable = None):
