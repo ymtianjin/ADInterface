@@ -299,16 +299,20 @@ class Parser:
         cs = []
         cg = []
         for programData in self.program:
-            if params.__contains__("duration") and isinstance(params["duration"], int) and params["duration"] > 0 and int(programData["data"]["duration"]) < params["duration"]: #过滤时长
-                continue
+            logging.info(str(programData))
+            if params.__contains__("duration") and isinstance(params["duration"], int) and params["duration"] > 0: #过滤时长
+                if not programData["data"].__contains__("duration") or int(programData["data"]["duration"]) < params["duration"]:
+                    continue
             if params.__contains__("levelOneChannel") and isinstance(params["levelOneChannel"], list) and len(params["levelOneChannel"]) > 0 and programData["channel"]["levelOne"] not in params["levelOneChannel"]:
                 continue
             if params.__contains__("levelTwoChannel") and isinstance(params["levelTwoChannel"], list) and len(params["levelTwoChannel"]) > 0 and programData["channel"]["levelTwo"] not in params["levelTwoChannel"]:
                 continue
-            if params.__contains__("videoType") and isinstance(params["videoType"], list) and len(params["videoType"]) > 0 and programData["data"]["videoType"] not in params["videoType"]:
-                continue
-            if params.__contains__("videoClass") and isinstance(params["videoClass"], list) and len(params["videoClass"]) > 0 and programData["data"]["videoClass"] not in params["videoClass"]:
-                continue
+            if params.__contains__("videoType") and isinstance(params["videoType"], list) and len(params["videoType"]) > 0:
+                if not programData["data"].__contains__("videoType") or programData["data"]["videoType"] not in params["videoType"]:
+                    continue
+            if params.__contains__("videoClass") and isinstance(params["videoClass"], list) and len(params["videoClass"]) > 0:
+                if not programData["data"].__contains__("videoClass") or programData["data"]["videoClass"] not in params["videoClass"]:
+                    continue
             if params.__contains__("levelOneCategory") and isinstance(params["levelOneCategory"], list) and len(params["levelOneCategory"]):
                 bFound = False
                 for categoryId in programData["category"]["levelOne"]:
@@ -325,8 +329,9 @@ class Parser:
                         break
                 if not bFound:
                     continue
-            if params.__contains__("series") and isinstance(params["series"], list) and len(params["series"]) > 0 and programData["data"]["contentId"] not in params["series"]:
-                continue
+            if params.__contains__("series") and isinstance(params["series"], list) and len(params["series"]) > 0:
+                if not programData["data"].__contains__("contentId") or programData["data"]["contentId"] not in params["series"]:
+                    continue
             if programData["data"]["contentType"] == "PS":
                 if programData["data"]["seriesType"] == "1":
                     psSeries.append(programData["clickParam"])
