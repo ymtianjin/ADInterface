@@ -2055,5 +2055,5 @@ class Naviage:
         self.driver = None
 
         # 停止Appium
-        #appiumPath = os.path.join(os.getcwd(), 'common/stopAppiumServer.bat')
-        #os.system("start " + appiumPath)
+        # appiumPath = os.path.join(os.getcwd(), 'common/stopAppiumServer.bat')
+        # os.system("start " + appiumPath)

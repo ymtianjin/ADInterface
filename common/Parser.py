@@ -162,6 +162,7 @@ class Parser:
             logging.error(e)
             return False
 
+    #遍历内容接口
     def content(self, contentId, clickParam, programIndex):
         try:
             url = self.contentUrl
@@ -232,6 +233,7 @@ class Parser:
             logging.error(e)
             return False
 
+    #遍历栏目树接口
     def categoryTree(self):
         try:
             path = os.path.join(self.parentPath, "category.json")
@@ -271,10 +273,12 @@ class Parser:
             logging.error(e)
             return False
 
+    #定义应用渠道
     def appChannel(self, appKey, channelCode):
         self.appKey = appKey
         self.channelCode = channelCode
 
+    #过滤函数
     def filter(self, params):
         if params.__contains__("position") and isinstance(params["position"], list) and len(params["position"]) > 0:
             return [params["position"]]
@@ -325,7 +329,7 @@ class Parser:
                 if not programData.__contains__("subcontent") or not isinstance(programData["subcontent"], dict) or not isinstance(programData["subcontent"]["data"], list) or len(programData["subcontent"]["data"]) == 0:
                     continue
                 bFound = False
-                for subContent in programData["subcontent"]:
+                for subContent in programData["subcontent"]["data"]:
                     if subContent["contentId"] in params["series"]:
                         bFound = True
                         break

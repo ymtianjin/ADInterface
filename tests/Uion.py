@@ -22,19 +22,19 @@ class Uion(unittest.TestCase):
     def tearDown(self):
         pass
 
-
+    #测试用例执行
     def test_free(self):
         logging.info(self._testMethodName)
 
         testFileName = None
         if len(sys.argv) > 1:
             testFileName = sys.argv[1]
-
+        #日志
         reportPath = os.path.join(os.getcwd(), 'results/report/', time.strftime('%Y%m%d%H%M%S') + 'report.html')
         reportFile = open(reportPath, 'wb')
         report = HTMLReport.HTMLReport(stream = reportFile, title = '接口测试报告', description = '接口测试执行结果：')
         results = []
-
+        #读取文件及参数
         files = os.listdir(self.parentPath)
         for file in files:
             path = os.path.join(self.parentPath, file)
@@ -49,6 +49,7 @@ class Uion(unittest.TestCase):
 
             caseCount = self.param.caseCount();
 
+            #执行测试用例
             for caseIndex in range(0, caseCount):
                 logging.info("===========bengin============")
                 caseName = self.param.switchCase(caseIndex)

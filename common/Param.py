@@ -37,8 +37,8 @@ class Param:
 	#读sheet中单元格的数据
 	def read(self, row, col):
 		try:
-			ctype = self.sheet.cell(row, col).ctype  #单元格数据类型
-			if ctype == 0 or ctype == 5:  # 0或5 是空
+			ctype = self.sheet.cell(row, col).ctype  #单元格数据类型   # 类型 0 empty,1 string, 2 number, 3 date, 4 boolean, 5 error
+			if ctype == 0 or ctype == 5:  # 0或5 是空0 empty 5 error
 				return None
 			if ctype == 2: #整形
 				return int(self.sheet.cell(row, col).value)
@@ -46,7 +46,7 @@ class Param:
 		except BaseException:
 			return None
 
-
+	#判断是否是空字符串
 	def isEmpty(self, value):
 		if len(value) == 0:
 			return True
@@ -59,7 +59,7 @@ class Param:
 
 		return True
 
-
+	#判断是否数组格式
 	def isArray(self, value):
 		if isinstance(value, str)  and len(value) > 2:
 			length = len(value)
@@ -73,7 +73,7 @@ class Param:
 
 		return (-1, -1)
 
-
+	#把数组中的所有格式去掉前后的空格
 	def stripArray(self, arr):
 		for n in range(0, len(arr)):
 			if isinstance(arr[n], str):

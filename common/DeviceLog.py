@@ -8,6 +8,7 @@ class DeviceLog:
     def __init__(self):
         pass
 
+        #连接设备
     def connect(self, device_ip, device_name):
         for i in range(10):
             try:
@@ -74,6 +75,7 @@ class DeviceLog:
             # # pop_log = subprocess.Popen(log_cmd, stdout=log_file_path, stderr=subprocess.PIPE)
             # return pop_log
 
+    #从日志中提取需要的数据
     def __check_ad_data(self, request, checkResult, adResult):
         try:
             data = json.loads(request)
@@ -96,6 +98,7 @@ class DeviceLog:
         except Exception as e:
             logging.info(e)
 
+    #判断设备中的期望值
     def log_read(self, log_file_path, checkResult):
         try:
             missionMids = []
@@ -126,9 +129,9 @@ class DeviceLog:
                         for v in value:
                             if v not in result:
                                 missionMids.append(type + "：" + str(v) + "：value dismatch")
-                    elif isinstance(value, str):
-                        if value != str(result[0]):
-                            missionMids.append(type + "：" + value + "：value dismatch")
+                    elif isinstance(value, str) or isinstance(value, int):
+                        if str(value) != str(result[0]):
+                            missionMids.append(type + "：" + str(value) + "：value dismatch")
             return missionMids
         except Exception as e:
             logging.info(e)
