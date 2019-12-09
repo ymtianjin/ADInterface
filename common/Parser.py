@@ -322,7 +322,7 @@ class Parser:
                 if not bFound:
                     continue
             if params.__contains__("series") and isinstance(params["series"], list) and len(params["series"]) > 0:
-                if not isinstance(programData["subcontent"], dict) or not isinstance(programData["subcontent"]["data"], list) or len(programData["subcontent"]["data"]) == 0:
+                if not programData.__contains__("subcontent") or not isinstance(programData["subcontent"], dict) or not isinstance(programData["subcontent"]["data"], list) or len(programData["subcontent"]["data"]) == 0:
                     continue
                 bFound = False
                 for subContent in programData["subcontent"]:
