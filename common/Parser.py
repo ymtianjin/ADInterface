@@ -182,7 +182,7 @@ class Parser:
             if self.FILTER and data["data"].__contains__("vipFlag") and data["data"]["vipFlag"] != "0" and data["data"]["vipFlag"] is not None:
                 return False
 
-            if data["data"]["contentType"] == "PS" and data["data"]["seriesType"] == "1": #当contentType为CS的时候，seriesType为1表示剧集（需要获取subcontent），如果seriesType为0表示综艺
+            if data["data"]["contentType"] == "PS":  # and data["data"]["seriesType"] == "1": #当contentType为CS的时候，seriesType为1表示剧集（需要获取subcontent），如果seriesType为0表示综艺
                 url = self.subcontentUrl
                 url = url.replace("{app_key}", self.appKey)
                 url = url.replace("{channel_code}", self.channelCode)
@@ -325,16 +325,8 @@ class Parser:
                         break
                 if not bFound:
                     continue
-            if params.__contains__("series") and isinstance(params["series"], list) and len(params["series"]) > 0:
-                if not programData.__contains__("subcontent") or not isinstance(programData["subcontent"], dict) or not isinstance(programData["subcontent"]["data"], list) or len(programData["subcontent"]["data"]) == 0:
-                    continue
-                bFound = False
-                for subContent in programData["subcontent"]["data"]:
-                    if subContent["contentId"] in params["series"]:
-                        bFound = True
-                        break
-                if not bFound:
-                    continue
+            if params.__contains__("series") and isinstance(params["series"], list) and len(params["series"]) > 0 and programData["data"]["contentId"] not in params["series"]:
+                continue
             if programData["data"]["contentType"] == "PS":
                 if programData["data"]["seriesType"] == "1":
                     psSeries.append(programData["clickParam"])
