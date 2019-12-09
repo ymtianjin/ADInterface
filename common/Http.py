@@ -251,7 +251,8 @@ class Http:
 			logging.info("click ad space: " + str(param))
 			# 通过adb记录设备日志
 			logPath = os.path.join(os.getcwd(), 'results/device_logs/')
-			logFile = os.path.join(logPath, time.strftime('%Y%m%d%H%M%S') + 'DeviceLog.log')
+            logFileName = time.strftime('%Y%m%d%H%M%S') + 'DeviceLog.log'
+			logFile = os.path.join(logPath, logFileName)
 			if not os.path.exists(logPath):
 				os.makedirs(logPath)
 			deviceLog = DeviceLog.DeviceLog()
@@ -275,10 +276,10 @@ class Http:
 			if len(missionMid) > 0:
 				strSplit = ","
 				clickFail.append(False)
-				clickMsg.append(str(param) + "，fail，mid: " + strSplit.join(missionMid) + " can't be found")
+				clickMsg.append(str(param) + "，fail，mid: " + strSplit.join(missionMid) + " can't be found,device log: " + logFileName)
 			else:
 				clickSuccess.append(True)
-				clickMsg.append(str(param) + "，pass")
+				clickMsg.append(str(param) + "，pass,device log: " + logFileName)
 
 		if len(clickSuccess) == 0 and len(clickFail) == 0:
 			self.success = False
