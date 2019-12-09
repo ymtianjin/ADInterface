@@ -251,7 +251,7 @@ class Http:
 			logging.info("click ad space: " + str(param))
 			# 通过adb记录设备日志
 			logPath = os.path.join(os.getcwd(), 'results/device_logs/')
-            logFileName = time.strftime('%Y%m%d%H%M%S') + 'DeviceLog.log'
+			logFileName = time.strftime('%Y%m%d%H%M%S') + 'DeviceLog.log'
 			logFile = os.path.join(logPath, logFileName)
 			if not os.path.exists(logPath):
 				os.makedirs(logPath)
