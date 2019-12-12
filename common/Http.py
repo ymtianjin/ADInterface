@@ -235,13 +235,12 @@ class Http:
 		#missionMid = deviceLog.log_read(logFile, checkResult)
 
 		# 获取cms的推荐位
-		parser = Parser.Parser()
-		parser.appChannel("8acb5c18e56c1988723297b1a8dc9260", "600001")
+		parser = Parser.Parser(self.variable)
 		clickParams = parser.filter(params)
 
 		# 目前其实还只支持点击一个，因为第一次跑完后appuim就退出了，并且测试用例的结果也只支持一次，后面会覆盖前面的结果
 		# 后续改进是把每次点击都触发一个测试用例，并且单独记录结果集，并且可以自动启动appium
-		navigate = Navigate.Naviage()
+		navigate = Navigate.Naviage(self.variable)
 		clickSuccess = []
 		clickFail = []
 		clickMsg = []
@@ -255,10 +254,10 @@ class Http:
 			logFile = os.path.join(logPath, logFileName)
 			if not os.path.exists(logPath):
 				os.makedirs(logPath)
-			deviceLog = DeviceLog.DeviceLog()
-			deviceLog.connect("192.168.22.34", "14499M580068257")
-			deviceLog.clear_cache("com.newtv.cboxtv")
-			deviceLog.log_start("14499M580068257", "adsdk", logFile)
+			deviceLog = DeviceLog.DeviceLog(self.variable)
+			deviceLog.connect()
+			deviceLog.clear_cache()
+			deviceLog.log_start(logFile)
 
 			# 通过appium启动遍历
 			if not navigate.startup():

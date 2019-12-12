@@ -3,15 +3,17 @@ __author__ = 'limeng'
 import json, requests, random, os, logging
 
 class Parser:
-    def __init__(self):
+    def __init__(self, param):
         self.FILTER = True
         self.appKey = ""
         self.channelCode = ""
-        self.indexUrl = "http://testcms31.ottcn.com:30012/api/v31/{app_key}/{channel_code}/navigation/index.json"
-        self.pageUrl = "http://testcms31.ottcn.com:30012/api/v31/{app_key}/{channel_code}/page/{page_id}.json"
-        self.contentUrl = "http://testcms31.ottcn.com:30012/api/v31/{app_key}/{channel_code}/content/{left_content}/{right_content}/{content_id}.json"
-        self.subcontentUrl = "http://testcms31.ottcn.com:30012/api/v31/{app_key}/{channel_code}/detailsubcontents/{content_id}.json?subcontenttype=subcontents"
-        self.categoryTreeUrl = "http://testcms31.ottcn.com:30012/api/v31/{app_key}/{channel_code}/categorytree/categorytree.json"
+        self.indexUrl = param.__contains__("global_index_url") and param["global_index_url"] or ""
+        self.pageUrl = param.__contains__("global_page_url") and param["global_page_url"] or ""
+        self.contentUrl = param.__contains__("global_content_url") and param["global_content_url"] or ""
+        self.subcontentUrl = param.__contains__("global_subcontent_url") and param["global_subcontent_url"] or ""
+        self.categoryTreeUrl = param.__contains__("global_category_tree_url") and param["global_category_tree_url"] or ""
+        self.appKey = param.__contains__("global_app_key") and param["global_app_key"] or ""
+        self.channelCode = param.__contains__("global_channel_code") and param["global_channel_code"] or ""
         self.channel = {}
         self.program = []
         self.category = {}
@@ -272,11 +274,6 @@ class Parser:
         except BaseException as e:
             logging.error(e)
             return False
-
-    #定义应用渠道
-    def appChannel(self, appKey, channelCode):
-        self.appKey = appKey
-        self.channelCode = channelCode
 
     #过滤函数
     def filter(self, params):

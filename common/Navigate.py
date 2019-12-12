@@ -5,9 +5,14 @@ from appium import webdriver
 import time, logging, os
 
 class Naviage:
-    def __init__(self):
+    def __init__(self, param):
         # 常量定义
-        self.app_tag = "com.newtv.cboxtv"
+        self.app_tag = param.__contains__("global_app_package") and param["global_app_package"] or ""
+        self.device_name = param.__contains__("global_device_name") and param["global_device_name"] or ""
+        self.app_package = param.__contains__("global_app_package") and param["global_app_package"] or ""
+        self.app_activity = param.__contains__("global_app_activity") and param["global_app_activity"] or ""
+        self.app_wait_activity = param.__contains__("global_app_wait_activity") and param["global_app_wait_activity"] or ""
+        self.webdriver_server = param.__contains__("global_webdriver_server") and param["global_webdriver_server"] or ""
         # 页面左上角logo的xpath定位，用于判断应用是否正常启动
         self.logo_xpath = '//android.widget.RelativeLayout[@index=0]/android.widget.ImageView[@index=1]'
         # 一级导航的xpath
@@ -2024,20 +2029,20 @@ class Naviage:
             #time.sleep(15);
 
             desired_caps = {
-                'deviceName': "14499M580068257",  # 设备信息，adb devices命令得到的值
+                'deviceName': self.device_name,  # 设备信息，adb devices命令得到的值
                 'platformName': "Android",  # 系统信息，Android/IOS
                 'platformVersion': "5.1",  # 系统版本号
                 'automationName': "Appium",  # Appium
-                'appPackage': "com.newtv.cboxtv",  # 被测试apk包名
-                'appActivity': "tv.newtv.cboxtv.EntryActivity",  # 被测试apk启动页
-                'appWaitActivity': "tv.newtv.cboxtv.MainActivity",  # 填写测试包等待页
+                'appPackage': self.app_package,  # 被测试apk包名
+                'appActivity': self.app_activity,  # 被测试apk启动页
+                'appWaitActivity': self.app_wait_activity,  # 填写测试包等待页
                 'noReset': True,  # 不要在会话前重置应用状态
                 'unicodeKeyboard': True,  # 使用 Unicode 输入法
                 'resetKeyboard': True,  # Unicode 测试结束后，重置输入法到原有状态
                 'newCommandTimeout': 24000,  # 设置过期时间
 
             }
-            self.driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', desired_caps)
+            self.driver = webdriver.Remote(self.webdriver_server, desired_caps)
             # self.driver.find_elements_by_xpath(self.logo_xpath)
 
             return True
