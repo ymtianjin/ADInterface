@@ -2062,3 +2062,4 @@ class Naviage:
         # 停止Appium
         appiumPath = os.path.join(os.getcwd(), 'common/stopAppiumServer.bat')
         os.system("start " + appiumPath)
+        time.sleep(15);
