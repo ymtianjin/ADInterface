@@ -134,7 +134,7 @@ class DeviceLog:
                             if v not in result:
                                 missionMids.append(type + "：" + str(v) + "：value dismatch")
                     elif isinstance(value, str) or isinstance(value, int):
-                        if str(value) != str(result[0]):
+                        if str(value) != str(result[-1]):
                             missionMids.append(type + "：" + str(value) + "：value dismatch")
             return missionMids
         except Exception as e:
