@@ -2024,9 +2024,9 @@ class Naviage:
     def startup(self):
         try:
             # 启动Appium
-            #appiumPath = os.path.join(os.getcwd(), 'common/startAppiumServer.bat')
-            #os.system("start " + appiumPath)
-            #time.sleep(15);
+            appiumPath = os.path.join(os.getcwd(), 'common/startAppiumServer.bat')
+            os.system("start " + appiumPath)
+            time.sleep(15);
 
             desired_caps = {
                 'deviceName': self.device_name,  # 设备信息，adb devices命令得到的值
@@ -2060,5 +2060,5 @@ class Naviage:
         self.driver = None
 
         # 停止Appium
-        # appiumPath = os.path.join(os.getcwd(), 'common/stopAppiumServer.bat')
-        # os.system("start " + appiumPath)
+        appiumPath = os.path.join(os.getcwd(), 'common/stopAppiumServer.bat')
+        os.system("start " + appiumPath)
