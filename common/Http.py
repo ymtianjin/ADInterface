@@ -262,7 +262,7 @@ class Http:
 			# 通过appium启动遍历
 			if not navigate.startup():
 				clickFail.append(False)
-				clickMsg.append("device can't be connected")
+				clickMsg.append(str(param) + "，fail，device can't be connected")
 				deviceLog.disconnect()
 				navigate.disconnect()
 				continue
