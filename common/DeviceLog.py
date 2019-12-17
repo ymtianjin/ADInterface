@@ -6,10 +6,10 @@ from selenium.webdriver.common.keys import Keys
 
 class DeviceLog:
     def __init__(self, param):
-        self.device_ip = param.__contains__("global_device_ip") and param["global_device_ip"] or ""
-        self.device_name = param.__contains__("global_device_name") and param["global_device_name"] or ""
-        self.app_package = param.__contains__("global_app_package") and param["global_app_package"] or ""
-        self.sdk_name = param.__contains__("global_sdk_name") and param["global_sdk_name"] or ""
+        self.device_ip = str(param.__contains__("global_device_ip") and param["global_device_ip"] or "")
+        self.device_name = str(param.__contains__("global_device_name") and param["global_device_name"] or "")
+        self.app_package = str(param.__contains__("global_app_package") and param["global_app_package"] or "")
+        self.sdk_name = str(param.__contains__("global_sdk_name") and param["global_sdk_name"] or "")
         pass
 
         #连接设备

@@ -7,12 +7,12 @@ import time, logging, os
 class Naviage:
     def __init__(self, param):
         # 常量定义
-        self.app_tag = param.__contains__("global_app_package") and param["global_app_package"] or ""
-        self.device_name = param.__contains__("global_device_name") and param["global_device_name"] or ""
-        self.app_package = param.__contains__("global_app_package") and param["global_app_package"] or ""
-        self.app_activity = param.__contains__("global_app_activity") and param["global_app_activity"] or ""
-        self.app_wait_activity = param.__contains__("global_app_wait_activity") and param["global_app_wait_activity"] or ""
-        self.webdriver_server = param.__contains__("global_webdriver_server") and param["global_webdriver_server"] or ""
+        self.app_tag = str(param.__contains__("global_app_package") and param["global_app_package"] or "")
+        self.device_name = str(param.__contains__("global_device_name") and param["global_device_name"] or "")
+        self.app_package = str(param.__contains__("global_app_package") and param["global_app_package"] or "")
+        self.app_activity = str(param.__contains__("global_app_activity") and param["global_app_activity"] or "")
+        self.app_wait_activity = str(param.__contains__("global_app_wait_activity") and param["global_app_wait_activity"] or "")
+        self.webdriver_server = str(param.__contains__("global_webdriver_server") and param["global_webdriver_server"] or "")
         # 页面左上角logo的xpath定位，用于判断应用是否正常启动
         self.logo_xpath = '//android.widget.RelativeLayout[@index=0]/android.widget.ImageView[@index=1]'
         # 一级导航的xpath
