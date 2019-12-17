@@ -50,7 +50,7 @@ class Http:
 					index = key[begin:end]
 				if index.isdigit() and 0 <= int(index) < len(value):
 					name = "{$" + name + "}[" + index + "]"
-					key = key.replace(name, value[int(index)])
+					key = key.replace(name, str(value[int(index)]))
 			else:
 				name = "{$" + name + "}"
 				key = key.replace(name, str(value))
