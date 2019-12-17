@@ -1916,6 +1916,7 @@ class Naviage:
             elif block_no_content_list != []:
                 # 需要测试的推荐位内容
                 self.__interface_block_no_content_travel(block_no_content_list, block_recommend_no)
+                return
 
             # print (block_no_name, block_recommend_no)
             # print(type(block_no_name),type(block_recommend_no))
