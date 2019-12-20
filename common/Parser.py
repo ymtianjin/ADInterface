@@ -135,7 +135,7 @@ class Parser:
             for blockData in data["data"]:   #遍历data中的data，
                 layoutCode = blockData["layoutCode"]  #取出layout后三位赋值给blockId
                 blockId = layoutCode[-3 : ]
-                if blockId in ["009", "010", "032"]:
+                if blockId in ["009", "010", "032", "005"]:
                     return False
                 clickParam["block"].append(blockId)
                 programs = []
