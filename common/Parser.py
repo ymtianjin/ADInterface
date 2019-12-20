@@ -197,7 +197,7 @@ class Parser:
                     return False
                 if subcontentData["errorCode"] != "0":
                     return False
-                if self.FILTER and (not isinstance(subcontentData["data"], list) or len(subcontentData["data"]) < 3):
+                if self.FILTER and (not isinstance(subcontentData["data"], list) or len(subcontentData["data"]) < 1):
                     return False
                 data["subcontent"] = subcontentData
 
