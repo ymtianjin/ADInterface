@@ -141,7 +141,7 @@ class Parser:
                 programs = []
                 if isinstance(blockData["programs"], list):  #判断programs类型
                     for programIndex, programData in enumerate(blockData["programs"]):  #遍历programs下的data，加索引
-                        if self.FILTER and programData["l_actionType"] != "OPEN_DETAILS":
+                        if self.FILTER and (not programData.__contains__("l_actionType") or programData["l_actionType"] != "OPEN_DETAILS"):
                             continue
                         if self.FILTER and programData["contentType"] not in ["PS", "CS", "TV", "CG"]: #节目集类型：CS=合集、TV=电视、PS=剧集、CG=节目合集
                             continue
@@ -149,7 +149,7 @@ class Parser:
                         content = self.content(contentId, clickParam, programIndex)   #contet由contentId，
                         if self.FILTER and not content:
                             continue
-                        if blockId == "008" and content["data"]["blockType"] == 0:
+                        if blockId == "008" and (not content["data"].__contains__("blockType") or content["data"]["blockType"] == 0):
                             return False
                         programData["content"] = content
                         programs.append(programData)
