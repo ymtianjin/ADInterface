@@ -199,7 +199,12 @@ class Parser:
                     return False
                 if self.FILTER and (not isinstance(subcontentData["data"], list) or len(subcontentData["data"]) < 1):
                     return False
-                data["subcontent"] = subcontentData
+                subcontents = []
+                for subcontentIndex, subcontentBlock in enumerate(subcontentData["data"]):
+                    if self.FILTER and subcontentBlock["contentType"] not in ["PS", "CS", "TV", "CG"]:  # 节目集类型：CS=合集、TV=电视、PS=剧集、CG=节目合集
+                        continue
+                    subcontents.append(subcontentBlock)
+                data["subcontent"] = subcontents
 
             contentData = data
 
