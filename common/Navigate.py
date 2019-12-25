@@ -102,7 +102,7 @@ class Naviage:
         :param driver:用例驱动
         # :param content_type:节目类型
         # :param  content_name :详情页标题
-        :return:
+        :return: 返回是否在详情页
         """
         try:
             list_page_attr = self.driver.current_activity  # 获取导航页页面属性
@@ -169,6 +169,8 @@ class Naviage:
                 # fileProcess.interface_data_return(block_recommend_no,content_num,Flag)
         except Exception as e:
             print(e)
+
+        return Flag
 
     def __find_element(self, id_or_xpath, n=20):
         """
@@ -442,7 +444,7 @@ class Naviage:
         :param driver:
         :param block_no_content_list: 推荐位信息列表
         :param block_recommend_no: 推荐位编号
-        :return:
+        :return: 是否在详情页
         """
         # 遍历接口信息：需要测试的推荐位内容
         # for content_dict_no in range(len(block_no_content_list)):
@@ -468,9 +470,9 @@ class Naviage:
                 print('---------------点击推荐位进入详情页并返回-----------', content_num)
                 # 调用用例方法，运行对应用例
                 # paramAndPlay.verify(driver, content_type, content_name)
-                self.__verify(block_recommend_no, content_num)
+                return self.__verify(block_recommend_no, content_num)
 
-                break
+        return False
 
     def __block_001_play_focus_move(self, i):
         """
@@ -1915,8 +1917,10 @@ class Naviage:
                 logging.info('无推荐位遍历')
             elif block_no_content_list != []:
                 # 需要测试的推荐位内容
-                self.__interface_block_no_content_travel(block_no_content_list, block_recommend_no)
-                return
+                isInDetailPage = self.__interface_block_no_content_travel(block_no_content_list, block_recommend_no)
+
+                if isInDetailPage:
+                    return
 
             # print (block_no_name, block_recommend_no)
             # print(type(block_no_name),type(block_recommend_no))
@@ -2063,4 +2067,4 @@ class Naviage:
         # 停止Appium
         appiumPath = os.path.join(os.getcwd(), 'common/stopAppiumServer.bat')
         os.system("start " + appiumPath)
-        time.sleep(15);
+        time.sleep(30);
