@@ -35,3 +35,8 @@ url列：substr<br>
 接口地址：<br>
 创建投放接口：http://admin.adott.ottcn.org/api/mediabuy_operate<br>
 获取投放接口：http://api.test.adott.ottcn.com/ad?deviceid=1234&at=before&appkey=100001&channelcode=101<br>
+
+xlrd<br>
+requests<br>
+selenium<br>
+Appium-Python-Client<br>
